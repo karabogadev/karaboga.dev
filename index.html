@@ -34,6 +34,7 @@
   <meta name="twitter:description" content="5+ years building fast, clean iOS and Android apps in Flutter and Dart.">
   <meta name="twitter:image" content="https://karaboga.dev/og.png">
   <meta name="twitter:image:alt" content="Cihat Karaboğa — Mobile Software Engineer">
+  <meta name="twitter:site" content="@cihatapp">
   <meta name="twitter:creator" content="@cihatapp">
 
   <!-- Icons & manifest -->
@@ -56,6 +57,7 @@
         "@id": "https://karaboga.dev/#website",
         "url": "https://karaboga.dev/",
         "name": "Cihat Karaboğa",
+        "alternateName": "karaboga.dev",
         "description": "Personal site of Cihat Karaboğa, mobile software engineer.",
         "inLanguage": "en",
         "publisher": { "@id": "https://karaboga.dev/#person" }
@@ -67,8 +69,20 @@
         "name": "Cihat Karaboğa — Mobile Software Engineer & Flutter Developer",
         "isPartOf": { "@id": "https://karaboga.dev/#website" },
         "about": { "@id": "https://karaboga.dev/#person" },
-        "primaryImageOfPage": "https://karaboga.dev/og.png",
+        "mainEntity": { "@id": "https://karaboga.dev/#person" },
+        "primaryImageOfPage": { "@id": "https://karaboga.dev/#primaryimage" },
+        "dateCreated": "2026-05-19",
+        "dateModified": "2026-05-19",
         "inLanguage": "en"
+      },
+      {
+        "@type": "ImageObject",
+        "@id": "https://karaboga.dev/#primaryimage",
+        "url": "https://karaboga.dev/og.png",
+        "contentUrl": "https://karaboga.dev/og.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Cihat Karaboğa — Mobile Software Engineer"
       },
       {
         "@type": "Person",
@@ -78,9 +92,17 @@
         "givenName": "Cihat",
         "familyName": "Karaboğa",
         "url": "https://karaboga.dev/",
+        "mainEntityOfPage": { "@id": "https://karaboga.dev/#webpage" },
         "jobTitle": "Mobile Software Engineer",
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "Mobile Software Engineer",
+          "occupationalCategory": "15-1252.00"
+        },
         "description": "Mobile software engineer specializing in Flutter and Dart for cross-platform iOS and Android apps.",
         "email": "mailto:cihattkaraboga@gmail.com",
+        "address": { "@type": "PostalAddress", "addressCountry": "TR" },
+        "knowsLanguage": ["Turkish", "English"],
         "knowsAbout": ["Flutter", "Dart", "Mobile app development", "iOS development", "Android development", "Cross-platform development"],
         "sameAs": [
           "https://github.com/karabogaa",
@@ -311,9 +333,9 @@
           5+ years turning ideas into products that ship.
         </p>
         <nav class="links" aria-label="Links">
-          <a href="https://github.com/karabogaa" rel="noopener noreferrer" target="_blank">GitHub</a>
-          <a href="https://www.linkedin.com/in/cihatapp/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
-          <a href="https://x.com/cihatapp" rel="noopener noreferrer" target="_blank">X</a>
+          <a href="https://github.com/karabogaa" rel="me noopener noreferrer" target="_blank">GitHub</a>
+          <a href="https://www.linkedin.com/in/cihatapp/" rel="me noopener noreferrer" target="_blank">LinkedIn</a>
+          <a href="https://x.com/cihatapp" rel="me noopener noreferrer" target="_blank">X</a>
           <a href="mailto:cihattkaraboga@gmail.com">Email</a>
         </nav>
       </div>

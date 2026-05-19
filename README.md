@@ -2,10 +2,10 @@
 
 Personal site of **Cihat Karaboğa** — mobile software engineer, Türkiye.
 
-A single static page. `index.html` is fully self-contained: inline CSS, no
-JavaScript, no web fonts, and the avatar embedded as a data URI — so the page
-renders in a single request. Built for speed and SEO with semantic HTML,
+A single static page. `index.html` is self-contained — inline CSS and a tiny
+inline theme script, no build step. Built for speed and SEO with semantic HTML,
 Open Graph + Twitter cards, JSON-LD structured data, a sitemap and a manifest.
+The UI uses the Geist webfont (Google Fonts) with a system-font fallback.
 
 ## Develop locally
 
@@ -44,12 +44,17 @@ custom domain to `karaboga.dev` (this adds a `CNAME` file).
 | `manifest.webmanifest` | PWA manifest |
 | `robots.txt`, `sitemap.xml` | Crawler directives |
 | `nginx.conf`, `Dockerfile` | Container deployment |
-| `og.html`, `avatar-src.png` | Build sources — not deployed |
+| `og.html` | Build source for `og.png` — not deployed |
 
-## Regenerate images
+## Regenerate the OG image
 
-`og.png` is a 1200×630 screenshot of `og.html`. Re-render if its source changes.
+`og.png` is a 1200×630 render of `og.html`. After editing `og.html`, re-render
+and commit `og.png` — the `Dockerfile` `COPY`s it directly:
 
-The Docker image copies `icon-512.png` to `og.png` when the real file is not in
-the repo so builds succeed; commit `og.png` for correct social preview and then
-add it to the `COPY` line in the `Dockerfile` (and remove the `RUN cp` there).
+```bash
+chrome --headless --window-size=1200,630 --force-device-scale-factor=1 \
+  --hide-scrollbars --virtual-time-budget=5000 \
+  --screenshot=og.png "file://$PWD/og.html"
+```
+
+On macOS, `chrome` is `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`.
