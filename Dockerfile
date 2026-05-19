@@ -6,7 +6,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Static site (explicit list — build sources are intentionally excluded)
 COPY index.html 404.html manifest.webmanifest robots.txt sitemap.xml styles.css \
      favicon.svg favicon.ico apple-touch-icon.png \
-     icon-192.png icon-512.png avatar.jpg \
+     icon-192.png icon-512.png \
      /usr/share/nginx/html/
 
 # If og.png is committed, COPY it alongside the other assets and delete this line.

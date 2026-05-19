@@ -41,7 +41,6 @@ custom domain to `karaboga.dev` (this adds a `CNAME` file).
 | `404.html` | Themed not-found page |
 | `og.png` | 1200×630 social share image |
 | `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-*.png` | Icons |
-| `avatar.jpg` | Portrait used by structured data and the share card |
 | `manifest.webmanifest` | PWA manifest |
 | `robots.txt`, `sitemap.xml` | Crawler directives |
 | `nginx.conf`, `Dockerfile` | Container deployment |
@@ -49,9 +48,7 @@ custom domain to `karaboga.dev` (this adds a `CNAME` file).
 
 ## Regenerate images
 
-`og.png` is a 1200×630 screenshot of `og.html`. The avatar is resized from
-`avatar-src.png` (the inline copy in `index.html` and the standalone
-`avatar.jpg`). Re-render if either source changes.
+`og.png` is a 1200×630 screenshot of `og.html`. Re-render if its source changes.
 
 The Docker image copies `icon-512.png` to `og.png` when the real file is not in
 the repo so builds succeed; commit `og.png` for correct social preview and then
