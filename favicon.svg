@@ -1,9 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Cihat Karaboğa">
-  <rect width="100" height="100" rx="22" fill="#0e0e10"/>
-  <g fill="#ff5a2c">
-    <path d="M13 24 Q50 60 87 24 Q50 80 13 24 Z"/>
-    <path d="M32 47 Q50 42 68 47 Q71 62 62 79 Q50 87 38 79 Q29 62 32 47 Z"/>
-    <path d="M33 52 Q21 52 20 63 Q29 63 37 57 Z"/>
-    <path d="M67 52 Q79 52 80 63 Q71 63 63 57 Z"/>
-  </g>
+  <defs>
+    <linearGradient id="bg" x1="12" y1="8" x2="88" y2="94" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#16161a"/>
+      <stop offset="1" stop-color="#050506"/>
+    </linearGradient>
+    <linearGradient id="fire" x1="18" y1="17" x2="83" y2="85" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff8a3d"/>
+      <stop offset=".52" stop-color="#ff4d1d"/>
+      <stop offset="1" stop-color="#b91c1c"/>
+    </linearGradient>
+    <linearGradient id="spark" x1="34" y1="32" x2="66" y2="74" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#fb923c"/>
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="24" fill="url(#bg)"/>
+  <path d="M16 23c12 2 24 10 34 23 10-13 22-21 34-23-4 16-14 28-28 34 0 0-2-8-6-8s-6 8-6 8C30 51 20 39 16 23Z" fill="url(#fire)"/>
+  <path d="M34 46c5-7 27-7 32 0 2 10 0 24-7 33-5 5-13 5-18 0-7-9-9-23-7-33Z" fill="#0b0b0d"/>
+  <path d="M40 46h20l4 18-14 14-14-14 4-18Z" fill="url(#fire)"/>
+  <path d="M42 38 30 50l12 12" fill="none" stroke="#f8fafc" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M58 38 70 50 58 62" fill="none" stroke="#f8fafc" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M48 44 43 70" fill="none" stroke="url(#spark)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M52 56 57 30" fill="none" stroke="url(#spark)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="40" cy="57" r="3" fill="#050506"/>
+  <circle cx="60" cy="57" r="3" fill="#050506"/>
 </svg>
