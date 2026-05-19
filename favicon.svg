@@ -1,4 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="K">
-  <rect width="32" height="32" rx="6" fill="#0b57d0"/>
-  <text x="16" y="22" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-size="16" font-weight="700">K</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Cihat Karaboğa">
+  <rect width="100" height="100" rx="22" fill="#0e0e10"/>
+  <g fill="#ff5a2c">
+    <path d="M13 24 Q50 60 87 24 Q50 80 13 24 Z"/>
+    <path d="M32 47 Q50 42 68 47 Q71 62 62 79 Q50 87 38 79 Q29 62 32 47 Z"/>
+    <path d="M33 52 Q21 52 20 63 Q29 63 37 57 Z"/>
+    <path d="M67 52 Q79 52 80 63 Q71 63 63 57 Z"/>
+  </g>
 </svg>
