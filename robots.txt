@@ -1,0 +1,5 @@
+# https://karaboga.dev
+User-agent: *
+Allow: /
+
+Sitemap: https://karaboga.dev/sitemap.xml
