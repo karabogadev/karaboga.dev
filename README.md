@@ -52,3 +52,7 @@ custom domain to `karaboga.dev` (this adds a `CNAME` file).
 `og.png` is a 1200×630 screenshot of `og.html`. The avatar is resized from
 `avatar-src.png` (the inline copy in `index.html` and the standalone
 `avatar.jpg`). Re-render if either source changes.
+
+The Docker image copies `icon-512.png` to `og.png` when the real file is not in
+the repo so builds succeed; commit `og.png` for correct social preview and then
+add it to the `COPY` line in the `Dockerfile` (and remove the `RUN cp` there).
