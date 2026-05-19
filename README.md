@@ -1,35 +1,54 @@
 # karaboga.dev
 
-Statik, hızlı ve SEO uyumlu kişisel tanıtım sayfası. Framework yok; yalnızca HTML, CSS ve birkaç yardımcı dosya.
+Personal site of **Cihat Karaboğa** — mobile software engineer, Türkiye.
 
-## Yerel önizleme
+A single static page. `index.html` is fully self-contained: inline CSS, no
+JavaScript, no web fonts, and the avatar embedded as a data URI — so the page
+renders in a single request. Built for speed and SEO with semantic HTML,
+Open Graph + Twitter cards, JSON-LD structured data, a sitemap and a manifest.
 
-Repo kökünde bir HTTP sunucusu çalıştırın (kök yolları `/styles.css` için doğru çözülsün):
+## Develop locally
+
+Serve the folder so root-absolute paths (`/favicon.svg`, `/og.png`, …) resolve:
 
 ```bash
 python3 -m http.server 8080
+# → http://localhost:8080
 ```
 
-Ardından tarayıcıda `http://localhost:8080` adresine gidin.
+## Deploy
 
-## GitHub Pages
+### Docker / nginx
 
-1. Bu repoyu GitHub’a gönderin.
-2. **Settings → Pages** bölümünde **Source** olarak `main` (veya `master`) dalını ve **root** (`/`) klasörünü seçin.
-3. Yayın URL’i `https://<kullanıcı>.github.io/<repo-adı>/` olur.
+```bash
+docker build -t karaboga-dev .
+docker run --rm -p 8080:80 karaboga-dev
+```
 
-**Özel alan adı (karaboga.dev):**
+`nginx.conf` adds gzip, long-cache headers for static assets, and wires up the
+custom `404.html`.
 
-1. Aynı ayar sayfasında **Custom domain** alanına `karaboga.dev` yazın.
-2. DNS sağlayıcınızda GitHub’ın [Pages özel alan belgelerinde](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site) anlatıldığı gibi **A**, **AAAA** veya **CNAME** kayıtlarını ekleyin (apex için A kayıtları, `www` için CNAME yaygındır).
-3. İsteğe bağlı: **Enforce HTTPS** seçeneğini etkinleştirin (sertifika hazır olduktan sonra).
+### GitHub Pages
 
-## Dosyalar
+Push to GitHub, then **Settings → Pages → Source: `main` / root**. Set the
+custom domain to `karaboga.dev` (this adds a `CNAME` file).
 
-| Dosya | Açıklama |
-|--------|-----------|
-| `index.html` | Ana sayfa, meta/OG, JSON-LD |
-| `styles.css` | Stiller |
-| `robots.txt` | Tarayıcı robotları |
-| `sitemap.xml` | Site haritası |
-| `favicon.svg` | Sekme ikonu |
+## Files
+
+| File | Purpose |
+|------|---------|
+| `index.html` | The page — markup, inline CSS, SEO metadata, JSON-LD |
+| `404.html` | Themed not-found page |
+| `og.png` | 1200×630 social share image |
+| `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-*.png` | Icons |
+| `avatar.jpg` | Portrait used by structured data and the share card |
+| `manifest.webmanifest` | PWA manifest |
+| `robots.txt`, `sitemap.xml` | Crawler directives |
+| `nginx.conf`, `Dockerfile` | Container deployment |
+| `og.html`, `avatar-src.png` | Build sources — not deployed |
+
+## Regenerate images
+
+`og.png` is a 1200×630 screenshot of `og.html`. The avatar is resized from
+`avatar-src.png` (the inline copy in `index.html` and the standalone
+`avatar.jpg`). Re-render if either source changes.
