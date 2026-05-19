@@ -9,42 +9,61 @@
   <meta name="color-scheme" content="dark">
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;800&display=swap">
   <style>
     *,*::before,*::after{box-sizing:border-box}
     *{margin:0}
     :root{
       --bg:#0a0a0b;--ink:#f3f1ed;--ink-dim:#a4a09a;--ink-mute:#6a6760;
-      --ember:#ff5a2c;--ember-bright:#ff7a52;--line-2:rgba(243,241,237,.17);
-      --font:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+      --ember:#ff5a2c;--ember-bright:#ff7a52;--ember-soft:rgba(255,90,44,.14);
+      --line-2:rgba(243,241,237,.17);
+      --font:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
       --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+      --ease:cubic-bezier(.22,.61,.36,1);
     }
     html{-webkit-text-size-adjust:100%}
     body{
       font-family:var(--font);background:var(--bg);color:var(--ink);
       min-height:100vh;display:flex;align-items:center;justify-content:center;
       text-align:center;padding:2rem;-webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;letter-spacing:-.011em;
       position:relative;overflow:hidden;
     }
     body::before{
       content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
       background:radial-gradient(46rem 32rem at 50% -12%,rgba(255,90,44,.16),transparent 68%);
     }
-    .wrap{max-width:32rem}
-    .mark{width:5.5rem;height:5.5rem;color:var(--ember);margin:0 auto 2rem;opacity:.92}
-    .code{font-size:clamp(4rem,16vw,7rem);font-weight:800;letter-spacing:-.04em;line-height:1}
-    h1{font-size:clamp(1.1rem,3.5vw,1.4rem);font-weight:600;margin:.8rem 0 .6rem;letter-spacing:-.01em}
-    p{color:var(--ink-dim);font-size:1rem;margin-bottom:2rem}
+    .wrap{max-width:32rem;animation:rise .6s var(--ease) backwards}
+    .mark{
+      width:5.5rem;height:5.5rem;color:var(--ember);margin:0 auto 2rem;opacity:.92;
+      filter:drop-shadow(0 .4rem 1.6rem rgba(255,90,44,.32));
+      animation:float 4s ease-in-out infinite;
+    }
+    .code{font-size:clamp(4rem,16vw,7rem);font-weight:800;letter-spacing:-.045em;line-height:1}
+    h1{font-size:clamp(1.1rem,3.5vw,1.4rem);font-weight:600;margin:.8rem 0 .6rem;letter-spacing:-.02em}
+    p{color:var(--ink-dim);font-size:1rem;margin-bottom:2rem;text-wrap:pretty}
     .home{
       display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:.95rem;
-      padding:.72rem 1.3rem;border-radius:.6rem;text-decoration:none;
+      padding:.72rem 1.35rem;border-radius:.6rem;text-decoration:none;
       background:var(--ember);color:#180a04;
-      transition:background .16s,transform .16s;
+      box-shadow:0 .5rem 1.4rem -.4rem rgba(255,90,44,.5);
+      transition:background .18s var(--ease),transform .18s var(--ease),box-shadow .18s var(--ease);
     }
-    .home:hover{background:var(--ember-bright);transform:translateY(-1px)}
+    .home:hover{
+      background:var(--ember-bright);transform:translateY(-2px);
+      box-shadow:0 .8rem 1.8rem -.4rem rgba(255,90,44,.6);
+    }
+    .home:active{transform:translateY(0) scale(.97)}
     .domain{margin-top:2.4rem;font-family:var(--mono);font-size:.78rem;
       color:var(--ink-mute);letter-spacing:.06em}
-    :focus-visible{outline:2px solid var(--ember);outline-offset:3px}
-    @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+    :focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:3px}
+    @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation:none!important;transition:none!important}
+    }
   </style>
 </head>
 <body>
