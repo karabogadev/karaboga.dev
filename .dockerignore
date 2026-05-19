@@ -1,7 +1,10 @@
 .git
 .gitignore
+.dockerignore
+Dockerfile
 .DS_Store
 .idea
 .vscode
 node_modules
 npm-debug.log
+README.md
