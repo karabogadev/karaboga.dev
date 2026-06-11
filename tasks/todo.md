@@ -29,6 +29,13 @@
 - [x] Soru/cevap/keypanel sıkılaştırıldı (stem 53, opts 47, keypanel padding 46, QR 560)
 - [x] Headless Chromium render, başlık/orta/alt bölge kontrolleri → `lamatia-sinav-pankart-a3.png` güncellendi
 
+## "OKUT BENİ!" eş pankartı — A3 (2026-06-11)
+- [x] `lamatia/poster/okut-beni.html` — sınav pankartının yanına asılacak, uzaktan bağıran ikinci A3
+- [x] Ters palet: fosforlu sarı zemin + dev Fraunces 900 "OKUT BENİ!" (585px) + 1400px menü QR (baskıda ~17cm)
+- [x] Sınav kampanyası dili korundu: siyah "FİNAL DÖNEMİ ★ KAHVE MOLASI" bantları, el yazısı kırmızı notlar/oklar, kraft Pilav Ustası yapışkanı, La'Matia damgası, kahve halkaları
+- [x] Marka düzeltmesi: her iki pankartta "Coffee & More" → "Chocolate & Coffee" (lamatia.com gerçek alt yazı)
+- [x] Render doğrulama (bölge bölge: alt bant/QR boşluğu, sağ not, damga) → `lamatia-okut-beni-a3.png`; sınav pankartı PNG'si de yenilendi
+
 ## Gerçek marka: logo + jenerik lamatia.com'dan (2026-06-11)
 - [x] lamatia.com analizi: "logo" = Luxurious Script "La'matia" yazı markası + "Chocolate & Coffee"; jenerik = tam ekran düşen kahve çekirdekleri videosu (Wix, 27 sn 720p)
 - [x] Jenerik indirildi + ffmpeg ile 960px / CRF33 / 811KB'a küçültüldü → `lamatia/menu/assets/jenerik.mp4` (+ 20KB poster)
