@@ -49,14 +49,6 @@
       --shadow:rgba(0,0,0,.5); --acc-bg:rgba(217,154,43,.18); --acc-fg:#e7b24d; --acc-bd:rgba(217,154,43,.45);
       --ctrl-bg:rgba(36,26,16,.86); --grain:.22;
     }
-    @media (prefers-color-scheme:dark){
-      :root:not([data-theme="light"]){
-        --paper:#171009; --paper-deep:#211710; --ink:#f3ead9; --ink-soft:#b6a48d; --card:#241a10;
-        --line:rgba(244,236,221,.14); --line-soft:rgba(244,236,221,.08); --dots:rgba(244,236,221,.2);
-        --shadow:rgba(0,0,0,.5); --acc-bg:rgba(217,154,43,.18); --acc-fg:#e7b24d; --acc-bd:rgba(217,154,43,.45);
-        --ctrl-bg:rgba(36,26,16,.86); --grain:.22;
-      }
-    }
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
     @media (prefers-reduced-motion:reduce){
@@ -412,6 +404,17 @@
     .langmenu button.on{background:var(--acc-bg);color:var(--acc-fg)}
     .langmenu button .flag{font-size:16px;line-height:1}
 
+    /* ---------- toast ---------- */
+    .toast{
+      position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));
+      transform:translateX(-50%) translateY(16px);z-index:60;
+      background:var(--ink);color:var(--paper);font:600 13px 'Hanken Grotesk',sans-serif;
+      padding:11px 18px;border-radius:999px;max-width:82vw;text-align:center;
+      box-shadow:0 12px 32px -8px rgba(0,0,0,.55);
+      opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease;
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
     /* ---------- RTL (Arabic) ---------- */
     [dir="rtl"] .controls{left:auto;right:8px}
     [dir="rtl"] .langmenu{left:auto;right:0}
@@ -421,6 +424,14 @@
     [dir="rtl"] .search .clear{right:auto;left:8px}
     [dir="rtl"] .sheet .x{right:auto;left:14px}
     [dir="rtl"] .steam{right:auto;left:16px}
+    [dir="rtl"] .order .chef{right:auto;left:8px}
+    [dir="rtl"] .order .ox{right:auto;left:14px}
+    [dir="rtl"] .order .talk{left:auto;right:16px}
+    [dir="rtl"] .order .bubble{border-radius:18px 18px 18px 4px;transform-origin:10% 100%}
+    [dir="rtl"] .order .bubble::after{right:auto;left:-9px;border:10px solid transparent;border-right-color:var(--card);border-left:0}
+    [dir="rtl"] .order .pf1{right:auto;left:170px}
+    [dir="rtl"] .order .pf2{right:auto;left:30px}
+    [dir="rtl"] .order .pf3{right:auto;left:120px}
     /* Arabic: drop latin-style uppercasing / wide tracking */
     html[lang="ar"] .hero-kicker,html[lang="ar"] .brand-sub,html[lang="ar"] .sheet-cat,
     html[lang="ar"] .cat-title .cnt,html[lang="ar"] .qr-tag,html[lang="ar"] .ctrl{
@@ -437,6 +448,10 @@
 
   <div class="controls">
     <button class="ctrl" id="themeBtn" type="button" aria-label="Tema"><span class="ic" id="themeIcon">🌙</span></button>
+    <div class="langwrap">
+      <button class="ctrl" id="shareBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Paylaş"><span class="ic">📤</span></button>
+      <div class="langmenu" id="shareMenu" role="menu"></div>
+    </div>
     <div class="langwrap">
       <button class="ctrl" id="langBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Dil">
         <span class="ic">🌐</span><span id="langCur">TR</span>
@@ -490,7 +505,7 @@
 </div>
 
 <button class="ofab" id="ofab" type="button" aria-haspopup="dialog">
-  <span class="face" aria-hidden="true"></span>Sipariş Ver
+  <span class="face" aria-hidden="true"></span><span id="ofabTxt">Sipariş Ver</span>
 </button>
 
 <div class="order-back" id="orderBack"></div>
@@ -501,21 +516,22 @@
   <div class="chef"><img src="assets/betul.png" alt="Şef Betül"></div>
   <button class="ox" id="orderX" aria-label="Kapat">✕</button>
   <div class="talk">
-    <span class="who">Şef · Betül Abla</span>
-    <div class="bubble">Hoş geldin canım! 🤗<br><em>Söyle bakalım, ne hazırlayayım?</em></div>
+    <span class="who" id="orderWho">Şef · Betül Abla</span>
+    <div class="bubble"><span id="orderHi">Hoş geldin canım! 🤗</span><br><em id="orderAsk">Söyle bakalım, ne hazırlayayım?</em></div>
     <div class="acts">
       <a class="act call" href="tel:+905345740596">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>
-        Hemen Ara
+        <span id="orderCallTxt">Hemen Ara</span>
       </a>
-      <a class="act wa" href="https://wa.me/905345740596?text=Merhaba%20Bet%C3%BCl%20Abla%2C%20sipari%C5%9F%20vermek%20istiyorum%20%F0%9F%99%82" rel="noopener" target="_blank">
+      <a class="act wa" id="orderWaLink" href="https://wa.me/905345740596?text=Merhaba%20Bet%C3%BCl%20Abla%2C%20sipari%C5%9F%20vermek%20istiyorum%20%F0%9F%99%82" rel="noopener" target="_blank">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1-.3-.1-1.1-.4-2-1.2-.8-.7-1.3-1.5-1.4-1.8-.2-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9.6.3 1.1.4 1.5.5.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.2z"/></svg>
-        WhatsApp'tan Yaz
+        <span id="orderWaTxt">WhatsApp'tan Yaz</span>
       </a>
     </div>
   </div>
 </aside>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="sheet-back" id="sheetBack"></div>
 <aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Ürün detayı">
   <div class="grip"><i></i></div>
@@ -584,11 +600,8 @@
   const FB = 'tr';
   function ls(key){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
   function lsSet(key,val){ try{ localStorage.setItem(key,val); }catch(e){} }
-  function detectLang(){
-    const n = (navigator.language || FB).slice(0,2).toLowerCase();
-    return I18N.ui[n] ? n : FB;
-  }
-  let LANG = (I18N.ui[ls('lm_lang')] && ls('lm_lang')) || detectLang();
+  /* varsayılan dil her zaman Türkçe; yalnızca kullanıcı seçimi hatırlanır */
+  let LANG = (I18N.ui[ls('lm_lang')] && ls('lm_lang')) || FB;
 
   function U(k){ const o = I18N.ui[LANG] || I18N.ui[FB]; return (o && o[k] != null) ? o[k] : I18N.ui[FB][k]; }
   function catName(m){ if(LANG===FB) return m.name; const t=I18N.cat[m.name]; return (t && t[LANG]) || m.name; }
@@ -801,17 +814,28 @@
     document.getElementById('sheetX').setAttribute('aria-label', U('closeAria'));
     langBtn.setAttribute('aria-label', U('langLabel'));
     themeBtn.setAttribute('aria-label', U('themeLabel'));
+    shareBtn.setAttribute('aria-label', U('shareLabel'));
     document.getElementById('langCur').textContent = LANG.toUpperCase();
+    /* sipariş: Betül abla */
+    document.getElementById('ofabTxt').textContent = U('orderFab');
+    document.getElementById('orderWho').textContent = U('orderWho');
+    document.getElementById('orderHi').textContent = U('orderHi');
+    document.getElementById('orderAsk').textContent = U('orderAsk');
+    document.getElementById('orderCallTxt').textContent = U('orderCall');
+    document.getElementById('orderWaTxt').textContent = U('orderWa');
+    document.getElementById('orderWaLink').href = 'https://wa.me/905345740596?text=' + encodeURIComponent(U('orderWaMsg'));
+    order.setAttribute('aria-label', U('orderAria'));
+    document.getElementById('orderX').setAttribute('aria-label', U('closeAria'));
+    buildShareMenu();
   }
 
   /* ---------- tema (açık/koyu) ---------- */
   const themeBtn = document.getElementById('themeBtn');
   const themeIcon = document.getElementById('themeIcon');
   const tcMeta = document.querySelector('meta[name="theme-color"]');
-  function prefersDark(){ return matchMedia('(prefers-color-scheme:dark)').matches; }
+  /* varsayılan açık tema; koyu yalnızca kullanıcı seçimiyle */
   function isDark(){
-    const t = document.documentElement.getAttribute('data-theme');
-    return t === 'dark' ? true : t === 'light' ? false : prefersDark();
+    return document.documentElement.getAttribute('data-theme') === 'dark';
   }
   function applyTheme(){
     const dark = isDark();
@@ -837,15 +861,13 @@
   function closeLangMenu(){ langMenu.classList.remove('open'); langBtn.setAttribute('aria-expanded','false'); }
   langBtn.addEventListener('click', e => {
     e.stopPropagation();
+    closeShareMenu();
     const open = langMenu.classList.toggle('open');
     langBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
   langMenu.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     setLang(b.dataset.l); closeLangMenu();
-  });
-  document.addEventListener('click', e => {
-    if (!langMenu.contains(e.target) && !langBtn.contains(e.target)) closeLangMenu();
   });
   function setLang(l){
     if (!I18N.ui[l] || l === LANG) return;
@@ -855,6 +877,62 @@
     applyUI(); buildLangMenu(); buildChips(); renderPilav(); render();
     window.scrollTo({ top: y, left: 0, behavior: 'instant' });
   }
+
+  /* ---------- paylaş: AirDrop (native share) · kopyala · NFC ---------- */
+  const shareBtn = document.getElementById('shareBtn');
+  const shareMenu = document.getElementById('shareMenu');
+  function shareURL(){ const c = document.querySelector('link[rel="canonical"]'); return (c && c.href) || location.href; }
+  let toastT;
+  function toast(msg){
+    const el = document.getElementById('toast'); if (!el) return;
+    el.textContent = msg; el.classList.add('show');
+    clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 2300);
+  }
+  function buildShareMenu(){
+    let h = `<button type="button" role="menuitem" data-act="share"><span class="flag">📤</span><span>${esc(U('shareNative'))}</span></button>`;
+    h += `<button type="button" role="menuitem" data-act="copy"><span class="flag">🔗</span><span>${esc(U('copy'))}</span></button>`;
+    if ('NDEFReader' in window)
+      h += `<button type="button" role="menuitem" data-act="nfc"><span class="flag">📡</span><span>${esc(U('nfc'))}</span></button>`;
+    shareMenu.innerHTML = h;
+  }
+  function closeShareMenu(){ shareMenu.classList.remove('open'); shareBtn.setAttribute('aria-expanded','false'); }
+  async function nativeShare(){
+    const url = shareURL();
+    if (navigator.share) { try { await navigator.share({ title: document.title, url }); } catch(e){} }
+    else copyLink();
+  }
+  function copyLink(){
+    const url = shareURL();
+    if (navigator.clipboard && navigator.clipboard.writeText)
+      navigator.clipboard.writeText(url).then(() => toast(U('copied'))).catch(() => toast(url));
+    else toast(url);
+  }
+  async function writeNFC(){
+    if (!('NDEFReader' in window)) { toast(U('nfcUnsupported')); return; }
+    try {
+      toast(U('nfcReady'));
+      const reader = new NDEFReader();
+      await reader.write({ records: [{ recordType: 'url', data: shareURL() }] });
+      toast(U('nfcOk'));
+    } catch(e){ toast(U('nfcFail')); }
+  }
+  shareBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    closeLangMenu();
+    const open = shareMenu.classList.toggle('open');
+    shareBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  shareMenu.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const act = b.dataset.act; closeShareMenu();
+    if (act === 'share') nativeShare();
+    else if (act === 'copy') copyLink();
+    else if (act === 'nfc') writeNFC();
+  });
+  document.addEventListener('click', e => {
+    if (!langMenu.contains(e.target) && !langBtn.contains(e.target)) closeLangMenu();
+    if (!shareMenu.contains(e.target) && !shareBtn.contains(e.target)) closeShareMenu();
+  });
 
   /* ---------- init ---------- */
   applyTheme();

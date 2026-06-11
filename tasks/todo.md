@@ -71,3 +71,19 @@
 - Oyun QA (headless otomatik oyuncu): 3 sipariş/500₺/kombo ×3 sorunsuz; ölüm → oyun sonu ekranı, rütbe, rozet, rekor kaydı, tekrar oyna akışı doğrulandı; sıfır JS hatası.
 - Denge: bomba oranı seviyeyle artıyor; gerekli malzemeyi kaçırmak komboyu bozuyor.
 - Deploy: lamatia.karaboga.dev → nginx server bloğu (root: /usr/share/nginx/html/lamatia, / → /menu/). Coolify'da domain'in app'e ekli olması ve DNS kaydı gerekiyor.
+
+## Sipariş FAB: Betül Abla (2026-06-11)
+- [x] Oyun tamamen kaldırıldı (lamatia/oyun/, qr-oyun.png, menü FAB'ı, poster blokları)
+- [x] "Sipariş Ver" FAB — Betül'ün yüz avatarıyla, bob animasyonlu
+- [x] Basınca Betül abla yaylanarak sahneye çıkıyor: konuşma balonu + "Hemen Ara" (tel:+905345740596) + WhatsApp CTA'sı, uçuşan ☕✨🥐 parçacıkları
+- [x] 5 dile çevrildi (tr/en/ar/es/zh) — eski oyun i18n anahtarları sipariş anahtarlarıyla değiştirildi; RTL (Arapça) aynalama eklendi
+- [x] QA (Playwright): TR/EN/AR ekran görüntüleri, ESC + backdrop kapatma, WhatsApp önyazısı dile göre, 320px ekran, sıfır JS hatası
+
+## Sepet + WhatsApp Sipariş + Tatlı Animasyon (2026-06-11)
+- [x] Varsayılan açık tema (prefers-color-scheme kaldırıldı) + varsayılan dil Türkçe
+- [ ] i18n: sepet anahtarları (5 dil) + Betül overlay metinleri applyUI'a bağlanacak
+- [ ] CSS: tatlı FAB animasyonu (salınım+nabız halkası+yüz), rozet, uçan emoji, sepet listesi
+- [ ] Markup: kart ➕ butonu, FAB rozet/toplam, overlay sepet kutusu
+- [ ] JS: CART (localStorage), addToCart, stepper, updateFab, renderCart, waText (Türkçe otomatik sipariş metni)
+- [ ] Varyantlı ürünler: kartta ➕ → sheet açılır; sheet'te varyant satırlarına ➕
+- [ ] Doğrulama: syntax + DOM-shim çok dilli test
