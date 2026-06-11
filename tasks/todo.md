@@ -29,6 +29,14 @@
 - [x] Soru/cevap/keypanel sıkılaştırıldı (stem 53, opts 47, keypanel padding 46, QR 560)
 - [x] Headless Chromium render, başlık/orta/alt bölge kontrolleri → `lamatia-sinav-pankart-a3.png` güncellendi
 
+## Gerçek marka: logo + jenerik lamatia.com'dan (2026-06-11)
+- [x] lamatia.com analizi: "logo" = Luxurious Script "La'matia" yazı markası + "Chocolate & Coffee"; jenerik = tam ekran düşen kahve çekirdekleri videosu (Wix, 27 sn 720p)
+- [x] Jenerik indirildi + ffmpeg ile 960px / CRF33 / 811KB'a küçültüldü → `lamatia/menu/assets/jenerik.mp4` (+ 20KB poster)
+- [x] Menü header'ı lamatia.com'daki gibi: jenerik video bandı üzerine Luxurious Script (Google Fonts) "La'matia" + "CHOCOLATE & COFFEE"; QR Menü rozeti köşede
+- [x] Footer markası da Luxurious Script; meta açıklamada "Coffee & More" → "Chocolate & Coffee"
+- [x] prefers-reduced-motion → video gizli, poster arka planı kalıyor
+- [x] QA (Playwright 390×844 + 320×568): video oynuyor (paused=false), font yüklü, yatay taşma 0, sıfır konsol hatası
+
 ## Redesign v2 — "çok çok daha iyi" (2026-06-11)
 - [ ] Tek sayfa akış: tüm kategoriler alt alta + scrollspy'lı yapışkan chip nav (sekme yerine)
 - [ ] Ürün detay alt-sayfası (bottom sheet): büyük görsel (wix w_800), açıklama, varyantlar

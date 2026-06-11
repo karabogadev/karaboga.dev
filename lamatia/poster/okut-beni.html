@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>La'Matia — OKUT BENİ Pankartı (A3)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Caveat:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,600&display=swap">
+<style>
+  :root{
+    --yellow:#ffd23f;
+    --yellow-hi:#ffdf63;
+    --yellow-deep:#edb723;
+    --ink:#241509;
+    --red:#bf2026;
+    --red-deep:#971a1f;
+    --cream:#fcf8ee;
+    --kraft:#c8a06b;
+    --stain:rgba(133,84,38,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:2480px;height:3508px;overflow:hidden}
+  body{
+    font-family:'Courier Prime',monospace;color:var(--ink);position:relative;
+    -webkit-font-smoothing:antialiased;
+    background:radial-gradient(ellipse 130% 95% at 50% 32%, var(--yellow-hi) 0%, var(--yellow) 52%, var(--yellow-deep) 100%);
+  }
+  .grain{
+    position:absolute;inset:0;z-index:40;pointer-events:none;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.40 0 0 0 0 0.28 0 0 0 0 0.10 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .vignette{
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse 115% 85% at 50% 40%, transparent 55%, rgba(110,70,0,.22) 100%);
+  }
+
+  /* ---------- caution tapes ---------- */
+  .tape{
+    position:absolute;left:-120px;right:-120px;height:124px;background:var(--ink);
+    display:flex;align-items:center;overflow:hidden;z-index:6;
+    box-shadow:0 20px 44px rgba(60,30,0,.30);
+  }
+  .tape span{
+    white-space:nowrap;font-weight:700;font-size:52px;letter-spacing:.30em;
+    color:var(--yellow);padding-left:40px;
+  }
+  .tape.top{top:118px;transform:rotate(-2.1deg)}
+  .tape.bot{bottom:236px;transform:rotate(1.7deg)}
+  .tape.bot span{color:var(--cream)}
+
+  /* ---------- headline ---------- */
+  .head{position:absolute;top:340px;left:0;right:0;text-align:center;z-index:4}
+  .head .kicker{
+    font-weight:700;font-size:54px;letter-spacing:.36em;color:var(--ink);
+  }
+  .head .l1,.head .l2{
+    font-family:'Fraunces',serif;font-weight:900;line-height:.86;letter-spacing:-.012em;
+  }
+  .head .l1{font-size:585px;margin-top:36px}
+  .head .l2{font-size:585px;color:var(--red);position:relative;display:inline-block}
+  .head .l2 .bang{color:var(--ink)}
+  /* hand-drawn underline scribble */
+  .head .l2 svg{
+    position:absolute;left:-2%;right:-2%;bottom:-72px;width:104%;height:90px;overflow:visible;
+  }
+  .head .l2 svg path{fill:none;stroke:var(--ink);stroke-width:16px;stroke-linecap:round}
+
+  /* ---------- giant QR hero ---------- */
+  .qrhero{
+    position:absolute;z-index:5;left:50%;top:1640px;width:1400px;height:1400px;
+    transform:translateX(-50%) rotate(-1.6deg);
+    background:#fff;border:12px solid var(--ink);border-radius:52px;padding:86px;
+    box-shadow:36px 46px 0 var(--red), 36px 46px 0 12px var(--ink);
+  }
+  .qrhero img{width:100%;height:100%;display:block;image-rendering:pixelated}
+  .qrhero .tag{
+    position:absolute;left:50%;top:-56px;transform:translateX(-50%) rotate(1.6deg);
+    background:var(--ink);color:var(--cream);font-weight:700;font-size:48px;
+    letter-spacing:.22em;padding:20px 58px;white-space:nowrap;
+  }
+  .qrhero .tag b{color:var(--yellow)}
+  /* corner crop marks, optic-form flavour */
+  .qrhero .cm{position:absolute;width:74px;height:74px;border:0 solid var(--red)}
+  .qrhero .cm.tl{left:26px;top:26px;border-left-width:12px;border-top-width:12px}
+  .qrhero .cm.tr{right:26px;top:26px;border-right-width:12px;border-top-width:12px}
+  .qrhero .cm.bl{left:26px;bottom:26px;border-left-width:12px;border-bottom-width:12px}
+  .qrhero .cm.br{right:26px;bottom:26px;border-right-width:12px;border-bottom-width:12px}
+
+  /* ---------- handwritten notes + arrows ---------- */
+  .note{
+    position:absolute;z-index:7;font-family:'Caveat',cursive;font-weight:700;
+    color:var(--red-deep);line-height:1.04;
+  }
+  .note.ink{color:var(--ink)}
+  .arrow{position:absolute;z-index:7;overflow:visible}
+  .arrow path{fill:none;stroke:var(--red-deep);stroke-width:14px;stroke-linecap:round;stroke-linejoin:round}
+  .arrow.ink path{stroke:var(--ink)}
+
+  /* ---------- brand stamp ---------- */
+  .stamp{
+    position:absolute;z-index:7;left:34px;top:2470px;
+    border:8px solid var(--red-deep);border-radius:50%/42%;color:var(--red-deep);
+    padding:20px 46px 24px;transform:rotate(-8deg);text-align:center;
+    mix-blend-mode:multiply;opacity:.92;
+  }
+  .stamp .nm{font-family:'Fraunces',serif;font-weight:900;font-size:68px;line-height:1}
+  .stamp .tg{margin-top:8px;font-weight:700;font-size:26px;letter-spacing:.38em}
+
+  /* ---------- game sticky (kraft) ---------- */
+  .gsticky{
+    position:absolute;z-index:8;right:96px;top:2680px;width:520px;
+    background:linear-gradient(180deg,#d3ab77,var(--kraft));
+    transform:rotate(6deg);padding:74px 36px 38px;text-align:center;
+    box-shadow:14px 26px 44px rgba(60,30,0,.35);
+  }
+  .gsticky::before{
+    content:"";position:absolute;left:50%;top:-30px;width:250px;height:64px;
+    transform:translateX(-50%) rotate(-2deg);
+    background:rgba(252,248,238,.55);box-shadow:0 4px 8px rgba(0,0,0,.14);
+  }
+  .gsticky .gqr{
+    width:300px;height:300px;margin:0 auto;background:#fff;border-radius:22px;padding:20px;
+    box-shadow:8px 10px 0 var(--red),8px 10px 0 3px rgba(36,21,9,.8);
+  }
+  .gsticky .gqr img{width:100%;height:100%;display:block;image-rendering:pixelated}
+  .gsticky .cap{
+    margin-top:30px;font-family:'Caveat',cursive;font-weight:700;font-size:52px;
+    line-height:1.05;color:#3d2c12;
+  }
+  .gsticky .cap b{color:var(--red-deep)}
+
+  /* ---------- coffee ring ---------- */
+  .stain{
+    position:absolute;z-index:3;border-radius:48% 52% 50% 50%/50% 47% 53% 50%;
+    border:15px solid var(--stain);pointer-events:none;mix-blend-mode:multiply;
+    filter:blur(1px);
+  }
+  .stain::after{
+    content:"";position:absolute;inset:-15px;border-radius:inherit;
+    border:5px solid rgba(133,84,38,.16);transform:scale(.88) translate(8px,6px);
+  }
+  .st1{width:430px;height:415px;left:140px;top:330px;transform:rotate(-11deg)}
+  .st2{width:250px;height:245px;right:200px;top:1500px;transform:rotate(13deg);border-width:11px}
+
+  /* ---------- footer url ---------- */
+  .url{
+    position:absolute;z-index:9;left:0;right:0;bottom:42px;text-align:center;
+    font-weight:700;font-size:56px;letter-spacing:.26em;color:var(--ink);
+  }
+  .url b{color:var(--red)}
+  .foot-note{
+    position:absolute;z-index:9;left:0;right:0;bottom:134px;text-align:center;
+    font-size:34px;letter-spacing:.06em;color:rgba(36,21,9,.72);
+  }
+</style>
+</head>
+<body>
+  <div class="vignette"></div>
+
+  <!-- caution tapes -->
+  <div class="tape top"><span>★ FİNAL DÖNEMİ &nbsp;★&nbsp; KAHVE MOLASI &nbsp;★&nbsp; FİNAL DÖNEMİ &nbsp;★&nbsp; KAHVE MOLASI &nbsp;★&nbsp; FİNAL DÖNEMİ &nbsp;★&nbsp; KAHVE MOLASI ★</span></div>
+  <div class="tape bot"><span>★ KOPYA ÇEKMEK BU SINAVDA SERBESTTİR &nbsp;★&nbsp; KOPYA ÇEKMEK BU SINAVDA SERBESTTİR ★</span></div>
+
+  <!-- coffee rings -->
+  <div class="stain st1"></div>
+  <div class="stain st2"></div>
+
+  <!-- headline -->
+  <div class="head">
+    <div class="kicker">LA&rsquo;MATIA ÜNİVERSİTESİ &bull; EK SINAV</div>
+    <div class="l1">OKUT</div>
+    <div class="l2">BENİ<span class="bang">!</span>
+      <svg viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M2 6 C 22 1, 46 9, 64 5 C 78 2, 92 6, 98 4"/></svg>
+    </div>
+  </div>
+
+  <!-- handwritten notes + arrows around the QR -->
+  <div class="note" style="left:200px;top:1850px;font-size:84px;transform:rotate(-8deg)">kamerayı<br>tut &rarr;</div>
+  <svg class="arrow" style="left:240px;top:2080px;width:300px;height:260px" viewBox="0 0 300 260">
+    <path d="M30 20 C 60 140, 150 210, 262 224 M262 224 l-78 6 M262 224 l-30 -64"/>
+  </svg>
+
+  <div class="note" style="right:170px;top:2120px;font-size:76px;text-align:right;transform:rotate(6deg)">3 saniyede<br>menü cebinde ✓</div>
+  <svg class="arrow" style="right:330px;top:2360px;width:260px;height:220px" viewBox="0 0 260 220">
+    <path d="M240 16 C 200 110, 120 170, 24 186 M24 186 l72 8 M24 186 l34 -58"/>
+  </svg>
+
+  <div class="note ink" style="right:200px;top:610px;font-size:64px;text-align:right;transform:rotate(7deg)">kopya<br>sayılmaz ✓</div>
+
+  <!-- giant QR -->
+  <div class="qrhero">
+    <div class="tag">CEVAP ANAHTARI &bull; <b>MENÜ</b></div>
+    <div class="cm tl"></div><div class="cm tr"></div><div class="cm bl"></div><div class="cm br"></div>
+    <img src="qr-menu.png" alt="Menü QR">
+  </div>
+
+  <!-- brand stamp -->
+  <div class="stamp">
+    <div class="nm">La&rsquo;Matia</div>
+    <div class="tg">COFFEE &amp; MORE</div>
+  </div>
+
+  <!-- game sticky -->
+  <div class="gsticky">
+    <div class="gqr"><img src="qr-oyun.png" alt="Pilav Ustası QR"></div>
+    <div class="cap">mola gelince:<br><b>PİLAV USTASI</b> &rarr;</div>
+  </div>
+
+  <div class="foot-note">* Bu pankartı okutmak ders çalışmaktan sayılır.</div>
+  <div class="url">LAMATIA<b>.</b>KARABOGA<b>.</b>DEV</div>
+
+  <div class="grain"></div>
+</body>
+</html>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>La'Matia — QR Menü</title>
-  <meta name="description" content="La'Matia Coffee & More dijital menüsü. Kahveler, tatlılar, kahvaltı ve ana yemekler.">
+  <meta name="description" content="La'Matia Chocolate & Coffee dijital menüsü. Kahveler, tatlılar, kahvaltı ve ana yemekler.">
   <meta name="theme-color" content="#2b1d12">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://lamatia.karaboga.dev/menu/">
@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://static.wixstatic.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,700&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,700&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Luxurious+Script&display=swap">
   <style>
     :root{
       --paper:#f4ecdd;
@@ -63,13 +63,30 @@
     .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:40;pointer-events:none}
     .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brush),var(--curry))}
 
-    /* ---------- header ---------- */
-    header{padding:28px 4px 12px;display:flex;align-items:baseline;justify-content:space-between}
-    .brand{font-family:'Fraunces',serif;font-style:italic;font-weight:700;font-size:clamp(36px,9.5vw,46px);letter-spacing:-.02em;line-height:1;margin:0}
-    .brand .ap{color:var(--brush)}
-    .brand small{display:flex;align-items:center;gap:10px;font-family:'Hanken Grotesk',sans-serif;font-style:normal;font-weight:700;font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-soft);margin-top:8px}
-    .brand small::after{content:"";flex:0 0 34px;height:2px;background:var(--kraft);border-radius:2px}
-    .qr-tag{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--paper);background:var(--ink);padding:6px 11px;border-radius:999px;white-space:nowrap}
+    /* ---------- header: lamatia.com jeneriği + yazı markası ---------- */
+    header{
+      position:relative;overflow:hidden;margin:14px 0 0;border-radius:24px;
+      display:flex;align-items:center;justify-content:center;min-height:196px;
+      background:var(--wood) url("assets/jenerik-poster.jpg") center/cover no-repeat;
+      box-shadow:0 20px 44px -18px rgba(43,29,18,.6);
+    }
+    .jenerik{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    @media (prefers-reduced-motion:reduce){.jenerik{display:none}}
+    header::after{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(26,14,7,.30),rgba(26,14,7,.18) 45%,rgba(26,14,7,.50));
+    }
+    .brand-in{position:relative;z-index:1;text-align:center;color:#fff;padding:34px 16px 30px}
+    .brand{
+      font-family:'Luxurious Script',cursive;font-weight:400;font-size:clamp(58px,16vw,74px);
+      line-height:.85;margin:0;text-shadow:0 3px 22px rgba(0,0,0,.55);
+    }
+    .brand-sub{font-size:12.5px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;margin-top:10px;text-shadow:0 1px 10px rgba(0,0,0,.5)}
+    .qr-tag{
+      position:absolute;top:12px;right:12px;z-index:2;
+      font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+      color:var(--ink);background:rgba(244,236,221,.92);padding:6px 11px;border-radius:999px;white-space:nowrap;
+    }
 
     /* ---------- pilav hero ---------- */
     .hero{
@@ -250,7 +267,7 @@
 
     footer{margin-top:44px;padding:24px 6px 8px;border-top:2px dotted rgba(43,29,18,.2);font-size:12.5px;color:var(--ink-soft);line-height:1.8;text-align:center}
     footer a{color:var(--brush-deep);font-weight:600;text-decoration:none}
-    footer .fbrand{font-family:'Fraunces',serif;font-style:italic;font-weight:700;font-size:17px;color:var(--ink)}
+    footer .fbrand{font-family:'Luxurious Script',cursive;font-weight:400;font-size:28px;color:var(--ink)}
   </style>
 </head>
 <body>
@@ -258,7 +275,13 @@
 <div class="wrap">
 
   <header>
-    <h1 class="brand">La<span class="ap">'</span>Matia<small>Coffee &amp; More</small></h1>
+    <video class="jenerik" autoplay muted loop playsinline preload="metadata" poster="assets/jenerik-poster.jpg" aria-hidden="true">
+      <source src="assets/jenerik.mp4" type="video/mp4">
+    </video>
+    <div class="brand-in">
+      <h1 class="brand">La'matia</h1>
+      <div class="brand-sub">Chocolate &amp; Coffee</div>
+    </div>
     <span class="qr-tag">QR Menü</span>
   </header>
 
@@ -288,7 +311,7 @@
   <main id="list"></main>
 
   <footer>
-    <div class="fbrand">La'Matia</div>
+    <div class="fbrand">La'matia</div>
     Yılanlı Ayazma Yolu No:13, Zeytinburnu / İstanbul<br>
     <a href="tel:+905385865309">0538 586 5309</a> ·
     <a href="https://www.instagram.com/lamatia_coffee" rel="noopener" target="_blank">@lamatia_coffee</a>
