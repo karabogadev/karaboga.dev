@@ -690,6 +690,18 @@
 </aside>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="qr-back" id="qrBack"></div>
+<div class="qr-modal" id="qrModal" role="dialog" aria-modal="true" aria-label="QR Menü">
+  <div class="qr-card">
+    <button class="qrx" id="qrX" aria-label="Kapat">✕</button>
+    <div class="qr-frame"><img id="qrImg" alt="La'matia QR" width="200" height="200" decoding="async"></div>
+    <div class="qr-name">La'matia</div>
+    <div class="qr-hint" id="qrHint">Telefon kameranla okut</div>
+    <div class="qr-url" id="qrUrl"></div>
+  </div>
+</div>
+
 <div class="sheet-back" id="sheetBack"></div>
 <aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Ürün detayı">
   <div class="grip"><i></i></div>
@@ -946,7 +958,9 @@
 
   addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
-    if (order.classList.contains('show')) closeOrder(); else closeSheet();
+    if (qrModal.classList.contains('show')) closeQR();
+    else if (order.classList.contains('show')) closeOrder();
+    else closeSheet();
   });
 
   /* aşağı sürükleyince kapat */
@@ -1093,6 +1107,10 @@
     themeBtn.setAttribute('aria-label', U('themeLabel'));
     shareBtn.setAttribute('aria-label', U('shareLabel'));
     document.getElementById('langCur').textContent = LANG.toUpperCase();
+    /* QR modalı */
+    document.getElementById('qrHint').textContent = U('qrHint');
+    document.getElementById('qrModal').setAttribute('aria-label', U('qr'));
+    document.getElementById('qrX').setAttribute('aria-label', U('closeAria'));
     /* sipariş: Betül abla */
     document.getElementById('ofabTxt').textContent = U('orderFab');
     document.getElementById('orderWho').textContent = U('orderWho');
@@ -1112,16 +1130,14 @@
 
   /* ---------- tema (açık/koyu) ---------- */
   const themeBtn = document.getElementById('themeBtn');
-  const themeIcon = document.getElementById('themeIcon');
   const tcMeta = document.querySelector('meta[name="theme-color"]');
   /* varsayılan açık tema; koyu yalnızca kullanıcı seçimiyle */
   function isDark(){
     return document.documentElement.getAttribute('data-theme') === 'dark';
   }
+  /* ikon (ay↔güneş) CSS ile geçer; burada yalnız tarayıcı tema rengini güncelle */
   function applyTheme(){
-    const dark = isDark();
-    themeIcon.textContent = dark ? '☀️' : '🌙';
-    if (tcMeta) tcMeta.setAttribute('content', dark ? '#171009' : '#2b1d12');
+    if (tcMeta) tcMeta.setAttribute('content', isDark() ? '#171009' : '#2b1d12');
   }
   (function initTheme(){ const s = ls('lm_theme'); if (s === 'dark' || s === 'light') document.documentElement.setAttribute('data-theme', s); })();
   themeBtn.addEventListener('click', () => {
@@ -1171,6 +1187,7 @@
   }
   function buildShareMenu(){
     let h = `<button type="button" role="menuitem" data-act="share"><span class="flag">📤</span><span>${esc(U('shareNative'))}</span></button>`;
+    h += `<button type="button" role="menuitem" data-act="qr"><span class="flag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="3" width="7" height="7" rx="1.2"/><rect x="3" y="14" width="7" height="7" rx="1.2"/><path d="M14 14h3v3M21 17v4M17 21h.5M21 14v.01"/></svg></span><span>${esc(U('qrShow'))}</span></button>`;
     h += `<button type="button" role="menuitem" data-act="copy"><span class="flag">🔗</span><span>${esc(U('copy'))}</span></button>`;
     if ('NDEFReader' in window)
       h += `<button type="button" role="menuitem" data-act="nfc"><span class="flag">📡</span><span>${esc(U('nfc'))}</span></button>`;
@@ -1207,6 +1224,7 @@
     const b = e.target.closest('button'); if (!b) return;
     const act = b.dataset.act; closeShareMenu();
     if (act === 'share') nativeShare();
+    else if (act === 'qr') openQR();
     else if (act === 'copy') copyLink();
     else if (act === 'nfc') writeNFC();
   });
@@ -1214,6 +1232,30 @@
     if (!langMenu.contains(e.target) && !langBtn.contains(e.target)) closeLangMenu();
     if (!shareMenu.contains(e.target) && !shareBtn.contains(e.target)) closeShareMenu();
   });
+
+  /* ---------- QR kod modalı ---------- */
+  const qrBack = document.getElementById('qrBack');
+  const qrModal = document.getElementById('qrModal');
+  const qrImg = document.getElementById('qrImg');
+  function openQR(){
+    const url = shareURL();
+    /* canlı menü URL'sini kodla; beyaz zeminde net modüller */
+    qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=12&ecc=M&data=' + encodeURIComponent(url);
+    document.getElementById('qrUrl').textContent = url.replace(/^https?:\/\//, '');
+    lockBody();
+    qrBack.classList.add('show');
+    qrModal.classList.add('show');
+  }
+  function closeQR(){
+    if (!qrModal.classList.contains('show')) return;
+    unlockBody();
+    qrBack.classList.remove('show');
+    qrModal.classList.remove('show');
+  }
+  qrBack.addEventListener('click', closeQR);
+  document.getElementById('qrX').addEventListener('click', closeQR);
+  /* QR getirilemezse bağlantıyı öne çıkar */
+  qrImg.addEventListener('error', () => { document.getElementById('qrUrl').style.opacity = '1'; });
 
   /* ---------- init ---------- */
   applyTheme();
