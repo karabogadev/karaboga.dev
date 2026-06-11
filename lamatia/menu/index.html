@@ -262,6 +262,108 @@
     .sheet-vars .vrow .dots{flex:1;border-bottom:2px dotted var(--dots);transform:translateY(3px)}
     .sheet-vars .vrow b{font-family:'Fraunces',serif;font-size:15.5px;color:var(--brush-deep)}
 
+    /* ---------- sipariş FAB: Betül abla ---------- */
+    .ofab{
+      position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));z-index:20;
+      display:flex;align-items:center;gap:10px;padding:8px 22px 8px 9px;border-radius:999px;border:none;cursor:pointer;
+      font:700 15px 'Hanken Grotesk',sans-serif;color:#fff;letter-spacing:.01em;white-space:nowrap;
+      background:linear-gradient(180deg,#d4373d,var(--brush-deep));
+      box-shadow:0 12px 28px -8px rgba(151,26,31,.7),inset 0 1px 0 rgba(255,255,255,.25);
+      animation:obob 2.6s ease-in-out infinite;
+      transition:opacity .2s,visibility .2s;
+    }
+    @keyframes obob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
+    .ofab:active{animation:none;transform:translateX(-50%) scale(.95)}
+    .ofab .face{
+      width:38px;height:38px;border-radius:50%;flex:none;
+      border:2px solid rgba(255,255,255,.85);
+      background:#e9ddc6 url("assets/betul.png") no-repeat;
+      background-size:300% auto;background-position:50% 5%;
+      box-shadow:0 2px 6px rgba(0,0,0,.3);
+    }
+    body.lock .ofab{opacity:0;visibility:hidden}
+
+    /* ---------- sipariş overlay: Betül abla sahneye çıkar ---------- */
+    .order-back{
+      position:fixed;inset:0;z-index:60;background:rgba(20,11,5,.58);
+      -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+      opacity:0;pointer-events:none;transition:opacity .3s ease;
+    }
+    .order-back.show{opacity:1;pointer-events:auto}
+    .order{
+      position:fixed;left:0;right:0;bottom:0;z-index:61;margin:0 auto;max-width:560px;
+      height:min(540px,86dvh);pointer-events:none;
+    }
+    .order.show{pointer-events:auto}
+    .order .chef{
+      position:absolute;right:8px;bottom:0;height:76%;aspect-ratio:302/825;
+      transform:translateY(112%) rotate(5deg);transform-origin:50% 100%;
+      transition:transform .65s cubic-bezier(.34,1.4,.46,1);
+      filter:drop-shadow(-12px 16px 22px rgba(0,0,0,.4));
+    }
+    .order.show .chef{transform:none}
+    .order .chef img{
+      width:100%;height:100%;display:block;
+      animation:chefsway 4.6s ease-in-out infinite;transform-origin:50% 96%;
+    }
+    @keyframes chefsway{0%,100%{transform:rotate(-.8deg)}50%{transform:rotate(1.2deg)}}
+    .order .ox{
+      position:absolute;top:6px;right:14px;width:38px;height:38px;border:none;border-radius:50%;cursor:pointer;
+      background:rgba(244,236,221,.94);color:#2b1d12;font:700 16px/1 'Hanken Grotesk',sans-serif;
+      box-shadow:0 6px 16px -6px rgba(0,0,0,.6);
+      opacity:0;transform:scale(.5) rotate(-90deg);
+      transition:transform .35s cubic-bezier(.34,1.56,.64,1) .5s,opacity .25s .5s;
+    }
+    .order.show .ox{opacity:1;transform:none}
+    .order .talk{position:absolute;left:16px;bottom:11%;width:min(62%,330px)}
+    .order .talk>*{
+      opacity:0;transform:translateY(16px) scale(.9);
+      transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .35s ease;
+    }
+    .order.show .talk>*{opacity:1;transform:none}
+    .order.show .who{transition-delay:.32s}
+    .order.show .bubble{transition-delay:.42s}
+    .order.show .acts{transition-delay:.56s}
+    .order .who{
+      display:inline-block;font-size:10px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;
+      color:#2b1d12;background:var(--curry);padding:5px 11px;border-radius:999px;
+      box-shadow:0 4px 12px -4px rgba(0,0,0,.5);
+    }
+    .order .bubble{
+      margin-top:9px;position:relative;background:var(--card);color:var(--ink);
+      border-radius:18px 18px 4px 18px;padding:14px 16px;transform-origin:90% 100%;
+      font-family:'Fraunces',serif;font-size:18px;line-height:1.32;font-weight:600;
+      box-shadow:0 16px 36px -12px rgba(0,0,0,.55);
+    }
+    .order .bubble em{font-style:italic;color:var(--brush-deep)}
+    .order .bubble::after{
+      content:"";position:absolute;right:-9px;bottom:16px;
+      border:10px solid transparent;border-left-color:var(--card);border-right:0;
+    }
+    .order .acts{margin-top:12px;display:flex;flex-direction:column;gap:9px}
+    .order .act{
+      display:flex;align-items:center;justify-content:center;gap:9px;padding:13px 16px;border-radius:14px;
+      text-decoration:none;font:800 15px 'Hanken Grotesk',sans-serif;color:#fff;
+      box-shadow:0 10px 22px -10px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.22);
+      transition:transform .12s;
+    }
+    .order .act:active{transform:scale(.96)}
+    .order .act.call{background:linear-gradient(180deg,#d4373d,var(--brush-deep))}
+    .order .act.wa{background:linear-gradient(180deg,#2ebd5f,#1b9248)}
+    .order .act svg{flex:none}
+    /* uçuşan buhar & lezzet parçacıkları */
+    .order .pf{position:absolute;font-size:22px;opacity:0;pointer-events:none}
+    .order.show .pf{animation:pfloat 3.4s ease-in-out infinite}
+    .order .pf1{right:170px;bottom:60%;animation-delay:.7s}
+    .order .pf2{right:30px;bottom:74%;animation-delay:1.4s;font-size:18px}
+    .order .pf3{right:120px;bottom:78%;animation-delay:2.2s;font-size:16px}
+    @keyframes pfloat{
+      0%{opacity:0;transform:translateY(10px) scale(.7)}
+      25%{opacity:.95}
+      60%{opacity:.5}
+      100%{opacity:0;transform:translateY(-52px) scale(1.15) rotate(10deg)}
+    }
+
     /* ---------- dar ekranlar (iPhone SE, küçük Android) ---------- */
     @media (max-width:380px){
       .wrap{padding-left:12px;padding-right:12px}
@@ -274,6 +376,10 @@
       .hero h2 em{font-size:23px}
       .pilav-row{font-size:13.5px}
       .sheet-name{font-size:23px}
+      .order .chef{height:70%;right:2px}
+      .order .talk{width:60%;left:12px}
+      .order .bubble{font-size:16px;padding:12px 13px}
+      .order .act{font-size:14px;padding:12px 13px}
     }
 
     /* ---------- top controls: theme + language ---------- */
@@ -357,9 +463,9 @@
       <path d="M46 38 c -5 -7 5 -11 0 -18 c -4 -6 4 -10 1 -16"/>
     </svg>
     <div class="hero-in">
-      <div class="hero-kicker">Doyurucu · Lezzetli · Ekonomik</div>
-      <h2>Pilavüstü <em>Lezzetler</em></h2>
-      <p class="hero-sub">Kraft kasede, günlük taze pilavüstü seçenekleri.</p>
+      <div class="hero-kicker" id="heroKicker">Doyurucu · Lezzetli · Ekonomik</div>
+      <h2 id="heroH2">Pilavüstü <em>Lezzetler</em></h2>
+      <p class="hero-sub" id="heroSub">Kraft kasede, günlük taze pilavüstü seçenekleri.</p>
       <div class="pilav-list" id="pilavList"></div>
     </div>
   </section>
@@ -383,6 +489,33 @@
   </footer>
 </div>
 
+<button class="ofab" id="ofab" type="button" aria-haspopup="dialog">
+  <span class="face" aria-hidden="true"></span>Sipariş Ver
+</button>
+
+<div class="order-back" id="orderBack"></div>
+<aside class="order" id="order" role="dialog" aria-modal="true" aria-label="Sipariş ver — Şef Betül">
+  <span class="pf pf1" aria-hidden="true">☕</span>
+  <span class="pf pf2" aria-hidden="true">✨</span>
+  <span class="pf pf3" aria-hidden="true">🥐</span>
+  <div class="chef"><img src="assets/betul.png" alt="Şef Betül"></div>
+  <button class="ox" id="orderX" aria-label="Kapat">✕</button>
+  <div class="talk">
+    <span class="who">Şef · Betül Abla</span>
+    <div class="bubble">Hoş geldin canım! 🤗<br><em>Söyle bakalım, ne hazırlayayım?</em></div>
+    <div class="acts">
+      <a class="act call" href="tel:+905345740596">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>
+        Hemen Ara
+      </a>
+      <a class="act wa" href="https://wa.me/905345740596?text=Merhaba%20Bet%C3%BCl%20Abla%2C%20sipari%C5%9F%20vermek%20istiyorum%20%F0%9F%99%82" rel="noopener" target="_blank">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1-.3-.1-1.1-.4-2-1.2-.8-.7-1.3-1.5-1.4-1.8-.2-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9.6.3 1.1.4 1.5.5.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.2z"/></svg>
+        WhatsApp'tan Yaz
+      </a>
+    </div>
+  </div>
+</aside>
+
 <div class="sheet-back" id="sheetBack"></div>
 <aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Ürün detayı">
   <div class="grip"><i></i></div>
@@ -398,6 +531,7 @@
   </div>
 </aside>
 
+<script src="i18n.js"></script>
 <script src="data.js"></script>
 <script>
 (function(){
@@ -418,9 +552,11 @@
     {n:'Köri Soslu Tavuk + Pilav',p:'225'},
     {n:'Acı Soslu Tavuk + Pilav',p:'225'},
   ];
-  document.getElementById('pilavList').innerHTML = PILAV.map(x =>
-    `<div class="pilav-row"><span>${x.n}</span><span class="dots"></span><span class="pilav-price">${x.p} ₺</span></div>`
-  ).join('');
+  function renderPilav(){
+    document.getElementById('pilavList').innerHTML = PILAV.map(x =>
+      `<div class="pilav-row"><span>${esc(pilavName(x.n))}</span><span class="dots"></span><span class="pilav-price">${x.p} ₺</span></div>`
+    ).join('');
+  }
 
   const cats = document.getElementById('cats');
   const list = document.getElementById('list');
@@ -444,10 +580,29 @@
     return t.slice(0,i) + '<mark>' + t.slice(i, i+term.length) + '</mark>' + t.slice(i+term.length);
   }
 
+  /* ---------- i18n (dil) ---------- */
+  const FB = 'tr';
+  function ls(key){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
+  function lsSet(key,val){ try{ localStorage.setItem(key,val); }catch(e){} }
+  function detectLang(){
+    const n = (navigator.language || FB).slice(0,2).toLowerCase();
+    return I18N.ui[n] ? n : FB;
+  }
+  let LANG = (I18N.ui[ls('lm_lang')] && ls('lm_lang')) || detectLang();
+
+  function U(k){ const o = I18N.ui[LANG] || I18N.ui[FB]; return (o && o[k] != null) ? o[k] : I18N.ui[FB][k]; }
+  function catName(m){ if(LANG===FB) return m.name; const t=I18N.cat[m.name]; return (t && t[LANG]) || m.name; }
+  function itName(it){ if(LANG===FB) return it.n; const t=I18N.item[it.n]; return (t && t[LANG] && t[LANG].n) || it.n; }
+  function itDesc(it){ if(!it.d) return it.d; if(LANG===FB) return it.d; const t=I18N.item[it.n]; return (t && t[LANG] && t[LANG].d != null) ? t[LANG].d : it.d; }
+  function varName(n){ if(LANG===FB) return n; const t=I18N.variant[n]; return (t && t[LANG]) || n; }
+  function pilavName(n){ if(LANG===FB) return n; const t=I18N.item[n]; return (t && t[LANG] && t[LANG].n) || n; }
+
   /* ---------- chips ---------- */
-  cats.innerHTML = DATA.map((m,i) =>
-    `<button class="chip${i===0?' on':''}" data-i="${i}">${m.icon} ${m.name}</button>`
-  ).join('');
+  function buildChips(){
+    cats.innerHTML = DATA.map((m,i) =>
+      `<button class="chip${i===0?' on':''}" data-i="${i}">${m.icon} ${esc(catName(m))}</button>`
+    ).join('');
+  }
 
   let spyPaused = 0;
   cats.addEventListener('click', e => {
@@ -467,19 +622,26 @@
 
   /* ---------- render ---------- */
   function card(it, mi, ii, term){
+    const name = itName(it), desc = itDesc(it);
     const img = it.i
       ? `<img src="${it.i}" alt="" loading="lazy" decoding="async" onerror="this.outerHTML='<div class=ph>🍽️</div>'">`
       : `<div class="ph">🍽️</div>`;
     const price = it.p ? `<div class="item-price">${it.p} ₺</div>` : '';
-    const vars = it.v ? `<div class="variants">${it.v.map(v=>`<span>${esc(v.n)} · ${v.p} ₺</span>`).join('')}</div>` : '';
-    return `<button class="item" data-m="${mi}" data-it="${ii}">${img}<div class="item-body"><div class="item-name">${hl(it.n, term)}</div>${it.d?`<div class="item-desc">${hl(it.d, term)}</div>`:''}${vars}</div>${price}</button>`;
+    const vars = it.v ? `<div class="variants">${it.v.map(v=>`<span>${esc(varName(v.n))} · ${v.p} ₺</span>`).join('')}</div>` : '';
+    return `<button class="item" data-m="${mi}" data-it="${ii}">${img}<div class="item-body"><div class="item-name">${hl(name, term)}</div>${desc?`<div class="item-desc">${hl(desc, term)}</div>`:''}${vars}</div>${price}</button>`;
   }
 
   function section(m, mi, items, term){
     return `<section class="cat" id="${slug(null, mi)}" data-i="${mi}">
-      <div class="cat-title"><h3>${m.icon} ${m.name}</h3><div class="rule"></div><span class="cnt">${items.length}</span></div>
+      <div class="cat-title"><h3>${m.icon} ${esc(catName(m))}</h3><div class="rule"></div><span class="cnt">${items.length}</span></div>
       <div class="items">${items.map(p => card(p.it, mi, p.ii, term)).join('')}</div>
     </section>`;
+  }
+
+  function matches(it, term){
+    if(!term) return true;
+    return norm(itName(it)).includes(term) || norm(itDesc(it)).includes(term)
+        || norm(it.n).includes(term) || norm(it.d).includes(term);
   }
 
   function render(){
@@ -489,12 +651,12 @@
     DATA.forEach((m, mi) => {
       const pairs = m.items
         .map((it, ii) => ({it, ii}))
-        .filter(p => !term || norm(p.it.n).includes(term) || norm(p.it.d).includes(term));
+        .filter(p => matches(p.it, term));
       if (pairs.length) { html += section(m, mi, pairs, term); total += pairs.length; }
     });
     if (term) {
-      hits.innerHTML = total ? `<b>${total}</b> sonuç bulundu` : '';
-      list.innerHTML = total ? html : `<div class="empty"><b>Sonuç yok</b>"${esc(q.value)}" için bir şey bulamadık.</div>`;
+      hits.innerHTML = total ? U('results').replace('{n}', `<b>${total}</b>`) : '';
+      list.innerHTML = total ? html : `<div class="empty"><b>${esc(U('noResultTitle'))}</b>${esc(U('noResultBody').replace('{q}', q.value))}</div>`;
       cats.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
     } else {
       hits.textContent = '';
@@ -551,16 +713,17 @@
 
   function openSheet(mi, ii){
     const m = DATA[mi], it = m.items[ii];
-    document.getElementById('sheetCat').textContent = m.name;
-    document.getElementById('sheetName').textContent = it.n;
+    const name = itName(it), desc = itDesc(it);
+    document.getElementById('sheetCat').textContent = catName(m);
+    document.getElementById('sheetName').textContent = name;
     const d = document.getElementById('sheetDesc');
-    d.textContent = it.d || '';
-    d.style.display = it.d ? '' : 'none';
+    d.textContent = desc || '';
+    d.style.display = desc ? '' : 'none';
     document.getElementById('sheetImg').innerHTML = it.i
-      ? `<img src="${big(it.i)}" alt="${esc(it.n)}" onerror="this.outerHTML='<div class=ph>🍽️</div>'">`
+      ? `<img src="${big(it.i)}" alt="${esc(name)}" onerror="this.outerHTML='<div class=ph>🍽️</div>'">`
       : `<div class="ph">🍽️</div>`;
     document.getElementById('sheetPrice').innerHTML = it.v
-      ? `<div class="sheet-vars">${it.v.map(v=>`<div class="vrow"><span>${esc(v.n)}</span><span class="dots"></span><b>${v.p} ₺</b></div>`).join('')}</div>`
+      ? `<div class="sheet-vars">${it.v.map(v=>`<div class="vrow"><span>${esc(varName(v.n))}</span><span class="dots"></span><b>${v.p} ₺</b></div>`).join('')}</div>`
       : (it.p ? `<div class="sheet-price">${it.p} ₺</div>` : '');
     lockBody();
     sheetBack.classList.add('show');
@@ -579,7 +742,29 @@
   });
   sheetBack.addEventListener('click', closeSheet);
   document.getElementById('sheetX').addEventListener('click', closeSheet);
-  addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+
+  /* ---------- sipariş: Betül abla ---------- */
+  const order = document.getElementById('order');
+  const orderBack = document.getElementById('orderBack');
+  function openOrder(){
+    lockBody();
+    orderBack.classList.add('show');
+    order.classList.add('show');
+  }
+  function closeOrder(){
+    if (!order.classList.contains('show')) return;
+    unlockBody();
+    orderBack.classList.remove('show');
+    order.classList.remove('show');
+  }
+  document.getElementById('ofab').addEventListener('click', openOrder);
+  orderBack.addEventListener('click', closeOrder);
+  document.getElementById('orderX').addEventListener('click', closeOrder);
+
+  addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (order.classList.contains('show')) closeOrder(); else closeSheet();
+  });
 
   /* aşağı sürükleyince kapat */
   let ty = null, dy = 0;
@@ -596,6 +781,87 @@
     ty = null;
   });
 
+  /* ---------- static UI metni + dil/yön uygula ---------- */
+  function applyUI(){
+    const root = document.documentElement;
+    root.lang = LANG;
+    root.dir = I18N.rtl.indexOf(LANG) >= 0 ? 'rtl' : 'ltr';
+    document.title = U('title');
+    document.getElementById('qrTag').textContent = U('qr');
+    document.getElementById('heroKicker').textContent = U('heroKicker');
+    document.getElementById('heroH2').innerHTML = esc(U('heroTitle')) + ' <em>' + esc(U('heroEm')) + '</em>';
+    document.getElementById('heroSub').textContent = U('heroSub');
+    const hero = document.querySelector('.hero');
+    if (hero) hero.setAttribute('aria-label', U('heroTitle') + ' ' + U('heroEm'));
+    q.placeholder = U('searchPh');
+    q.setAttribute('aria-label', U('searchAria'));
+    qClear.setAttribute('aria-label', U('clearAria'));
+    cats.setAttribute('aria-label', U('catsAria'));
+    sheet.setAttribute('aria-label', U('sheetAria'));
+    document.getElementById('sheetX').setAttribute('aria-label', U('closeAria'));
+    langBtn.setAttribute('aria-label', U('langLabel'));
+    themeBtn.setAttribute('aria-label', U('themeLabel'));
+    document.getElementById('langCur').textContent = LANG.toUpperCase();
+  }
+
+  /* ---------- tema (açık/koyu) ---------- */
+  const themeBtn = document.getElementById('themeBtn');
+  const themeIcon = document.getElementById('themeIcon');
+  const tcMeta = document.querySelector('meta[name="theme-color"]');
+  function prefersDark(){ return matchMedia('(prefers-color-scheme:dark)').matches; }
+  function isDark(){
+    const t = document.documentElement.getAttribute('data-theme');
+    return t === 'dark' ? true : t === 'light' ? false : prefersDark();
+  }
+  function applyTheme(){
+    const dark = isDark();
+    themeIcon.textContent = dark ? '☀️' : '🌙';
+    if (tcMeta) tcMeta.setAttribute('content', dark ? '#171009' : '#2b1d12');
+  }
+  (function initTheme(){ const s = ls('lm_theme'); if (s === 'dark' || s === 'light') document.documentElement.setAttribute('data-theme', s); })();
+  themeBtn.addEventListener('click', () => {
+    const dark = !isDark();
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    lsSet('lm_theme', dark ? 'dark' : 'light');
+    applyTheme();
+  });
+
+  /* ---------- dil seçici ---------- */
+  const langBtn = document.getElementById('langBtn');
+  const langMenu = document.getElementById('langMenu');
+  function buildLangMenu(){
+    langMenu.innerHTML = I18N.langs.map(l =>
+      `<button type="button" role="menuitem" data-l="${l.c}" class="${l.c===LANG?'on':''}"><span class="flag">${l.flag}</span><span>${l.name}</span></button>`
+    ).join('');
+  }
+  function closeLangMenu(){ langMenu.classList.remove('open'); langBtn.setAttribute('aria-expanded','false'); }
+  langBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    const open = langMenu.classList.toggle('open');
+    langBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  langMenu.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    setLang(b.dataset.l); closeLangMenu();
+  });
+  document.addEventListener('click', e => {
+    if (!langMenu.contains(e.target) && !langBtn.contains(e.target)) closeLangMenu();
+  });
+  function setLang(l){
+    if (!I18N.ui[l] || l === LANG) return;
+    LANG = l;
+    lsSet('lm_lang', l);
+    const y = window.scrollY;
+    applyUI(); buildLangMenu(); buildChips(); renderPilav(); render();
+    window.scrollTo({ top: y, left: 0, behavior: 'instant' });
+  }
+
+  /* ---------- init ---------- */
+  applyTheme();
+  applyUI();
+  buildLangMenu();
+  buildChips();
+  renderPilav();
   render();
 })();
 </script>
