@@ -76,7 +76,7 @@
     padding:44px 60px 40px;text-align:center;position:relative;
   }
   .exhead .uni{font-weight:700;font-size:66px;letter-spacing:.10em;padding:0 250px}
-  .exhead .term{margin-top:14px;font-size:44px;letter-spacing:.34em;color:var(--ink-soft);padding:0 250px}
+  .exhead .term{margin-top:14px;font-size:44px;letter-spacing:.22em;color:var(--ink-soft);white-space:nowrap}
   .exhead .course{
     margin-top:26px;font-weight:700;font-size:78px;line-height:1.1;
   }
@@ -107,7 +107,7 @@
   }
   .barcode span{
     position:absolute;left:0;right:0;top:104px;text-align:center;
-    font-size:26px;letter-spacing:.22em;color:var(--ink-soft);
+    font-size:22px;letter-spacing:.12em;color:var(--ink-soft);white-space:nowrap;
   }
 
   /* ---------- grade stamp (top right, over header) ---------- */
@@ -135,9 +135,9 @@
   .opts b{font-weight:700}
   .opts .dim{color:var(--ink-soft)}
   /* red pen ellipse around the right answer */
-  .circled{position:relative;display:inline-block;padding:2px 26px}
+  .circled{position:relative;display:inline-block;padding:2px 44px}
   .circled svg{
-    position:absolute;left:-14px;top:-12px;width:calc(100% + 28px);height:calc(100% + 28px);
+    position:absolute;left:-20px;top:-14px;width:calc(100% + 40px);height:calc(100% + 32px);
     overflow:visible;
   }
   .circled svg path{fill:none;stroke:var(--pen-red);stroke-width:9px;stroke-linecap:round;vector-effect:non-scaling-stroke}
@@ -174,7 +174,7 @@
     margin-top:8px;font-weight:700;font-size:128px;line-height:1;letter-spacing:.01em;
   }
   .keypanel h2 em{font-style:normal;color:var(--pen-red)}
-  .keypanel .sub{margin-top:22px;font-size:45px;line-height:1.5;color:var(--ink-soft);max-width:880px}
+  .keypanel .sub{margin-top:22px;font-size:45px;line-height:1.5;color:var(--ink-soft);white-space:nowrap}
   .keypanel .sub b{color:var(--ink)}
   .qrcard{
     flex:0 0 auto;width:580px;height:580px;background:#fff;border:6px solid var(--ink);
@@ -189,7 +189,7 @@
   }
   /* brand stamp under the copy */
   .stamp{
-    display:inline-block;margin-top:28px;
+    display:inline-block;margin-top:20px;
     border:7px solid var(--pen-red-deep);border-radius:50%/42%;color:var(--pen-red-deep);
     padding:18px 48px 22px;transform:rotate(-4deg);text-align:center;
     mix-blend-mode:multiply;opacity:.92;
@@ -235,10 +235,10 @@
   .sticky b{color:var(--pen-red)}
 
   /* ---------- desk props ---------- */
-  .cup{position:absolute;z-index:8;width:500px;height:500px;right:34px;bottom:620px;transform:rotate(-12deg);
+  .cup{position:absolute;z-index:8;width:470px;height:470px;right:8px;bottom:640px;transform:rotate(-12deg);
     filter:drop-shadow(-26px 38px 44px rgba(0,0,0,.55))}
-  .redpen{position:absolute;z-index:8;width:820px;left:96px;bottom:206px;transform:rotate(-7deg);
-    filter:drop-shadow(0 22px 26px rgba(0,0,0,.5))}
+  .redpen{position:absolute;z-index:8;width:760px;left:-170px;top:1330px;transform:rotate(80deg);
+    filter:drop-shadow(-18px 16px 22px rgba(0,0,0,.45))}
   .clip{position:absolute;z-index:8;left:330px;top:64px;width:120px;transform:rotate(-14deg);
     filter:drop-shadow(6px 10px 10px rgba(0,0,0,.35))}
 
