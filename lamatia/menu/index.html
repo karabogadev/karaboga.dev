@@ -887,21 +887,25 @@
     ).join('');
   }
 
-  let spyPaused = 0, jumpFix;
+  let spyPaused = 0, jumpFix1, jumpFix2;
   cats.addEventListener('click', e => {
     const b = e.target.closest('.chip'); if(!b) return;
     if (q.value) { q.value = ''; render(); }
     setChip(+b.dataset.i);
-    spyPaused = Date.now() + 1300; /* programatik scroll sırasında spy'ı sustur */
+    spyPaused = Date.now() + 1600; /* programatik scroll sırasında spy'ı sustur */
     const sec = document.getElementById(slug(null, b.dataset.i));
     if (sec) {
       sec.scrollIntoView({behavior:'smooth', block:'start'});
-      /* content-visibility tahmini yüksekliklerle hedefi ıskalayabilir → otur ve düzelt */
-      clearTimeout(jumpFix);
-      jumpFix = setTimeout(() => {
+      /* content-visibility tahmini yükseklikleri scroll sırasında netleşip hedefi kaydırabilir
+         → iki kademede anlık düzeltme */
+      const fix = () => {
         const off = parseFloat(getComputedStyle(sec).scrollMarginTop) || 0;
-        if (Math.abs(sec.getBoundingClientRect().top - off) > 30) sec.scrollIntoView({block:'start'});
-      }, 750);
+        if (Math.abs(sec.getBoundingClientRect().top - off) > 30)
+          sec.scrollIntoView({behavior:'instant', block:'start'});
+      };
+      clearTimeout(jumpFix1); clearTimeout(jumpFix2);
+      jumpFix1 = setTimeout(fix, 700);
+      jumpFix2 = setTimeout(fix, 1200);
     }
   });
 
