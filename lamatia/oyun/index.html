@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Pilav Ustası — La'Matia</title>
+  <meta name="description" content="Pilav Ustası: düşen malzemeleri kasende yakala, siparişleri tamamla. La'Matia'nın QR menü oyunu.">
+  <meta name="theme-color" content="#2b1d12">
+  <link rel="canonical" href="https://lamatia.karaboga.dev/oyun/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍚%3C/text%3E%3C/svg%3E">
+  <meta property="og:title" content="Pilav Ustası 🍚 — kaç ₺ kazanabilirsin?">
+  <meta property="og:description" content="Düşen malzemeleri kraft kasende yakala, Pilavüstü siparişlerini tamamla!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,700&family=Hanken+Grotesk:wght@500;600;700;800&display=swap">
+  <style>
+    :root{
+      --paper:#f4ecdd; --ink:#2b1d12; --ink-soft:#6b5743;
+      --brush:#bf2026; --brush-deep:#971a1f; --curry:#d99a2b; --kraft:#c8a06b; --wood:#3a2417;
+    }
+    :root{--sat:env(safe-area-inset-top,0px)}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+    html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none}
+    body{font-family:'Hanken Grotesk',sans-serif;background:var(--paper);color:var(--ink);touch-action:none}
+    #game{position:fixed;inset:0;display:block;touch-action:none}
+
+    .veil{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:22px;z-index:10;
+      background:rgba(43,29,18,.45);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+      opacity:0;pointer-events:none;transition:opacity .25s}
+    .veil.show{opacity:1;pointer-events:auto}
+    .panel{width:100%;max-width:380px;background:var(--paper);border-radius:26px;padding:28px 24px;text-align:center;
+      box-shadow:0 30px 70px -20px rgba(0,0,0,.6);border:1px solid rgba(43,29,18,.1);position:relative;overflow:hidden}
+    .panel::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .45 0 0 0 0 .32 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E")}
+    .panel>*{position:relative}
+    .kicker{font-size:10px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft)}
+    .title{font-family:'Fraunces',serif;font-weight:700;font-size:38px;line-height:1;margin:10px 0 2px;letter-spacing:-.02em}
+    .title em{font-style:italic;color:var(--brush)}
+    .sub{font-size:14px;color:var(--ink-soft);line-height:1.55;margin:10px 0 18px}
+    .howto{display:flex;justify-content:center;gap:14px;margin:0 0 20px;font-size:11.5px;font-weight:700;color:var(--ink-soft)}
+    .howto span{display:flex;flex-direction:column;align-items:center;gap:5px}
+    .howto b{font-size:24px}
+    .btn{display:block;width:100%;border:none;cursor:pointer;text-decoration:none;
+      font:800 17px 'Hanken Grotesk',sans-serif;letter-spacing:.02em;border-radius:16px;padding:16px;margin-top:10px;
+      transition:transform .12s}
+    .btn:active{transform:scale(.96)}
+    .btn-go{color:#fff;background:linear-gradient(180deg,#d4373d,var(--brush-deep));box-shadow:0 10px 24px -8px rgba(151,26,31,.7),inset 0 1px 0 rgba(255,255,255,.25)}
+    .btn-soft{color:var(--ink);background:rgba(43,29,18,.08)}
+    .best{margin-top:16px;font-size:12.5px;font-weight:700;color:var(--ink-soft)}
+    .best b{color:var(--curry)}
+    .score-big{font-family:'Fraunces',serif;font-weight:700;font-size:54px;color:var(--brush);margin:6px 0 0}
+    .rank{display:inline-block;font-weight:800;font-size:13px;color:#fff;background:var(--wood);padding:7px 16px;border-radius:999px;margin:10px 0 4px}
+    .stats{display:flex;justify-content:center;gap:22px;margin:14px 0 6px;font-size:12px;font-weight:700;color:var(--ink-soft)}
+    .stats b{display:block;font-size:19px;color:var(--ink);font-family:'Fraunces',serif}
+    .reward{margin:14px 0 4px;padding:12px 14px;border:2px dashed var(--curry);border-radius:14px;background:rgba(217,154,43,.1);font-size:13px;font-weight:700;color:#8a5f14}
+  </style>
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div class="veil show" id="menuVeil">
+  <div class="panel">
+    <div class="kicker">La'Matia · Pilavüstü Lezzetler</div>
+    <div class="title">Pilav <em>Ustası</em></div>
+    <p class="sub">Düşen malzemeleri kraft kasende yakala,<br>gerçek menüden gelen siparişleri tamamla.<br><b>Yanlış malzeme komboyu bozar, biber bombasından kaç!</b></p>
+    <div class="howto">
+      <span><b>👆</b>Sürükle</span>
+      <span><b>🍚</b>Yakala</span>
+      <span><b>🧾</b>Siparişi bitir</span>
+      <span><b>💥</b>Bombadan kaç</span>
+    </div>
+    <button class="btn btn-go" id="startBtn">Mesai Başlasın 🔔</button>
+    <a class="btn btn-soft" href="../menu/">← Menüye Dön</a>
+    <div class="best" id="menuBest"></div>
+  </div>
+</div>
+
+<div class="veil" id="overVeil">
+  <div class="panel">
+    <div class="kicker">Mesai Bitti</div>
+    <div class="score-big" id="finalScore">0 ₺</div>
+    <div class="rank" id="rankLabel"></div>
+    <div class="stats">
+      <span>Sipariş<b id="stOrders">0</b></span>
+      <span>En İyi Kombo<b id="stCombo">x1</b></span>
+      <span>Rekor<b id="stBest">0 ₺</b></span>
+    </div>
+    <div class="reward" id="reward" hidden>🏅 Ustalık belgen hazır! Ekranı kasadaki ekibe göster, gülümseme garantili.</div>
+    <button class="btn btn-go" id="againBtn">Tekrar Oyna 🔄</button>
+    <button class="btn btn-soft" id="shareBtn">Skorunu Paylaş 📣</button>
+    <a class="btn btn-soft" href="../menu/">← Menüye Dön</a>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+/* ---------------- setup ---------------- */
+const cv = document.getElementById('game');
+const cx = cv.getContext('2d');
+let W=0, H=0, DPR=1;
+function resize(){
+  DPR = Math.min(window.devicePixelRatio||1, 2.5);
+  W = window.innerWidth; H = window.innerHeight;
+  cv.width = W*DPR; cv.height = H*DPR;
+  cx.setTransform(DPR,0,0,DPR,0,0);
+}
+resize(); addEventListener('resize', resize);
+
+const LS_BEST='lamatia_pilav_best', LS_SND='lamatia_pilav_snd';
+const best = ()=> +(localStorage.getItem(LS_BEST)||0);
+
+/* ---------------- ingredients ---------------- */
+// key, label, color used in checklist
+const ING = {
+  pilav:{label:'Pilav',  emoji:'🍚'},
+  nohut:{label:'Nohut',  emoji:'🟡'},
+  tavuk:{label:'Tavuk',  emoji:'🍗'},
+  kori: {label:'Köri Sos',emoji:'🍛'},
+  aci:  {label:'Acı Sos', emoji:'🌶️'},
+};
+// real menu: name, price (₺), recipe
+const RECIPES = [
+  {name:'Sade Pilav',               price:100, need:{pilav:2}},
+  {name:'Nohutlu Pilav',            price:130, need:{pilav:2,nohut:2}},
+  {name:'Tavuklu Pilav',            price:150, need:{pilav:2,tavuk:2}},
+  {name:'Köri Soslu Tavuk + Pilav', price:225, need:{pilav:2,tavuk:2,kori:1}},
+  {name:'Acı Soslu Tavuk + Pilav',  price:225, need:{pilav:2,tavuk:2,aci:1}},
+];
+const RANKS = [
+  [0,   'Çaylak Komi 🧹'],
+  [400, 'Kase Taşıyıcı 🥡'],
+  [900, 'Usta Yardımcısı 🥄'],
+  [1600,'Pilav Ustası 👨‍🍳'],
+  [2600,'Efsane Şef 🔥'],
+];
+
+/* ---------------- audio ---------------- */
+let AC=null, sndOn = localStorage.getItem(LS_SND)!=='0';
+function beep(f,d,type,g){
+  if(!sndOn) return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==='suspended') AC.resume();
+    const o=AC.createOscillator(), v=AC.createGain();
+    o.type=type||'triangle'; o.frequency.value=f;
+    v.gain.setValueAtTime(g||.08, AC.currentTime);
+    v.gain.exponentialRampToValueAtTime(.0001, AC.currentTime+(d||.12));
+    o.connect(v).connect(AC.destination);
+    o.start(); o.stop(AC.currentTime+(d||.12)+.02);
+  }catch(e){}
+}
+const sCatch =()=>{ beep(620,.09); beep(880,.1); };
+const sBad   =()=>{ beep(180,.18,'sawtooth',.06); };
+const sOrder =()=>{ [660,830,990,1320].forEach((f,i)=>setTimeout(()=>beep(f,.14),i*70)); };
+const sBomb  =()=>{ beep(90,.3,'sawtooth',.1); };
+const buzz = p => { try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} };
+
+/* ---------------- state ---------------- */
+const S = {
+  mode:'menu',           // menu | play | over
+  bowlX:0, bowlTarget:0,
+  items:[], particles:[], floats:[],
+  order:null, got:{},
+  score:0, combo:1, bestCombo:1, orders:0, lives:3,
+  time:0, spawnAt:0, level:0,
+  shake:0,
+};
+
+function newOrder(){
+  // weight early game to simpler recipes
+  const max = Math.min(RECIPES.length, 2+Math.floor(S.orders/2));
+  S.order = RECIPES[Math.floor(Math.random()*max)];
+  S.got = {};
+}
+
+function startGame(){
+  S.mode='play';
+  S.items.length=0; S.particles.length=0; S.floats.length=0;
+  S.score=0; S.combo=1; S.bestCombo=1; S.orders=0; S.lives=3;
+  S.time=0; S.spawnAt=.4; S.level=0; S.shake=0;
+  S.bowlX=S.bowlTarget=W/2;
+  newOrder();
+  veil(menuVeil,false); veil(overVeil,false);
+}
+
+function endGame(){
+  S.mode='over';
+  const b = Math.max(best(), S.score);
+  localStorage.setItem(LS_BEST, b);
+  document.getElementById('finalScore').textContent = S.score+' ₺';
+  document.getElementById('stOrders').textContent = S.orders;
+  document.getElementById('stCombo').textContent = 'x'+S.bestCombo;
+  document.getElementById('stBest').textContent = b+' ₺';
+  let rank=RANKS[0][1]; for(const [s,r] of RANKS) if(S.score>=s) rank=r;
+  document.getElementById('rankLabel').textContent = rank;
+  document.getElementById('reward').hidden = S.score < 1600;
+  setTimeout(()=>veil(overVeil,true), 650);
+}
+
+function veil(el,show){ el.classList.toggle('show',show); }
+const menuVeil=document.getElementById('menuVeil'), overVeil=document.getElementById('overVeil');
+
+/* ---------------- input ---------------- */
+function px(e){ return (e.touches? e.touches[0].clientX : e.clientX); }
+let dragging=false;
+cv.addEventListener('pointerdown', e=>{ dragging=true; S.bowlTarget=e.clientX; });
+cv.addEventListener('pointermove', e=>{ if(dragging) S.bowlTarget=e.clientX; });
+addEventListener('pointerup', ()=>dragging=false);
+cv.addEventListener('touchstart', e=>{ S.bowlTarget=px(e); e.preventDefault(); },{passive:false});
+cv.addEventListener('touchmove',  e=>{ S.bowlTarget=px(e); e.preventDefault(); },{passive:false});
+
+document.getElementById('startBtn').onclick = ()=>{ beep(520,.08); startGame(); };
+document.getElementById('againBtn').onclick = ()=>{ beep(520,.08); startGame(); };
+document.getElementById('shareBtn').onclick = ()=>{
+  const txt = `Pilav Ustası'nda ${S.score} ₺ kazandım! 🍚👨‍🍳 Sen de dene:`;
+  const url = 'https://lamatia.karaboga.dev/oyun/';
+  if(navigator.share) navigator.share({title:'Pilav Ustası', text:txt, url}).catch(()=>{});
+  else { navigator.clipboard && navigator.clipboard.writeText(txt+' '+url); alert('Skor panoya kopyalandı!'); }
+};
+document.getElementById('menuBest').innerHTML = best()? `Rekorun: <b>${best()} ₺</b>` : 'İlk mesain — bol şans! ☕';
+
+document.addEventListener('visibilitychange', ()=>{ if(document.hidden) last=0; });
+
+/* ---------------- spawning ---------------- */
+function spawn(){
+  const need = S.order.need;
+  const lacking = Object.keys(need).filter(k => (S.got[k]||0) < need[k]);
+  const r = Math.random();
+  let type;
+  if(r < .12 && S.time > 8) type='bomb';
+  else if(r < .17) type='bonus';
+  else if(r < .72 && lacking.length) type = lacking[Math.floor(Math.random()*lacking.length)];
+  else { const all=Object.keys(ING); type = all[Math.floor(Math.random()*all.length)]; }
+  const m = 30;
+  S.items.push({
+    type, x: m+Math.random()*(W-2*m), y:-40,
+    vy: (130+S.level*22+Math.random()*60)/1000,
+    rot: Math.random()*Math.PI*2, vr:(Math.random()-.5)*.003,
+    r: type==='bomb'?17: type==='bonus'?15 : 19,
+    wob: Math.random()*Math.PI*2,
+  });
+}
+
+/* ---------------- catch logic ---------------- */
+function caught(it){
+  const bw = bowlW();
+  if(it.type==='bomb'){
+    S.lives--; S.combo=1; S.shake=14; sBomb(); buzz([60,40,80]);
+    burst(it.x, bowlY()-10, '#2b1d12', 16);
+    float_(it.x, bowlY()-40, '💥 -1 can', '#bf2026');
+    if(S.lives<=0) endGame();
+    return;
+  }
+  if(it.type==='bonus'){
+    S.score+=25; sCatch(); buzz(25);
+    burst(it.x, bowlY()-10, '#5a9e3d', 10);
+    float_(it.x, bowlY()-40, '+25 ₺ 🌿', '#5a9e3d');
+    return;
+  }
+  const need=S.order.need;
+  if((S.got[it.type]||0) < (need[it.type]||0)){
+    S.got[it.type]=(S.got[it.type]||0)+1;
+    sCatch(); buzz(20);
+    burst(it.x, bowlY()-10, '#d99a2b', 10);
+    // order complete?
+    if(Object.keys(need).every(k => (S.got[k]||0)>=need[k])){
+      const gain = S.order.price * S.combo;
+      S.score += gain; S.orders++;
+      float_(W/2, H*.34, `${S.order.name} ✓  +${gain} ₺`, '#bf2026', 1.6);
+      S.combo = Math.min(S.combo+1, 5);
+      S.bestCombo = Math.max(S.bestCombo, S.combo);
+      sOrder(); buzz([30,30,30,30,60]);
+      burst(W/2, H*.4, '#bf2026', 26, true);
+      newOrder();
+    }
+  } else {
+    // not needed → combo breaks
+    S.combo=1; sBad(); buzz(50);
+    burst(it.x, bowlY()-10, '#97694a', 8);
+    float_(it.x, bowlY()-40, 'gereksiz! kombo ×1', '#6b5743');
+  }
+}
+
+/* ---------------- fx ---------------- */
+function burst(x,y,color,n,big){
+  for(let i=0;i<n;i++){
+    const a=Math.random()*Math.PI*2, sp=(big?.18:.12)*(.4+Math.random());
+    S.particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-.08,life:1,color,r:2+Math.random()*3});
+  }
+}
+function float_(x,y,text,color,scale){
+  S.floats.push({x,y,text,color,life:1,scale:scale||1});
+}
+
+/* ---------------- geometry ---------------- */
+const bowlY = ()=> H - Math.max(96, H*.13);
+const bowlW = ()=> Math.min(W*.30, 132);
+
+/* ---------------- drawing ---------------- */
+function roundRect(x,y,w,h,r){ cx.beginPath(); cx.roundRect(x,y,w,h,r); }
+
+function drawBg(){
+  cx.fillStyle='#f4ecdd'; cx.fillRect(0,0,W,H);
+  // faint diagonal stripes
+  cx.save(); cx.globalAlpha=.05; cx.strokeStyle='#2b1d12'; cx.lineWidth=1;
+  for(let i=-H;i<W;i+=26){ cx.beginPath(); cx.moveTo(i,0); cx.lineTo(i+H,H); cx.stroke(); }
+  cx.restore();
+  // wooden counter
+  const cy = H - Math.max(64, H*.085);
+  const g = cx.createLinearGradient(0,cy,0,H);
+  g.addColorStop(0,'#4a2e1b'); g.addColorStop(1,'#241408');
+  cx.fillStyle=g; cx.fillRect(0,cy,W,H-cy);
+  cx.fillStyle='rgba(244,236,221,.07)';
+  for(let i=0;i<W;i+=46){ cx.fillRect(i,cy+8,30,2); cx.fillRect(i+14,cy+26,30,2); }
+}
+
+function drawBowl(x){
+  const w=bowlW(), y=bowlY(), h=w*.52;
+  cx.save(); cx.translate(x,y);
+  // kraft cup (trapezoid)
+  const g=cx.createLinearGradient(-w/2,0,w/2,0);
+  g.addColorStop(0,'#b68a52'); g.addColorStop(.5,'#d6b285'); g.addColorStop(1,'#b68a52');
+  cx.beginPath();
+  cx.moveTo(-w/2,0); cx.lineTo(w/2,0); cx.lineTo(w/2-w*.1,h); cx.lineTo(-w/2+w*.1,h); cx.closePath();
+  cx.fillStyle=g; cx.fill();
+  // label
+  cx.fillStyle='rgba(43,29,18,.85)';
+  cx.font=`800 ${Math.max(8,w*.085)}px 'Hanken Grotesk',sans-serif`;
+  cx.textAlign='center'; cx.textBaseline='middle';
+  cx.fillText('PİLAVÜSTÜ', 0, h*.42);
+  cx.fillText('LEZZETLER', 0, h*.42+w*.1);
+  // rim ellipse
+  cx.beginPath(); cx.ellipse(0,0,w/2,w*.13,0,0,Math.PI*2);
+  cx.fillStyle='#e8caa2'; cx.fill();
+  cx.lineWidth=2; cx.strokeStyle='#a3793f'; cx.stroke();
+  // rice fill grows with order progress
+  const need=S.order?S.order.need:{}, total=Object.values(need).reduce((a,b)=>a+b,0)||1;
+  const got=Object.keys(need).reduce((a,k)=>a+(S.got[k]||0),0);
+  const f=got/total;
+  if(f>0){
+    cx.beginPath(); cx.ellipse(0,-w*.06*f,w*.42,w*.12+w*.08*f,0,Math.PI,0);
+    cx.fillStyle='#fdf8ee'; cx.fill();
+    cx.fillStyle='#efe3cb';
+    for(let i=0;i<10;i++){ const a=Math.random()*Math.PI, rr=Math.random()*w*.36;
+      cx.beginPath(); cx.ellipse(Math.cos(a)*rr,-w*.06*f-Math.random()*w*.06,2.4,1.4,a,0,Math.PI*2); cx.fill(); }
+  }
+  cx.restore();
+}
+
+function drawItem(it){
+  cx.save(); cx.translate(it.x + Math.sin(it.wob+S.time*2.2)*8, it.y); cx.rotate(it.rot);
+  const r=it.r;
+  switch(it.type){
+    case 'pilav':
+      cx.beginPath(); cx.ellipse(0,0,r,r*.75,0,0,Math.PI*2); cx.fillStyle='#fdf8ee'; cx.fill();
+      cx.lineWidth=1.5; cx.strokeStyle='#d9c9a8'; cx.stroke();
+      cx.fillStyle='#e8dcc0';
+      for(let i=0;i<7;i++){ const a=i*0.9; cx.beginPath();
+        cx.ellipse(Math.cos(a)*r*.45,Math.sin(a)*r*.35,3,1.6,a,0,Math.PI*2); cx.fill(); }
+      break;
+    case 'nohut':
+      for(const [dx,dy] of [[-6,-4],[7,-2],[0,6],[-2,-1]]){
+        cx.beginPath(); cx.arc(dx,dy,r*.42,0,Math.PI*2);
+        cx.fillStyle='#e3b85e'; cx.fill(); cx.lineWidth=1.5; cx.strokeStyle='#b98c33'; cx.stroke();
+        cx.beginPath(); cx.arc(dx-2,dy-2,r*.13,0,Math.PI*2); cx.fillStyle='rgba(255,255,255,.5)'; cx.fill();
+      }
+      break;
+    case 'tavuk':
+      cx.beginPath(); cx.ellipse(0,0,r,r*.55,0,0,Math.PI*2);
+      cx.fillStyle='#e9c89a'; cx.fill(); cx.lineWidth=1.5; cx.strokeStyle='#c49a5e'; cx.stroke();
+      cx.strokeStyle='#d3a96f'; cx.lineWidth=2;
+      cx.beginPath(); cx.moveTo(-r*.5,-2); cx.quadraticCurveTo(0,2,r*.5,-2); cx.stroke();
+      cx.beginPath(); cx.moveTo(-r*.4,4); cx.quadraticCurveTo(0,7,r*.4,4); cx.stroke();
+      break;
+    case 'kori':
+      drop(r,'#e8b53a','#c4901c'); break;
+    case 'aci':
+      drop(r,'#d4372f','#9e1f18');
+      cx.fillStyle='#fff'; cx.font=`${r}px serif`; cx.textAlign='center'; cx.textBaseline='middle';
+      cx.fillText('🌶', 0, 2);
+      break;
+    case 'bomb':
+      cx.beginPath(); cx.arc(0,0,r,0,Math.PI*2); cx.fillStyle='#241a12'; cx.fill();
+      cx.strokeStyle='#4a3a28'; cx.lineWidth=2;
+      for(let i=0;i<8;i++){ const a=i*Math.PI/4;
+        cx.beginPath(); cx.moveTo(Math.cos(a)*r,Math.sin(a)*r);
+        cx.lineTo(Math.cos(a)*(r+5),Math.sin(a)*(r+5)); cx.stroke(); }
+      cx.fillStyle='#f4ecdd'; cx.font=`800 ${r*.8}px 'Hanken Grotesk'`; cx.textAlign='center'; cx.textBaseline='middle';
+      cx.fillText('!',0,1);
+      break;
+    case 'bonus': // parsley sprig
+      cx.strokeStyle='#3e7a2a'; cx.lineWidth=2.5;
+      cx.beginPath(); cx.moveTo(0,r); cx.quadraticCurveTo(2,-2,0,-r*.4); cx.stroke();
+      cx.fillStyle='#5a9e3d';
+      for(const [dx,dy] of [[0,-r*.55],[-7,-r*.2],[7,-r*.25],[-5,2],[6,3]]){
+        cx.beginPath(); cx.ellipse(dx,dy,6,4.5,dx*.1,0,Math.PI*2); cx.fill();
+      }
+      break;
+  }
+  cx.restore();
+
+  function drop(r,c1,c2){
+    cx.beginPath();
+    cx.moveTo(0,-r);
+    cx.bezierCurveTo(r*.9,-r*.2,r*.75,r*.6,0,r*.85);
+    cx.bezierCurveTo(-r*.75,r*.6,-r*.9,-r*.2,0,-r);
+    cx.fillStyle=c1; cx.fill(); cx.lineWidth=1.5; cx.strokeStyle=c2; cx.stroke();
+    cx.beginPath(); cx.arc(-r*.25,-r*.15,r*.16,0,Math.PI*2); cx.fillStyle='rgba(255,255,255,.55)'; cx.fill();
+  }
+}
+
+const SAFE_TOP = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sat'))||0;
+function drawHud(){
+  const pad=14, top=14+SAFE_TOP;
+  // score chip
+  cx.save();
+  cx.font="800 16px 'Hanken Grotesk'"; cx.textBaseline='middle';
+  const sTxt=S.score+' ₺';
+  const sw=cx.measureText(sTxt).width+30;
+  brushChip(pad, top, sw, 34, '#bf2026');
+  cx.fillStyle='#fff'; cx.textAlign='left'; cx.fillText(sTxt, pad+15, top+17);
+  // combo
+  if(S.combo>1){
+    cx.font="800 13px 'Hanken Grotesk'";
+    const cTxt='KOMBO ×'+S.combo;
+    const cw=cx.measureText(cTxt).width+24;
+    brushChip(pad, top+40, cw, 26, '#d99a2b');
+    cx.fillStyle='#3a2417'; cx.fillText(cTxt, pad+12, top+40+13);
+  }
+  // lives
+  cx.font="16px serif"; cx.textAlign='right';
+  let hearts=''; for(let i=0;i<3;i++) hearts = (i<S.lives?'❤️':'🤍')+hearts;
+  cx.fillText(hearts, W-pad, top+16);
+  cx.restore();
+  drawOrderCard();
+}
+
+function brushChip(x,y,w,h,color){
+  cx.save(); cx.translate(x+w/2,y+h/2); cx.rotate(-.02);
+  cx.fillStyle=color;
+  cx.beginPath();
+  cx.roundRect(-w/2,-h/2,w,h,[h*.35,h*.6,h*.3,h*.55]);
+  cx.fill(); cx.restore();
+}
+
+function drawOrderCard(){
+  if(!S.order) return;
+  const cw=Math.min(W-28, 330), x=(W-cw)/2, y=Math.max(50, H*.062)+44+SAFE_TOP;
+  cx.save();
+  cx.translate(x+cw/2, y); cx.rotate(-.008); cx.translate(-(x+cw/2), -y);
+  // ticket
+  cx.fillStyle='rgba(251,246,234,.96)';
+  cx.strokeStyle='rgba(43,29,18,.15)'; cx.lineWidth=1.5;
+  roundRect(x,y,cw,62,14); cx.fill(); cx.stroke();
+  // left red edge
+  cx.fillStyle='#bf2026'; roundRect(x,y,6,62,[14,0,0,14]); cx.fill();
+  cx.fillStyle='#6b5743'; cx.font="800 9.5px 'Hanken Grotesk'"; cx.textAlign='left'; cx.textBaseline='alphabetic';
+  cx.fillText('SİPARİŞ · '+S.order.price+' ₺'+(S.combo>1?'  ×'+S.combo:''), x+18, y+17);
+  cx.fillStyle='#2b1d12'; cx.font="700 15px 'Fraunces',serif";
+  cx.fillText(S.order.name, x+18, y+35);
+  // checklist
+  cx.font="600 12px 'Hanken Grotesk'";
+  let ix=x+18;
+  for(const k of Object.keys(S.order.need)){
+    const need=S.order.need[k], got=Math.min(S.got[k]||0,need);
+    const done=got>=need;
+    const t=`${ING[k].emoji}${got}/${need}`;
+    cx.fillStyle = done? '#3e7a2a':'#6b5743';
+    cx.fillText(t, ix, y+53);
+    ix += cx.measureText(t).width+12;
+  }
+  cx.restore();
+}
+
+/* ---------------- loop ---------------- */
+let last=0;
+function loop(ts){
+  requestAnimationFrame(loop);
+  if(!last){ last=ts; return; }
+  let dt=Math.min(ts-last, 50); last=ts;
+
+  if(S.shake>0){ S.shake-=dt*.04; }
+  cx.save();
+  if(S.shake>0) cx.translate((Math.random()-.5)*S.shake,(Math.random()-.5)*S.shake);
+
+  drawBg();
+
+  if(S.mode==='play'){
+    S.time += dt/1000;
+    S.level = Math.floor(S.time/14);
+    // smooth bowl
+    const bw=bowlW();
+    S.bowlTarget = Math.max(bw/2, Math.min(W-bw/2, S.bowlTarget));
+    S.bowlX += (S.bowlTarget-S.bowlX)*Math.min(1, dt*.018);
+    // spawn
+    S.spawnAt -= dt/1000;
+    if(S.spawnAt<=0){
+      spawn();
+      S.spawnAt = Math.max(.42, 1.05 - S.level*.09) * (.75+Math.random()*.5);
+    }
+    // items
+    const by=bowlY();
+    for(let i=S.items.length-1;i>=0;i--){
+      const it=S.items[i];
+      it.y += it.vy*dt; it.rot += it.vr*dt;
+      const ix = it.x + Math.sin(it.wob+S.time*2.2)*8;
+      if(it.y > by-14 && it.y < by+18 && Math.abs(ix-S.bowlX) < bw/2+6){
+        S.items.splice(i,1); caught(it); continue;
+      }
+      if(it.y > H+50){
+        S.items.splice(i,1);
+        // missing a NEEDED ingredient costs combo only (gentle)
+        continue;
+      }
+    }
+  }
+
+  // draw items & bowl in both play/over for life
+  for(const it of S.items) drawItem(it);
+  drawBowl(S.bowlX||W/2);
+
+  // particles
+  for(let i=S.particles.length-1;i>=0;i--){
+    const p=S.particles[i];
+    p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy+=dt*.0006; p.life-=dt*.0018;
+    if(p.life<=0){ S.particles.splice(i,1); continue; }
+    cx.globalAlpha=Math.max(0,p.life);
+    cx.fillStyle=p.color; cx.beginPath(); cx.arc(p.x,p.y,p.r,0,Math.PI*2); cx.fill();
+    cx.globalAlpha=1;
+  }
+  // floating texts
+  for(let i=S.floats.length-1;i>=0;i--){
+    const f=S.floats[i];
+    f.y -= dt*.045; f.life -= dt*.0011;
+    if(f.life<=0){ S.floats.splice(i,1); continue; }
+    cx.globalAlpha=Math.max(0,Math.min(1,f.life*1.4));
+    cx.font=`800 ${15*f.scale}px 'Hanken Grotesk'`;
+    cx.textAlign='center';
+    cx.lineWidth=4; cx.strokeStyle='rgba(244,236,221,.9)';
+    cx.strokeText(f.text,f.x,f.y);
+    cx.fillStyle=f.color; cx.fillText(f.text,f.x,f.y);
+    cx.globalAlpha=1;
+  }
+
+  if(S.mode==='play') drawHud();
+  cx.restore();
+}
+requestAnimationFrame(loop);
+window.__PILAV__ = S; // QA hook
+})();
+</script>
+</body>
+</html>
