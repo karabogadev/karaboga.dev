@@ -228,7 +228,7 @@ function spawn(){
   const lacking = Object.keys(need).filter(k => (S.got[k]||0) < need[k]);
   const r = Math.random();
   let type;
-  if(r < .12 && S.time > 8) type='bomb';
+  if(r < .10 + Math.min(.08, S.level*.015) && S.time > 8) type='bomb';
   else if(r < .17) type='bonus';
   else if(r < .72 && lacking.length) type = lacking[Math.floor(Math.random()*lacking.length)];
   else { const all=Object.keys(ING); type = all[Math.floor(Math.random()*all.length)]; }
@@ -510,7 +510,12 @@ function loop(ts){
       }
       if(it.y > H+50){
         S.items.splice(i,1);
-        // missing a NEEDED ingredient costs combo only (gentle)
+        // missing a NEEDED ingredient breaks the combo
+        const need=S.order.need;
+        if(it.type!=='bomb' && it.type!=='bonus' && (S.got[it.type]||0)<(need[it.type]||0) && S.combo>1){
+          S.combo=1;
+          float_(Math.max(60,Math.min(W-60,it.x)), H-160, 'kaçtı! kombo ×1', '#6b5743');
+        }
         continue;
       }
     }
