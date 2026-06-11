@@ -10,7 +10,7 @@
   <link rel="canonical" href="https://lamatia.karaboga.dev/menu/">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E☕%3C/text%3E%3C/svg%3E">
   <meta property="og:title" content="La'Matia — QR Menü">
-  <meta property="og:description" content="Kahveler, tatlılar, kahvaltı ve ana yemekler. Bir de sürpriz: Pilav Ustası oyunu 🎮">
+  <meta property="og:description" content="Kahveler, tatlılar, kahvaltı ve ana yemekler.">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -237,20 +237,6 @@
     .sheet-vars .vrow .dots{flex:1;border-bottom:2px dotted rgba(43,29,18,.18);transform:translateY(3px)}
     .sheet-vars .vrow b{font-family:'Fraunces',serif;font-size:15.5px;color:var(--brush-deep)}
 
-    /* ---------- floating game button ---------- */
-    .fab{
-      position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));z-index:20;
-      display:flex;align-items:center;gap:9px;padding:13px 22px;border-radius:999px;text-decoration:none;
-      font:700 15px 'Hanken Grotesk',sans-serif;color:var(--paper);
-      background:linear-gradient(180deg,#d4373d,var(--brush-deep));
-      box-shadow:0 12px 28px -8px rgba(151,26,31,.7),inset 0 1px 0 rgba(255,255,255,.25);
-      animation:bob 2.6s ease-in-out infinite;
-      transition:opacity .2s,visibility .2s;
-    }
-    @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
-    .fab:active{animation:none;transform:translateX(-50%) scale(.95)}
-    body.lock .fab{opacity:0;visibility:hidden}
-
     /* ---------- dar ekranlar (iPhone SE, küçük Android) ---------- */
     @media (max-width:380px){
       .wrap{padding-left:12px;padding-right:12px}
@@ -317,8 +303,6 @@
     <a href="https://www.instagram.com/lamatia_coffee" rel="noopener" target="_blank">@lamatia_coffee</a>
   </footer>
 </div>
-
-<a class="fab" href="../oyun/">🍚 Pilav Ustası <span style="opacity:.7;font-size:12px">oyna</span></a>
 
 <div class="sheet-back" id="sheetBack"></div>
 <aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Ürün detayı">

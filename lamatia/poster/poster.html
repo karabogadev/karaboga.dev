@@ -150,38 +150,6 @@
     text-transform:uppercase;
   }
   .url b{color:var(--brush)}
-
-  /* ---------- bottom game strip ---------- */
-  .strip{
-    position:absolute;left:0;right:0;bottom:0;height:600px;background:var(--wood);
-    color:var(--card);
-  }
-  .strip .wave{position:absolute;left:0;right:0;top:-86px;width:100%;height:90px;display:block}
-  .strip-inner{
-    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    gap:90px;padding:0 160px;
-  }
-  .strip .qr2{
-    width:400px;height:400px;background:#fff;border-radius:40px;padding:32px;
-    transform:rotate(2.5deg);flex:0 0 auto;
-    box-shadow:14px 18px 0 var(--curry),14px 18px 0 4px rgba(0,0,0,.18);
-  }
-  .strip .qr2 img{width:100%;height:100%;display:block;image-rendering:pixelated}
-  .strip .copy{max-width:1450px}
-  .strip .copy .pre{
-    font-family:'Fraunces',serif;font-style:italic;font-weight:500;
-    font-size:72px;color:var(--kraft);
-  }
-  .strip .copy .game{
-    margin-top:14px;font-family:'Fraunces',serif;font-weight:900;font-size:116px;
-    line-height:1.02;color:var(--card);white-space:nowrap;
-  }
-  .strip .copy .game em{font-style:normal;color:var(--curry)}
-  .strip .copy .sub{
-    margin-top:26px;font-weight:600;font-size:54px;color:rgba(244,236,221,.75);
-    letter-spacing:.02em;
-  }
-  .strip .joy{width:230px;flex:0 0 auto;transform:rotate(-8deg);filter:drop-shadow(10px 14px 0 rgba(0,0,0,.25))}
 </style>
 </head>
 <body>
@@ -250,29 +218,6 @@
     <div class="spark s3">✦</div>
 
     <div class="url">lamatia<b>.</b>karaboga<b>.</b>dev</div>
-
-    <footer class="strip">
-      <svg class="wave" viewBox="0 0 1240 45" preserveAspectRatio="none">
-        <path d="M0 45 L0 28 C 80 8, 150 42, 230 24 C 320 4, 390 40, 470 22 C 560 4, 630 42, 710 24 C 800 4, 870 40, 950 22 C 1040 4, 1110 42, 1190 26 L 1240 32 L 1240 45 Z" fill="#3a2417"/>
-      </svg>
-      <div class="strip-inner">
-        <div class="qr2"><img src="qr-oyun.png" alt="Pilav Ustası QR"></div>
-        <div class="copy">
-          <div class="pre">Sıranı beklerken&hellip;</div>
-          <div class="game">PİLAV USTASI<em>&rsquo;nı</em> oyna</div>
-          <div class="sub">Bu kodu okut, wok salla, rekoru kır — kahven gelene kadar şampiyon ol.</div>
-        </div>
-        <svg class="joy" viewBox="0 0 120 80">
-          <path d="M30 12 h60 c 16 0 24 14 26 32 c 2 20 -4 30 -14 30 c -8 0 -12 -8 -18 -14 h-48 c -6 6 -10 14 -18 14 c -10 0 -16 -10 -14 -30 c 2 -18 10 -32 26 -32 z" fill="#d99a2b"/>
-          <rect x="30" y="30" width="20" height="7" rx="3.5" fill="#3a2417"/>
-          <rect x="36.5" y="23.5" width="7" height="20" rx="3.5" fill="#3a2417"/>
-          <circle cx="80" cy="27" r="5.5" fill="#bf2026"/>
-          <circle cx="92" cy="37" r="5.5" fill="#3a2417"/>
-          <circle cx="68" cy="37" r="5.5" fill="#3a2417"/>
-          <circle cx="80" cy="47" r="5.5" fill="#3a2417"/>
-        </svg>
-      </div>
-    </footer>
 
   </div>
   <div class="grain"></div>
