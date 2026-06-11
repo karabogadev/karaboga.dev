@@ -1,5 +1,14 @@
 # Lamatia QR Menü + Oyun (lamatia.karaboga.dev/menu)
 
+## Redesign v2 — "çok çok daha iyi" (2026-06-11)
+- [ ] Tek sayfa akış: tüm kategoriler alt alta + scrollspy'lı yapışkan chip nav (sekme yerine)
+- [ ] Ürün detay alt-sayfası (bottom sheet): büyük görsel (wix w_800), açıklama, varyantlar
+- [ ] Görsel cila: başlık bandı, hero buhar animasyonu, kademeli kart reveal, arama vurgusu
+- [ ] "Breakfast" (tek ürün) kategorisini render'da "Kahvaltı & Sandviç" ile birleştir
+- [ ] Footer: "Fiyatlar www.lamatia.com..." satırını sil (kullanıcı isteği)
+- [ ] Performans: content-visibility, lazy img; erişilebilirlik: aria, reduced-motion
+- [ ] QA: Playwright 390×844 — scrollspy, arama, sheet aç/kapa, sıfır konsol hatası
+
 ## Plan
 - [x] lamatia.com/menu crawl (16 kategori, 172 ürün, fiyat + görsel URL'leri → JSON)
 - [x] `lamatia/menu/index.html` — mobil öncelikli QR menü sayfası
