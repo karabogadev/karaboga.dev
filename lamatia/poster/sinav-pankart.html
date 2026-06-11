@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>La'Matia — Sınav Dönemi Pankartı (A3)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Caveat:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,600&display=swap">
+<style>
+  :root{
+    --desk:#2e1c10;
+    --desk-hi:#3a2417;
+    --paper:#fcf8ee;
+    --paper-edge:#efe7d2;
+    --ink:#2b1d12;
+    --ink-soft:#6b5743;
+    --pen-red:#bf2026;
+    --pen-red-deep:#971a1f;
+    --pen-blue:#1d3f8f;
+    --hilite:#f2c84b;
+    --curry:#d99a2b;
+    --kraft:#c8a06b;
+    --stain:rgba(133,84,38,.30);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:2480px;height:3508px;overflow:hidden}
+  body{
+    font-family:'Courier Prime',monospace;
+    color:var(--ink);
+    position:relative;
+    -webkit-font-smoothing:antialiased;
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 6px, transparent 6px 410px),
+      linear-gradient(180deg, #34200f, var(--desk) 30%, #271709 100%);
+  }
+  /* wood grain streaks */
+  .wood{
+    position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='220'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.09' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.04 0 0 0 0 0.01 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='900' height='220' filter='url(%23w)'/%3E%3C/svg%3E");
+  }
+  .grain{
+    position:absolute;inset:0;z-index:50;pointer-events:none;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.32 0 0 0 0 0.22 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .deskshade{
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse 120% 80% at 50% 38%, transparent 40%, rgba(0,0,0,.42) 100%);
+  }
+
+  /* ================= THE EXAM SHEET ================= */
+  .sheet{
+    position:absolute;z-index:2;left:50%;top:96px;
+    width:2180px;height:2985px;
+    transform:translateX(-50%) rotate(-1.1deg);
+    background:
+      linear-gradient(180deg, var(--paper) 0%, #faf5e6 70%, var(--paper-edge) 100%);
+    box-shadow:
+      0 8px 0 rgba(255,255,255,.06),
+      36px 60px 90px rgba(0,0,0,.55),
+      0 0 0 1px rgba(0,0,0,.25);
+    padding:96px 110px 84px;
+  }
+  /* punched holes on the left margin */
+  .hole{position:absolute;left:58px;width:46px;height:46px;border-radius:50%;
+    background:var(--desk);box-shadow:inset 0 4px 6px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.5)}
+  .h1{top:420px}.h2{top:1480px}.h3{top:2540px}
+  /* faint ruled lines */
+  .rules{
+    position:absolute;inset:0;pointer-events:none;opacity:.35;
+    background:repeating-linear-gradient(180deg, transparent 0 88px, rgba(107,87,67,.16) 88px 90px);
+  }
+
+  /* ---------- header ---------- */
+  .exhead{
+    border:5px solid var(--ink);outline:3px solid var(--ink);outline-offset:6px;
+    padding:44px 60px 40px;text-align:center;position:relative;
+  }
+  .exhead .uni{font-weight:700;font-size:66px;letter-spacing:.10em;padding:0 250px}
+  .exhead .term{margin-top:14px;font-size:44px;letter-spacing:.34em;color:var(--ink-soft);padding:0 250px}
+  .exhead .course{
+    margin-top:26px;font-weight:700;font-size:78px;line-height:1.1;
+  }
+  .exhead .course .mark{
+    background:linear-gradient(104deg, transparent 2%, var(--hilite) 6%, var(--hilite) 94%, transparent 98%);
+    padding:0 .12em;
+  }
+  .exhead .meta{
+    margin-top:26px;display:flex;justify-content:center;gap:90px;
+    font-size:40px;color:var(--ink-soft);
+  }
+  .fields{
+    margin-top:38px;display:flex;gap:70px;justify-content:center;font-size:42px;
+  }
+  .fields .f{display:flex;align-items:baseline;gap:18px}
+  .fields .lbl{font-weight:700}
+  .fields .val{
+    min-width:300px;border-bottom:3px dotted var(--ink-soft);text-align:center;
+    font-family:'Caveat',cursive;font-weight:600;font-size:64px;color:var(--pen-blue);
+    transform:rotate(-1deg);padding:0 12px;
+  }
+  /* barcode */
+  .barcode{
+    position:absolute;left:64px;top:64px;width:230px;height:96px;
+    background:repeating-linear-gradient(90deg,
+      var(--ink) 0 5px, transparent 5px 9px, var(--ink) 9px 12px, transparent 12px 20px,
+      var(--ink) 20px 29px, transparent 29px 33px);
+  }
+  .barcode span{
+    position:absolute;left:0;right:0;top:104px;text-align:center;
+    font-size:26px;letter-spacing:.22em;color:var(--ink-soft);
+  }
+
+  /* ---------- grade stamp (top right, over header) ---------- */
+  .grade{
+    position:absolute;right:175px;top:135px;width:430px;height:430px;z-index:6;
+    transform:rotate(11deg);color:var(--pen-red);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    mix-blend-mode:multiply;
+  }
+  .grade .ring{
+    position:absolute;inset:0;border:9px solid var(--pen-red);border-radius:50%;
+    opacity:.9;
+  }
+  .grade .ring.r2{inset:16px;border-width:5px;opacity:.75}
+  .grade .aa{font-family:'Caveat',cursive;font-weight:700;font-size:215px;line-height:.9}
+  .grade .pass{font-family:'Caveat',cursive;font-weight:700;font-size:54px;letter-spacing:.02em;max-width:370px;text-align:center}
+
+  /* ---------- questions ---------- */
+  .qwrap{margin-top:56px;position:relative}
+  .q{margin-top:48px;position:relative}
+  .q .stem{font-weight:700;font-size:57px;line-height:1.32}
+  .q .pts{color:var(--ink-soft);font-weight:400;font-size:42px}
+  .opts{margin-top:22px;font-size:51px;line-height:1.6;padding-left:64px}
+  .opts .o{position:relative}
+  .opts b{font-weight:700}
+  .opts .dim{color:var(--ink-soft)}
+  /* red pen ellipse around the right answer */
+  .circled{position:relative;display:inline-block;padding:2px 26px}
+  .circled svg{
+    position:absolute;left:-14px;top:-12px;width:calc(100% + 28px);height:calc(100% + 28px);
+    overflow:visible;
+  }
+  .circled svg path{fill:none;stroke:var(--pen-red);stroke-width:9px;stroke-linecap:round;vector-effect:non-scaling-stroke}
+  /* red margin notes */
+  .rednote{
+    position:absolute;font-family:'Caveat',cursive;font-weight:700;color:var(--pen-red);
+    line-height:1;z-index:5;
+  }
+  .check{font-family:'Caveat',cursive;font-weight:700;color:var(--pen-red);font-size:70px}
+
+  /* open question answer line */
+  .answer{
+    margin-top:20px;margin-left:64px;display:flex;align-items:baseline;gap:24px;font-size:51px;
+  }
+  .answer .line{
+    flex:1;border-bottom:3px dotted var(--ink-soft);
+    font-family:'Caveat',cursive;font-weight:600;font-size:78px;color:var(--pen-blue);
+    transform:rotate(-.6deg);padding:0 30px 4px;
+  }
+
+  /* ---------- answer key panel ---------- */
+  .keypanel{
+    margin-top:64px;position:relative;
+    border:6px dashed var(--pen-red);border-radius:34px;
+    padding:56px 64px;display:flex;align-items:center;gap:84px;
+    transform:rotate(.5deg);background:rgba(191,32,38,.035);
+  }
+  .keypanel .kp-copy{flex:1;padding-right:200px}
+  .keypanel .kicker{
+    font-family:'Caveat',cursive;font-weight:700;font-size:66px;color:var(--pen-red);
+    transform:rotate(-1.4deg);display:inline-block;
+  }
+  .keypanel h2{
+    margin-top:8px;font-weight:700;font-size:128px;line-height:1;letter-spacing:.01em;
+  }
+  .keypanel h2 em{font-style:normal;color:var(--pen-red)}
+  .keypanel .sub{margin-top:22px;font-size:45px;line-height:1.5;color:var(--ink-soft);max-width:880px}
+  .keypanel .sub b{color:var(--ink)}
+  .qrcard{
+    flex:0 0 auto;width:580px;height:580px;background:#fff;border:6px solid var(--ink);
+    border-radius:28px;padding:40px;transform:rotate(-2deg);position:relative;
+    box-shadow:20px 26px 0 var(--pen-red), 20px 26px 0 6px var(--ink);
+  }
+  .qrcard img{width:100%;height:100%;display:block;image-rendering:pixelated}
+  .qrcard .tag{
+    position:absolute;left:50%;top:-46px;transform:translateX(-50%) rotate(2deg);
+    background:var(--ink);color:var(--paper);font-weight:700;font-size:38px;
+    letter-spacing:.18em;padding:14px 36px;white-space:nowrap;
+  }
+  /* brand stamp under the copy */
+  .stamp{
+    display:inline-block;margin-top:28px;
+    border:7px solid var(--pen-red-deep);border-radius:50%/42%;color:var(--pen-red-deep);
+    padding:18px 48px 22px;transform:rotate(-4deg);text-align:center;
+    mix-blend-mode:multiply;opacity:.92;
+  }
+  .stamp .nm{font-family:'Fraunces',serif;font-weight:900;font-size:68px;line-height:1}
+  .stamp .tg{margin-top:8px;font-weight:700;font-size:26px;letter-spacing:.42em}
+
+  /* ---------- url on the desk, below everything ---------- */
+  .deskurl{
+    position:absolute;z-index:9;left:0;right:0;bottom:26px;text-align:center;
+    font-weight:700;font-size:46px;letter-spacing:.30em;color:rgba(244,236,221,.85);
+    text-transform:uppercase;
+  }
+  .deskurl b{color:var(--curry)}
+
+  /* ---------- coffee stains ---------- */
+  .stain{
+    position:absolute;border-radius:48% 52% 50% 50%/50% 47% 53% 50%;
+    border:16px solid var(--stain);pointer-events:none;mix-blend-mode:multiply;
+    filter:blur(1px);
+  }
+  .stain::after{
+    content:"";position:absolute;inset:-16px;border-radius:inherit;
+    border:5px solid rgba(133,84,38,.20);transform:scale(.88) translate(8px,6px);
+  }
+  .st1{width:330px;height:320px;right:240px;top:1180px;transform:rotate(14deg)}
+  .st2{width:230px;height:225px;left:160px;top:2480px;transform:rotate(-8deg);border-width:11px}
+
+  /* ---------- sticky note ---------- */
+  .sticky{
+    position:absolute;z-index:7;right:84px;top:1980px;width:430px;
+    background:linear-gradient(180deg,#ffe98a,#f7d75e);
+    transform:rotate(6deg);padding:90px 36px 40px;text-align:center;
+    box-shadow:10px 22px 34px rgba(0,0,0,.30);
+    font-family:'Caveat',cursive;font-weight:600;font-size:56px;line-height:1.15;
+    color:#5a4413;
+  }
+  .sticky::before{
+    content:"";position:absolute;left:50%;top:-26px;width:240px;height:64px;
+    transform:translateX(-50%) rotate(-2deg);
+    background:rgba(244,236,221,.55);box-shadow:0 4px 8px rgba(0,0,0,.12);
+  }
+  .sticky b{color:var(--pen-red)}
+
+  /* ---------- desk props ---------- */
+  .cup{position:absolute;z-index:8;width:500px;height:500px;right:34px;bottom:620px;transform:rotate(-12deg);
+    filter:drop-shadow(-26px 38px 44px rgba(0,0,0,.55))}
+  .redpen{position:absolute;z-index:8;width:820px;left:96px;bottom:206px;transform:rotate(-7deg);
+    filter:drop-shadow(0 22px 26px rgba(0,0,0,.5))}
+  .clip{position:absolute;z-index:8;left:330px;top:64px;width:120px;transform:rotate(-14deg);
+    filter:drop-shadow(6px 10px 10px rgba(0,0,0,.35))}
+
+  /* ---------- bottom game card on desk ---------- */
+  .gamecard{
+    position:absolute;z-index:9;left:50%;bottom:118px;width:2110px;
+    transform:translateX(-50%) rotate(.9deg);
+    background:linear-gradient(180deg,#d3ab77,var(--kraft));
+    padding:56px 84px;display:flex;align-items:center;gap:74px;
+    box-shadow:0 40px 70px rgba(0,0,0,.55), inset 0 0 0 4px rgba(43,29,18,.25);
+  }
+  .gamecard::before,.gamecard::after{
+    content:"";position:absolute;top:-34px;width:300px;height:76px;
+    background:rgba(244,236,221,.5);box-shadow:0 4px 10px rgba(0,0,0,.18);
+  }
+  .gamecard::before{left:140px;transform:rotate(-4deg)}
+  .gamecard::after{right:140px;transform:rotate(3deg)}
+  .gamecard .gqr{
+    flex:0 0 auto;width:360px;height:360px;background:#fff;border-radius:30px;padding:26px;
+    transform:rotate(-2.5deg);
+    box-shadow:12px 16px 0 var(--pen-red),12px 16px 0 4px rgba(43,29,18,.8);
+  }
+  .gamecard .gqr img{width:100%;height:100%;display:block;image-rendering:pixelated}
+  .gamecard .gcopy{flex:1}
+  .gamecard .bell{
+    font-family:'Caveat',cursive;font-weight:700;font-size:64px;color:var(--pen-red-deep);
+  }
+  .gamecard .gtitle{
+    margin-top:4px;font-family:'Fraunces',serif;font-weight:900;font-size:112px;line-height:1;
+    color:var(--ink);white-space:nowrap;
+  }
+  .gamecard .gtitle em{font-style:normal;color:var(--pen-red-deep)}
+  .gamecard .gsub{margin-top:22px;font-weight:700;font-size:44px;color:#54401f;line-height:1.4}
+  .gamecard .joy{width:200px;flex:0 0 auto;transform:rotate(-9deg);
+    filter:drop-shadow(8px 12px 0 rgba(43,29,18,.35))}
+</style>
+</head>
+<body>
+  <div class="wood"></div>
+  <div class="deskshade"></div>
+
+  <!-- ============ EXAM SHEET ============ -->
+  <div class="sheet">
+    <div class="rules"></div>
+    <div class="hole h1"></div><div class="hole h2"></div><div class="hole h3"></div>
+
+    <header class="exhead">
+      <div class="barcode"><span>0023 KHV 2026</span></div>
+      <div class="uni">İSTANBUL YÜZYIL ÜNİVERSİTESİ</div>
+      <div class="term">2025–2026 BAHAR DÖNEMİ &bull; FİNAL SINAVI</div>
+      <div class="course">KHV 101 &mdash; <span class="mark">Kahve Bilimine Giriş</span></div>
+      <div class="meta">
+        <span>Süre: Kahven bitene kadar</span>
+        <span>Sayfa: 1/1</span>
+        <span>Kopya: Serbest*</span>
+      </div>
+      <div class="fields">
+        <div class="f"><span class="lbl">Adı:</span><span class="val">Uykusuz</span></div>
+        <div class="f"><span class="lbl">Soyadı:</span><span class="val">Öğrenci</span></div>
+        <div class="f"><span class="lbl">No:</span><span class="val">3 Shot</span></div>
+      </div>
+    </header>
+
+    <section class="qwrap">
+
+      <div class="q">
+        <div class="stem">1. Final haftasını sağ salim atlatmanın bilimsel yöntemi aşağıdakilerden hangisidir? <span class="pts">(40 p)</span></div>
+        <div class="opts">
+          <div class="o dim">a) Hiç uyumadan 6 slaytı ezberlemek</div>
+          <div class="o dim">b) Ağlayarak tekrar etmek (klasik)</div>
+          <div class="o"><span class="circled"><b>c) Bol kahve + sıcak bir köşe + iyi müzik</b>
+            <svg viewBox="0 0 100 30" preserveAspectRatio="none"><path d="M14 4 C 40 -3, 88 0, 95 12 C 100 24, 70 30, 38 28 C 12 26, 1 20, 5 10 C 8 4, 20 2, 34 3"/></svg>
+          </span> <span class="check">&nbsp;✓</span></div>
+          <div class="o dim">d) Çıkmış soruları rüyada görmeyi beklemek</div>
+        </div>
+        <div class="rednote" style="right:30px;top:120px;font-size:64px;transform:rotate(7deg)">Aferin!</div>
+      </div>
+
+      <div class="q">
+        <div class="stem">2. C şıkkının kampüse en yakın adresi neresidir? <span class="pts">(40 p)</span></div>
+        <div class="opts">
+          <div class="o dim">a) Kütüphane &mdash; yer bulursan haber et</div>
+          <div class="o dim">b) Yurt mutfağı &mdash; gürültü dahildir</div>
+          <div class="o dim">c) Ev &mdash; 15 dakika sonra uyku garantili</div>
+          <div class="o"><span class="circled"><b>d) LA&rsquo;MATIA &mdash; Coffee &amp; More</b>
+            <svg viewBox="0 0 100 30" preserveAspectRatio="none"><path d="M12 5 C 38 -3, 90 -1, 96 13 C 101 25, 68 31, 36 28 C 10 26, 0 19, 4 9 C 7 4, 18 2, 30 3"/></svg>
+          </span> <span class="check">&nbsp;✓✓</span></div>
+        </div>
+        <div class="rednote" style="right:50px;bottom:-6px;font-size:66px;transform:rotate(-5deg)">burası! &darr;</div>
+      </div>
+
+      <div class="q">
+        <div class="stem">3. Mola arası beyin nasıl resetlenir? <span class="pts">(20 p + bonus)</span></div>
+        <div class="answer"><span>Cevap:</span><span class="line">Pilav Ustası&rsquo;nda rekor kırarak!</span></div>
+        <div class="rednote" style="right:470px;bottom:-20px;font-size:58px;transform:rotate(4deg)">+10 bonus ✓</div>
+      </div>
+
+    </section>
+
+    <!-- answer key -->
+    <section class="keypanel">
+      <div class="qrcard">
+        <div class="tag">MENÜYÜ OKUT</div>
+        <img src="qr-menu.png" alt="Menü QR">
+      </div>
+      <div class="kp-copy">
+        <span class="kicker">&larr; tek serbest kopya bu</span>
+        <h2>CEVAP <em>ANAHTARI</em></h2>
+        <div class="sub"><b>Kameranı tut, menü cebinde.</b><br>Kahveni seç, masadan sipariş ver.</div>
+        <div class="stamp">
+          <div class="nm">La&rsquo;Matia</div>
+          <div class="tg">COFFEE &amp; MORE</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- coffee ring stains on the sheet -->
+  <div class="stain st1"></div>
+  <div class="stain st2"></div>
+
+  <!-- grade stamp -->
+  <div class="grade">
+    <div class="ring"></div><div class="ring r2"></div>
+    <div class="aa">AA</div>
+    <div class="pass">Geçtin, kahveyi hak ettin!</div>
+  </div>
+
+  <!-- sticky note -->
+  <div class="sticky">Not: Bugün çok<br>çalıştın, <b>kahve molası</b><br>resmen hakkın. ☕</div>
+
+  <!-- paperclip -->
+  <svg class="clip" viewBox="0 0 60 140">
+    <path d="M30 132 C 12 132, 8 116, 8 100 L 8 28 C 8 12, 18 4, 30 4 C 42 4, 52 12, 52 28 L 52 96 C 52 106, 46 112, 38 112 C 30 112, 24 106, 24 96 L 24 36"
+      fill="none" stroke="#8d8d96" stroke-width="9" stroke-linecap="round"/>
+  </svg>
+
+  <!-- top-view coffee cup -->
+  <svg class="cup" viewBox="0 0 200 200">
+    <ellipse cx="100" cy="102" rx="92" ry="90" fill="#efe5cf"/>
+    <ellipse cx="100" cy="100" rx="92" ry="90" fill="#fbf6ea"/>
+    <circle cx="100" cy="100" r="64" fill="#e8ddc4"/>
+    <circle cx="100" cy="100" r="56" fill="#3a2010"/>
+    <path d="M62 92 C 76 70, 124 70, 140 94 C 150 110, 132 132, 104 132 C 80 132, 70 122, 74 108"
+      fill="none" stroke="#c8a06b" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+    <circle cx="124" cy="86" r="7" fill="#c8a06b" opacity=".7"/>
+    <path d="M186 84 c 16 4, 16 28, 0 32" fill="none" stroke="#fbf6ea" stroke-width="13" stroke-linecap="round"/>
+  </svg>
+
+  <!-- red grading pen -->
+  <svg class="redpen" viewBox="0 0 400 60">
+    <polygon points="6,30 38,16 38,44" fill="#e8ddc4"/>
+    <polygon points="6,30 24,22 24,38" fill="#2b1d12"/>
+    <rect x="38" y="13" width="250" height="34" rx="8" fill="#bf2026"/>
+    <rect x="38" y="17" width="250" height="9" rx="4" fill="#d8454b" opacity=".8"/>
+    <rect x="288" y="10" width="86" height="40" rx="12" fill="#971a1f"/>
+    <rect x="296" y="6" width="64" height="10" rx="5" fill="#971a1f"/>
+  </svg>
+
+  <!-- bottom game card -->
+  <div class="gamecard">
+    <div class="gqr"><img src="qr-oyun.png" alt="Pilav Ustası QR"></div>
+    <div class="gcopy">
+      <div class="bell">Mola zili çaldı &rarr;</div>
+      <div class="gtitle">PİLAV USTASI<em>&rsquo;nı</em> oyna</div>
+      <div class="gsub">Okut, wok salla, rekoru kır &mdash; ders arasının en verimli 3 dakikası.</div>
+    </div>
+    <svg class="joy" viewBox="0 0 120 80">
+      <path d="M30 12 h60 c 16 0 24 14 26 32 c 2 20 -4 30 -14 30 c -8 0 -12 -8 -18 -14 h-48 c -6 6 -10 14 -18 14 c -10 0 -16 -10 -14 -30 c 2 -18 10 -32 26 -32 z" fill="#d99a2b"/>
+      <rect x="30" y="30" width="20" height="7" rx="3.5" fill="#3a2417"/>
+      <rect x="36.5" y="23.5" width="7" height="20" rx="3.5" fill="#3a2417"/>
+      <circle cx="80" cy="27" r="5.5" fill="#bf2026"/>
+      <circle cx="92" cy="37" r="5.5" fill="#3a2417"/>
+      <circle cx="68" cy="37" r="5.5" fill="#3a2417"/>
+      <circle cx="80" cy="47" r="5.5" fill="#3a2417"/>
+    </svg>
+  </div>
+
+  <div class="deskurl">LAMATIA<b>.</b>KARABOGA<b>.</b>DEV &mdash; SINAV DÖNEMİ BOYUNCA YANINDAYIZ</div>
+
+  <div class="grain"></div>
+</body>
+</html>
