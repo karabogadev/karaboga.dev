@@ -73,29 +73,33 @@
   /* ---------- header ---------- */
   .exhead{
     border:5px solid var(--ink);outline:3px solid var(--ink);outline-offset:6px;
-    padding:44px 60px 40px;text-align:center;position:relative;
+    padding:40px 60px 36px;text-align:center;position:relative;
   }
-  .exhead .uni{font-weight:700;font-size:66px;letter-spacing:.10em;padding:0 250px}
-  .exhead .term{margin-top:14px;font-size:44px;letter-spacing:.22em;color:var(--ink-soft);white-space:nowrap}
-  .exhead .course{
-    margin-top:26px;font-weight:700;font-size:78px;line-height:1.1;
+  .exhead .uni{font-weight:700;font-size:94px;letter-spacing:.05em;padding:0 200px;white-space:nowrap}
+  .exhead .term{margin-top:14px;font-size:34px;letter-spacing:.18em;color:var(--ink-soft);white-space:nowrap}
+  .exhead .hero{
+    margin-top:30px;font-weight:700;font-size:212px;line-height:1;
+    letter-spacing:.01em;white-space:nowrap;
   }
-  .exhead .course .mark{
+  .exhead .mark{
     background:linear-gradient(104deg, transparent 2%, var(--hilite) 6%, var(--hilite) 94%, transparent 98%);
-    padding:0 .12em;
+    padding:0 .10em;
+  }
+  .exhead .course{
+    margin-top:26px;font-weight:700;font-size:60px;line-height:1.1;
   }
   .exhead .meta{
-    margin-top:26px;display:flex;justify-content:center;gap:90px;
-    font-size:40px;color:var(--ink-soft);
+    margin-top:22px;display:flex;justify-content:center;gap:80px;
+    font-size:37px;color:var(--ink-soft);
   }
   .fields{
-    margin-top:38px;display:flex;gap:70px;justify-content:center;font-size:42px;
+    margin-top:30px;display:flex;gap:60px;justify-content:center;font-size:40px;
   }
   .fields .f{display:flex;align-items:baseline;gap:18px}
   .fields .lbl{font-weight:700}
   .fields .val{
-    min-width:300px;border-bottom:3px dotted var(--ink-soft);text-align:center;
-    font-family:'Caveat',cursive;font-weight:600;font-size:64px;color:var(--pen-blue);
+    min-width:280px;border-bottom:3px dotted var(--ink-soft);text-align:center;
+    font-family:'Caveat',cursive;font-weight:600;font-size:58px;color:var(--pen-blue);
     transform:rotate(-1deg);padding:0 12px;
   }
   /* barcode */
@@ -112,25 +116,25 @@
 
   /* ---------- grade stamp (top right, over header) ---------- */
   .grade{
-    position:absolute;right:175px;top:135px;width:430px;height:430px;z-index:6;
+    position:absolute;right:130px;top:110px;width:540px;height:540px;z-index:6;
     transform:rotate(11deg);color:var(--pen-red);
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     mix-blend-mode:multiply;
   }
   .grade .ring{
-    position:absolute;inset:0;border:9px solid var(--pen-red);border-radius:50%;
+    position:absolute;inset:0;border:11px solid var(--pen-red);border-radius:50%;
     opacity:.9;
   }
-  .grade .ring.r2{inset:16px;border-width:5px;opacity:.75}
-  .grade .aa{font-family:'Caveat',cursive;font-weight:700;font-size:215px;line-height:.9}
-  .grade .pass{font-family:'Caveat',cursive;font-weight:700;font-size:54px;letter-spacing:.02em;max-width:370px;text-align:center}
+  .grade .ring.r2{inset:20px;border-width:6px;opacity:.75}
+  .grade .aa{font-family:'Caveat',cursive;font-weight:700;font-size:270px;line-height:.9}
+  .grade .pass{font-family:'Caveat',cursive;font-weight:700;font-size:62px;letter-spacing:.02em;max-width:460px;text-align:center}
 
   /* ---------- questions ---------- */
-  .qwrap{margin-top:56px;position:relative}
-  .q{margin-top:48px;position:relative}
-  .q .stem{font-weight:700;font-size:57px;line-height:1.32}
-  .q .pts{color:var(--ink-soft);font-weight:400;font-size:42px}
-  .opts{margin-top:22px;font-size:51px;line-height:1.6;padding-left:64px}
+  .qwrap{margin-top:42px;position:relative}
+  .q{margin-top:38px;position:relative}
+  .q .stem{font-weight:700;font-size:53px;line-height:1.3}
+  .q .pts{color:var(--ink-soft);font-weight:400;font-size:40px}
+  .opts{margin-top:18px;font-size:47px;line-height:1.52;padding-left:64px}
   .opts .o{position:relative}
   .opts b{font-weight:700}
   .opts .dim{color:var(--ink-soft)}
@@ -150,19 +154,19 @@
 
   /* open question answer line */
   .answer{
-    margin-top:20px;margin-left:64px;display:flex;align-items:baseline;gap:24px;font-size:51px;
+    margin-top:16px;margin-left:64px;display:flex;align-items:baseline;gap:24px;font-size:47px;
   }
   .answer .line{
     flex:1;border-bottom:3px dotted var(--ink-soft);
-    font-family:'Caveat',cursive;font-weight:600;font-size:78px;color:var(--pen-blue);
+    font-family:'Caveat',cursive;font-weight:600;font-size:72px;color:var(--pen-blue);
     transform:rotate(-.6deg);padding:0 30px 4px;
   }
 
   /* ---------- answer key panel ---------- */
   .keypanel{
-    margin-top:64px;position:relative;
+    margin-top:48px;position:relative;
     border:6px dashed var(--pen-red);border-radius:34px;
-    padding:56px 64px;display:flex;align-items:center;gap:84px;
+    padding:46px 64px;display:flex;align-items:center;gap:84px;
     transform:rotate(.5deg);background:rgba(191,32,38,.035);
   }
   .keypanel .kp-copy{flex:1;padding-right:200px}
@@ -177,7 +181,7 @@
   .keypanel .sub{margin-top:22px;font-size:45px;line-height:1.5;color:var(--ink-soft);white-space:nowrap}
   .keypanel .sub b{color:var(--ink)}
   .qrcard{
-    flex:0 0 auto;width:580px;height:580px;background:#fff;border:6px solid var(--ink);
+    flex:0 0 auto;width:560px;height:560px;background:#fff;border:6px solid var(--ink);
     border-radius:28px;padding:40px;transform:rotate(-2deg);position:relative;
     box-shadow:20px 26px 0 var(--pen-red), 20px 26px 0 6px var(--ink);
   }
@@ -199,8 +203,8 @@
 
   /* ---------- url on the desk, below everything ---------- */
   .deskurl{
-    position:absolute;z-index:9;left:0;right:0;bottom:26px;text-align:center;
-    font-weight:700;font-size:46px;letter-spacing:.30em;color:rgba(244,236,221,.85);
+    position:absolute;z-index:9;left:0;right:0;bottom:24px;text-align:center;
+    font-weight:700;font-size:50px;letter-spacing:.24em;color:rgba(244,236,221,.92);
     text-transform:uppercase;
   }
   .deskurl b{color:var(--curry)}
@@ -287,9 +291,10 @@
 
     <header class="exhead">
       <div class="barcode"><span>0023 KHV 2026</span></div>
-      <div class="uni">İSTANBUL YÜZYIL ÜNİVERSİTESİ</div>
-      <div class="term">2025–2026 BAHAR DÖNEMİ &bull; FİNAL SINAVI</div>
-      <div class="course">KHV 101 &mdash; <span class="mark">Kahve Bilimine Giriş</span></div>
+      <div class="uni">LA&rsquo;MATIA ÜNİVERSİTESİ</div>
+      <div class="term">KAHVE BİLİMLERİ FAKÜLTESİ &bull; 2025–2026 BAHAR</div>
+      <div class="hero"><span class="mark">FİNAL SINAVI</span></div>
+      <div class="course">KHV 101 &mdash; Kahve Bilimine Giriş</div>
       <div class="meta">
         <span>Süre: Kahven bitene kadar</span>
         <span>Sayfa: 1/1</span>

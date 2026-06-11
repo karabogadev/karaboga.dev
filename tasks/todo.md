@@ -1,11 +1,11 @@
 # Lamatia QR Menü + Oyun (lamatia.karaboga.dev/menu)
 
 ## Menü mobil uyumluluk turu (2026-06-11)
-- [ ] iOS odak zoom'u: arama input font-size 15px → 16px
-- [ ] Bottom sheet: max-height + iç scroll (kısa ekranda uzun varyant listesi kesiliyor); sürükle-kapat yalnız scrollTop=0 iken
-- [ ] iOS'ta sheet açıkken arka plan kayması: body.lock → position:fixed + scroll restore
-- [ ] Dar ekran (≤380px) ince ayar: kart görseli 68px, play-cta flex-wrap, text-size-adjust
-- [ ] QA: Playwright 390×844 + 320×568 — sheet aç/scroll/kapat, arama, sıfır konsol hatası
+- [x] iOS odak zoom'u: arama input font-size 15px → 16px
+- [x] Bottom sheet: max-height (100dvh−28px) + `.sheet-scroll` iç scroll; sürükle-kapat yalnız scrollTop=0 iken
+- [x] iOS'ta sheet açıkken arka plan kayması: body.lock → position:fixed + top:-scrollY + kapatınca scroll restore
+- [x] Dar ekran (≤380px) ince ayar: kart görseli 68px, hero tipografi, play-cta flex-wrap, clear butonu 34px, text-size-adjust (menü+oyun)
+- [x] QA: Playwright 390×844 + 320×568 — 18/18 PASS (yatay taşma yok, arama, sheet aç/iç scroll/kapat, kilit, scroll restore), sıfır JS hatası
 
 ## Oyun mobil uyumluluk (2026-06-11)
 - [x] Göreceli sürükleme kontrolü (DRAG_SENS 1.4): kase parmağa ışınlanmıyor, parmak kaseyi kapatmıyor; masaüstü için ok tuşları
@@ -21,6 +21,13 @@
 - [x] `lamatia/poster/sinav-pankart.html` — A3 300dpi (2480×3508), Courier Prime + Caveat + Fraunces
 - [x] Menü QR = "Cevap Anahtarı", oyun QR = kraft mola kartı; AA damgası, kırmızı kalem, post-it, kahve lekeleri
 - [x] Render doğrulama (headless Chromium, bölge bölge kontrol) → `lamatia-sinav-pankart-a3.png`
+
+## Sınav pankartı v2 — La'Matia Üniversitesi + uzaktan okunabilirlik (2026-06-11)
+- [x] Üniversite adı → "LA'MATIA ÜNİVERSİTESİ" (94px, nowrap; fakülte satırı kısaltıldı, barkodla çakışma giderildi)
+- [x] Dev manşet: sarı fosforlu "FİNAL SINAVI" (212px) — sokaktan ilk okunan öğe
+- [x] AA damgası 430→540px, kağıt kenarından taşan kolaj görünümü
+- [x] Soru/cevap/keypanel sıkılaştırıldı (stem 53, opts 47, keypanel padding 46, QR 560)
+- [x] Headless Chromium render, başlık/orta/alt bölge kontrolleri → `lamatia-sinav-pankart-a3.png` güncellendi
 
 ## Redesign v2 — "çok çok daha iyi" (2026-06-11)
 - [ ] Tek sayfa akış: tüm kategoriler alt alta + scrollspy'lı yapışkan chip nav (sekme yerine)
