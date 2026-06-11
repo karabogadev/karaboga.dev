@@ -81,9 +81,9 @@
 
 ## Sepet + WhatsApp Sipariş + Tatlı Animasyon (2026-06-11)
 - [x] Varsayılan açık tema (prefers-color-scheme kaldırıldı) + varsayılan dil Türkçe
-- [ ] i18n: sepet anahtarları (5 dil) + Betül overlay metinleri applyUI'a bağlanacak
-- [ ] CSS: tatlı FAB animasyonu (salınım+nabız halkası+yüz), rozet, uçan emoji, sepet listesi
-- [ ] Markup: kart ➕ butonu, FAB rozet/toplam, overlay sepet kutusu
-- [ ] JS: CART (localStorage), addToCart, stepper, updateFab, renderCart, waText (Türkçe otomatik sipariş metni)
-- [ ] Varyantlı ürünler: kartta ➕ → sheet açılır; sheet'te varyant satırlarına ➕
-- [ ] Doğrulama: syntax + DOM-shim çok dilli test
+- [x] i18n: sepet anahtarları (5 dil); Betül overlay metinleri applyUI'da (eşzamanlı süreçle birlikte)
+- [x] CSS: tatlı FAB animasyonu (osway salınım + oring nabız halkası + facetilt), fabpop/cbump, uçan 😋, sepet listesi
+- [x] Markup: kart ➕ (item-side), FAB rozet (ocnt) + toplam (osum), overlay sepet kutusu (cartBox)
+- [x] JS: CART (lm_cart localStorage), addToCart, ± stepper, updateFab, renderCart, waText — sipariş metni HER ZAMAN Türkçe (işletme okuyor)
+- [x] Varyantlı ürünler: kartta ➕ → sheet açılır; vrow'lara .vadd, tek fiyatlıya "Siparişe Ekle"
+- [x] Doğrulama: node --check + DOM-shim uçtan uca (2× bowl + varyant ekle → 900₺ WA metni, stepper, dil değişimi, temizle) — PASS

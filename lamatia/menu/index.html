@@ -150,7 +150,7 @@
       width:34px;height:34px;border:none;border-radius:50%;background:var(--paper-deep);
       color:var(--ink-soft);font:700 15px/1 'Hanken Grotesk',sans-serif;cursor:pointer;
     }
-    .search.has .clear{display:block}
+    .search.has .clear{display:grid;place-items:center}
     .hits{min-height:22px;padding:4px 6px 0;font-size:12px;font-weight:600;color:var(--ink-soft)}
     .hits b{color:var(--brush-deep)}
     mark{background:rgba(217,154,43,.35);color:inherit;border-radius:3px;padding:0 1px}
@@ -232,6 +232,7 @@
     .sheet .grip i{width:44px;height:5px;border-radius:99px;background:var(--dots)}
     .sheet .x{
       position:absolute;top:14px;right:14px;z-index:2;width:34px;height:34px;border:none;border-radius:50%;
+      display:grid;place-items:center;
       background:rgba(43,29,18,.55);color:var(--paper);font:700 16px/1 'Hanken Grotesk',sans-serif;cursor:pointer;
     }
     .sheet-img{position:relative;margin:6px 16px 0;border-radius:18px;overflow:hidden;background:var(--paper-deep)}
@@ -326,6 +327,7 @@
     @keyframes addpop{0%{transform:scale(.6) rotate(-90deg)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
     .vadd{
       width:30px;height:30px;border-radius:50%;flex:none;border:none;cursor:pointer;
+      display:grid;place-items:center;
       background:var(--brush);color:#fff;font:800 16px/1 'Hanken Grotesk',sans-serif;
       box-shadow:0 4px 10px -4px rgba(151,26,31,.7);
       transition:transform .15s cubic-bezier(.34,1.56,.64,1);
@@ -363,6 +365,7 @@
     .crow .cq b{min-width:14px;text-align:center;font-size:13px}
     .cstep{
       width:24px;height:24px;border-radius:50%;border:none;cursor:pointer;flex:none;
+      display:grid;place-items:center;
       background:var(--paper-deep);color:var(--ink);font:800 14px/1 'Hanken Grotesk',sans-serif;
       transition:transform .12s;
     }
@@ -401,6 +404,7 @@
     @keyframes chefsway{0%,100%{transform:rotate(-.8deg)}50%{transform:rotate(1.2deg)}}
     .order .ox{
       position:absolute;top:6px;right:14px;width:38px;height:38px;border:none;border-radius:50%;cursor:pointer;
+      display:grid;place-items:center;
       background:rgba(244,236,221,.94);color:#2b1d12;font:700 16px/1 'Hanken Grotesk',sans-serif;
       box-shadow:0 6px 16px -6px rgba(0,0,0,.6);
       opacity:0;transform:scale(.5) rotate(-90deg);
@@ -442,7 +446,7 @@
     .order .act:active{transform:scale(.96)}
     .order .act.call{background:linear-gradient(180deg,#d4373d,var(--brush-deep))}
     .order .act.wa{background:linear-gradient(180deg,#2ebd5f,#1b9248)}
-    .order .act svg{flex:none}
+    .order .act svg{flex:none;width:18px;height:18px;display:block}
     /* uçuşan buhar & lezzet parçacıkları */
     .order .pf{position:absolute;font-size:22px;opacity:0;pointer-events:none}
     .order.show .pf{animation:pfloat 3.4s ease-in-out infinite}
@@ -485,7 +489,15 @@
       transition:transform .12s,background .18s;
     }
     .ctrl:active{transform:scale(.93)}
-    .ctrl .ic{font-size:14px;line-height:1}
+    .ctrl svg{width:15px;height:15px;display:block;flex:none}
+    .ctrl-ic{padding:8px;display:grid;place-items:center}
+    /* tema: ay↔güneş yumuşak geçiş */
+    .ticon{position:relative;width:15px;height:15px;display:block}
+    .ticon svg{position:absolute;inset:0;transition:opacity .25s ease,transform .4s cubic-bezier(.22,.61,.36,1)}
+    .ticon .sun{opacity:0;transform:rotate(-80deg) scale(.5)}
+    .ticon .moon{opacity:1;transform:none}
+    :root[data-theme="dark"] .ticon .sun{opacity:1;transform:none}
+    :root[data-theme="dark"] .ticon .moon{opacity:0;transform:rotate(80deg) scale(.5)}
     .langwrap{position:relative}
     #langCur{text-transform:uppercase}
     .langmenu{
@@ -502,7 +514,8 @@
     }
     .langmenu button:hover{background:var(--paper-deep)}
     .langmenu button.on{background:var(--acc-bg);color:var(--acc-fg)}
-    .langmenu button .flag{font-size:16px;line-height:1}
+    .langmenu button .flag{font-size:16px;line-height:1;width:20px;display:inline-grid;place-items:center;flex:none}
+    .langmenu button .flag svg{width:17px;height:17px;display:block}
 
     /* ---------- toast ---------- */
     .toast{
@@ -514,6 +527,37 @@
       opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease;
     }
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    /* ---------- QR kod modalı ---------- */
+    .qr-back{
+      position:fixed;inset:0;z-index:64;background:rgba(20,11,5,.6);
+      -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+      opacity:0;pointer-events:none;transition:opacity .25s ease;
+    }
+    .qr-back.show{opacity:1;pointer-events:auto}
+    .qr-modal{
+      position:fixed;left:50%;top:50%;z-index:65;width:min(86vw,320px);
+      opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(.9);
+      transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .25s ease;
+    }
+    .qr-modal.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+    .qr-card{
+      position:relative;background:var(--card);border-radius:24px;padding:24px 22px 20px;
+      text-align:center;box-shadow:0 26px 64px -18px rgba(0,0,0,.65);
+    }
+    .qrx{
+      position:absolute;top:11px;right:11px;width:32px;height:32px;border:none;border-radius:50%;
+      display:grid;place-items:center;cursor:pointer;
+      background:var(--paper-deep);color:var(--ink);font:700 15px/1 'Hanken Grotesk',sans-serif;
+    }
+    .qr-frame{
+      width:max-content;margin:4px auto 0;padding:14px;border-radius:16px;background:#fff;
+      box-shadow:0 6px 18px -8px rgba(0,0,0,.4);
+    }
+    .qr-frame img{display:block;width:200px;height:200px;border-radius:4px;background:#fff}
+    .qr-name{font-family:'Luxurious Script',cursive;font-weight:400;font-size:32px;line-height:1;color:var(--ink);margin-top:15px}
+    .qr-hint{font-size:13px;font-weight:600;color:var(--ink-soft);margin-top:9px}
+    .qr-url{font-size:11.5px;color:var(--ink-soft);opacity:.8;margin-top:6px;word-break:break-all}
 
     /* ---------- RTL (Arabic) ---------- */
     [dir="rtl"] .controls{left:auto;right:8px}
