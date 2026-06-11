@@ -2,16 +2,19 @@
 
 ## Plan
 - [x] lamatia.com/menu crawl (16 kategori, 172 ürün, fiyat + görsel URL'leri → JSON)
-- [ ] `lamatia/menu/index.html` — mobil öncelikli QR menü sayfası
-  - Kategori sekmeleri (yatay scroll), arama, ürün kartları (görsel, ad, açıklama, fiyat)
-  - "Pilavüstü Lezzetler" bölümü (görselden: Sade 100₺, Nohutlu 130₺, Tavuklu 150₺, Köri Soslu 225₺, Acı Soslu 225₺)
-  - Oyuna geçiş CTA'sı
-- [ ] `lamatia/oyun/index.html` — "Pilav Ustası" mobil web oyunu (canvas, dokunmatik)
-  - Düşen malzemeleri (pilav, nohut, tavuk, köri sos, acı sos) kaseyle yakala
-  - Sipariş = menüdeki gerçek ürünler; doğru tarif → puan/combo
-  - Skor eşiklerinde rozet/kupon ekranı → kullanıcıyı tutma
-- [ ] nginx.conf: `lamatia.karaboga.dev` server bloğu; Dockerfile'a lamatia/ kopyala
-- [ ] Lokal doğrulama (docker/nginx veya python http.server + mobil viewport test)
+- [x] `lamatia/menu/index.html` — mobil öncelikli QR menü sayfası
+  - Kategori sekmeleri (yatay scroll), arama, ürün kartları (görsel, ad, açıklama, fiyat, boy varyantları)
+  - "Pilavüstü Lezzetler" hero bölümü (görselden: Sade 100₺, Nohutlu 130₺, Tavuklu 150₺, Köri Soslu 225₺, Acı Soslu 225₺)
+  - Oyuna geçiş CTA + yüzen buton
+- [x] `lamatia/oyun/index.html` — "Pilav Ustası" mobil web oyunu (canvas, dokunmatik)
+  - Düşen malzemeleri (pilav, nohut, tavuk, köri sos, acı sos) kaseyle yakala; bomba = -1 can, maydanoz = bonus
+  - Sipariş = menüdeki 5 gerçek ürün; tamamla → fiyat × kombo kadar ₺ kazan
+  - Rütbeler (Çaylak Komi → Efsane Şef), 1600₺+ rozet, rekor localStorage, paylaş butonu
+- [x] nginx.conf: `lamatia.karaboga.dev` server bloğu; Dockerfile'a lamatia/ kopyala
+- [x] Lokal doğrulama (http.server + Playwright/Chromium, 390×844)
 
 ## Review
-(doldurulacak)
+- Crawl: Wix SSR HTML'den `data-hook` öznitelikleriyle parse edildi; 172 ürün, 16 kategori, 27 boy varyantı, görsel URL'leri (wixstatic, w_300 transform).
+- Oyun QA (headless otomatik oyuncu): 3 sipariş/500₺/kombo ×3 sorunsuz; ölüm → oyun sonu ekranı, rütbe, rozet, rekor kaydı, tekrar oyna akışı doğrulandı; sıfır JS hatası.
+- Denge: bomba oranı seviyeyle artıyor; gerekli malzemeyi kaçırmak komboyu bozuyor.
+- Deploy: lamatia.karaboga.dev → nginx server bloğu (root: /usr/share/nginx/html/lamatia, / → /menu/). Coolify'da domain'in app'e ekli olması ve DNS kaydı gerekiyor.
