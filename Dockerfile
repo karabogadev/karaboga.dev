@@ -9,7 +9,4 @@ COPY index.html 404.html manifest.webmanifest robots.txt sitemap.xml \
      icon-192.png icon-512.png og.png \
      /usr/share/nginx/html/
 
-# lamatia.karaboga.dev — QR menü + oyun
-COPY lamatia /usr/share/nginx/html/lamatia
-
 EXPOSE 80
