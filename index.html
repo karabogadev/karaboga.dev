@@ -1236,6 +1236,25 @@
         background: #ffffff66;
         transform: translateX(-50%);
       }
+      .mirror-phone i {
+        position: absolute;
+        top: 14px;
+        left: 7px;
+        right: 7px;
+        height: 30px;
+        border-radius: 3px;
+        background: #ffffff2e;
+      }
+      .mirror-phone i::after {
+        content: "";
+        position: absolute;
+        top: 38px;
+        left: 0;
+        width: 62%;
+        height: 6px;
+        border-radius: 3px;
+        background: #ffffff24;
+      }
       .mirror-usb {
         position: absolute;
         right: 12px;
@@ -2282,7 +2301,7 @@
                     <i></i><i></i><i></i><span>mirro for Mac</span>
                   </div>
                   <div class="mac-stage">
-                    <div class="mirror-phone"></div>
+                    <div class="mirror-phone"><i></i></div>
                     <div class="mirror-usb">USB</div>
                   </div>
                 </div>
