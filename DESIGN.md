@@ -20,7 +20,8 @@ prospective collaborator understand his specialty, inspect his work, and contact
 brand             section navigation          language / theme
 name + specialty + contact       interactive mobile interface study
 selected work                    GitHub link
-architecture project             game project       website project
+mirror app project               architecture project
+game project                     website project
 experience introduction          career timeline
 about                            technology groups
 contact invitation               two emails + individual copy actions
@@ -28,8 +29,10 @@ social links                     copyright
 ```
 
 The memorable element is a device illustration grounded in mobile development.
-Project illustrations explain their subject: architecture, a driving game, and
-the portfolio itself. They are interface studies, not claimed product screenshots.
+Project illustrations explain their subject: a phone mirrored into a Mac window,
+architecture, a driving game, and the portfolio itself. They are interface studies,
+not claimed product screenshots. Work is a two-by-two grid so a fourth project stays
+balanced.
 Avoid decorative metrics, repetitive numbered headings, gradients, and scroll-hidden
 content. The brand mark is a white geometric bull on cobalt blue, with angular eye cutouts
 that echo code chevrons. Blue connects the identity to interactive controls.

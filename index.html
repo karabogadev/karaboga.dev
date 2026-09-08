@@ -925,7 +925,7 @@
       }
       .project-grid {
         display: grid;
-        grid-template-columns: 1.18fr 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1.25rem;
       }
       .project {
@@ -945,7 +945,7 @@
         box-shadow: var(--shadow);
       }
       .project-art {
-        height: 220px;
+        height: 265px;
         position: relative;
         display: grid;
         place-items: center;
@@ -1163,6 +1163,89 @@
       }
       .mini-bottom i:nth-child(3) {
         background: #eee9e4;
+      }
+      .art-mirror {
+        background: #ece8fb;
+        padding: 1.5rem 1.25rem;
+      }
+      .mac-window {
+        width: 100%;
+        max-width: 300px;
+        border-radius: 10px;
+        background: #1b1a2b;
+        box-shadow: 0 12px 24px #241f4526;
+        transform: rotate(-3deg);
+        overflow: hidden;
+      }
+      .mac-bar {
+        padding: 10px 12px;
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        border-bottom: 1px solid #ffffff17;
+      }
+      .mac-bar i {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #4b4767;
+      }
+      .mac-bar i:first-child {
+        background: #7c6cf0;
+      }
+      .mac-bar span {
+        margin-left: 8px;
+        color: #b3aae0;
+        font: 9px var(--mono);
+      }
+      .mac-stage {
+        position: relative;
+        height: 132px;
+        display: grid;
+        place-items: center;
+        background: #232037;
+      }
+      .mirror-phone {
+        position: relative;
+        width: 48px;
+        height: 92px;
+        border-radius: 9px;
+        border: 2px solid #524c7d;
+        background: #6c58e6;
+        box-shadow: 0 8px 18px #0d0b1c59;
+      }
+      .mirror-phone::before {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 50%;
+        width: 16px;
+        height: 3px;
+        border-radius: 2px;
+        background: #1b1a2b;
+        transform: translateX(-50%);
+      }
+      .mirror-phone::after {
+        content: "";
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        width: 18px;
+        height: 2px;
+        border-radius: 2px;
+        background: #ffffff66;
+        transform: translateX(-50%);
+      }
+      .mirror-usb {
+        position: absolute;
+        right: 12px;
+        bottom: 11px;
+        padding: 3px 7px;
+        border: 1px solid #4b4767;
+        border-radius: 20px;
+        color: #b3aae0;
+        font: 8px var(--mono);
+        letter-spacing: 0.08em;
       }
       .project-body {
         padding: 1.4rem;
@@ -1540,13 +1623,13 @@
         }
         .project-grid {
           gap: 0.85rem;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(2, 1fr);
         }
         .project-body {
           padding: 1.15rem;
         }
         .project-art {
-          height: 190px;
+          height: 215px;
         }
         .trusted {
           gap: 1.5rem;
@@ -2190,6 +2273,50 @@
           <div class="project-grid">
             <a
               class="project"
+              href="https://mirro.tech"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><div class="project-art art-mirror" aria-hidden="true">
+                <div class="mac-window">
+                  <div class="mac-bar">
+                    <i></i><i></i><i></i><span>mirro for Mac</span>
+                  </div>
+                  <div class="mac-stage">
+                    <div class="mirror-phone"></div>
+                    <div class="mirror-usb">USB</div>
+                  </div>
+                </div>
+              </div>
+              <div class="project-body">
+                <p class="project-category">
+                  <span data-i18n="work.1.category">macOS app</span> / 2026
+                </p>
+                <div class="project-title">
+                  <h3>mirro</h3>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M7 17 17 7M7 7h10v10" />
+                  </svg>
+                </div>
+                <p class="project-desc" data-i18n="work.1.desc">
+                  Your iPhone and iPad screen on your Mac, at full frame rate
+                  over USB. Record, screenshot, and control by touch.
+                </p>
+                <ul class="tags">
+                  <li>Swift</li>
+                  <li>SwiftUI</li>
+                  <li>AVFoundation</li>
+                </ul>
+              </div></a
+            ><a
+              class="project"
               href="https://github.com/karabogadev/flutter_app_boilerplate"
               target="_blank"
               rel="noopener noreferrer"
@@ -2210,7 +2337,7 @@
               </div>
               <div class="project-body">
                 <p class="project-category">
-                  <span data-i18n="work.1.category">Developer tooling</span> /
+                  <span data-i18n="work.2.category">Developer tooling</span> /
                   2026
                 </p>
                 <div class="project-title">
@@ -2227,7 +2354,7 @@
                     <path d="M7 17 17 7M7 7h10v10" />
                   </svg>
                 </div>
-                <p class="project-desc" data-i18n="work.1.desc">
+                <p class="project-desc" data-i18n="work.2.desc">
                   A considered starting point for your next app. Clean
                   Architecture, BLoC, and offline-first storage, ready to build
                   on.
@@ -2254,7 +2381,7 @@
               </div>
               <div class="project-body">
                 <p class="project-category">
-                  <span data-i18n="work.2.category">Game development</span> /
+                  <span data-i18n="work.3.category">Game development</span> /
                   2025
                 </p>
                 <div class="project-title">
@@ -2271,7 +2398,7 @@
                     <path d="M7 17 17 7M7 7h10v10" />
                   </svg>
                 </div>
-                <p class="project-desc" data-i18n="work.2.desc">
+                <p class="project-desc" data-i18n="work.3.desc">
                   An endless road, built with Flutter. Exploring real-time
                   gameplay and the Flame game engine.
                 </p>
@@ -2307,7 +2434,7 @@
               </div>
               <div class="project-body">
                 <p class="project-category">
-                  <span data-i18n="work.3.category">Personal website</span> /
+                  <span data-i18n="work.4.category">Personal website</span> /
                   2026
                 </p>
                 <div class="project-title">
@@ -2324,7 +2451,7 @@
                     <path d="M7 17 17 7M7 7h10v10" />
                   </svg>
                 </div>
-                <p class="project-desc" data-i18n="work.3.desc">
+                <p class="project-desc" data-i18n="work.4.desc">
                   A small, fast home on the web. Two languages, two themes, and
                   an emphasis on the details.
                 </p>
@@ -2728,9 +2855,10 @@
             "xp.more": "LinkedIn profilime göz at",
             "xp.intro":
               "İlk mimari karardan bir sonraki sürüme kadar. Her adımda sorumluluk alarak.",
-            "work.3.category": "Kişisel web sitesi",
-            "work.2.category": "Oyun geliştirme",
-            "work.1.category": "Geliştirici araçları",
+            "work.4.category": "Kişisel web sitesi",
+            "work.1.category": "macOS uygulaması",
+            "work.3.category": "Oyun geliştirme",
+            "work.2.category": "Geliştirici araçları",
             "work.intro":
               "Açık kaynak projeler, denemeler ve kendi imzamı taşıyan işler.",
             "studio.caption":
@@ -2766,10 +2894,12 @@
             "hero.cta1": "İletişime geç",
             "work.title": "Seçili projeler",
             "work.1.desc":
-              "Bir sonraki uygulaman için sağlam bir başlangıç. Clean Architecture, BLoC ve çevrimdışı öncelikli depolamayla geliştirmeye hazır.",
+              "iPhone ve iPad ekranın, USB üzerinden tam kare hızıyla Mac’inde. Kayıt al, ekran görüntüsü çek, dokunarak kontrol et.",
             "work.2.desc":
-              "Flutter ile sonsuz bir yol. Flame oyun motoruyla gerçek zamanlı oyun deneyimi üzerine bir çalışma.",
+              "Bir sonraki uygulaman için sağlam bir başlangıç. Clean Architecture, BLoC ve çevrimdışı öncelikli depolamayla geliştirmeye hazır.",
             "work.3.desc":
+              "Flutter ile sonsuz bir yol. Flame oyun motoruyla gerçek zamanlı oyun deneyimi üzerine bir çalışma.",
+            "work.4.desc":
               "İnternette sade ve hızlı bir kişisel alan. İki dil, iki tema ve ayrıntılara gösterilen özen.",
             "work.more": "GitHub’da daha fazlası",
             "xp.title": "Deneyimle şekillenen işler.",
