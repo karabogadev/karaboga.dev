@@ -5,13 +5,13 @@ Personal site of **Cihat Karaboğa** — mobile software engineer, Türkiye.
 A single static page. `index.html` is self-contained — inline CSS and a small
 inline script, no build step. Built for speed and SEO with semantic HTML,
 Open Graph + Twitter cards, JSON-LD structured data, a sitemap and a manifest.
-Type is Manrope (Google Fonts) with system-font fallbacks; system monospace is
-used only for the code illustration. The design system is documented in `DESIGN.md`.
+Type is Inter Tight with Instrument Serif italic accents (Google Fonts) and
+system-font fallbacks. The design system is documented in `DESIGN.md`.
 
-Sections: introduction with an interactive device study, illustrated selected work,
-experience timeline, about, stack, and contact. Navigation stays visible on mobile.
-The device and project visuals are lightweight HTML/CSS illustrations, not product
-screenshots. The device study uses sample data.
+Sections: introduction with a live Istanbul clock, a numbered selected-work list
+with cursor-following previews on pointer devices, experience, about, stack, and
+contact. Navigation stays visible on mobile. The project previews are lightweight
+HTML/CSS motifs, not product screenshots.
 
 ## Themes and language
 
@@ -36,6 +36,8 @@ access is unavailable. Reduced-motion preferences disable animation.
 To add or change a string, add the `data-i18n` attribute to the element and the
 matching key to the `STRINGS.tr` object — the English side is snapshotted from
 the markup at load, so it never needs a second dictionary.
+A phrase set in the serif italic is its own key on its own `<em>`, so no
+translation ever needs markup.
 
 ## Develop locally
 
