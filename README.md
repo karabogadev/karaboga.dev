@@ -72,6 +72,7 @@ custom domain to `karaboga.dev` (this adds a `CNAME` file).
 | `DESIGN.md` | Visual system and interaction principles |
 | `index.html` | The page — markup, inline CSS, SEO metadata, JSON-LD |
 | `404.html` | Themed not-found page |
+| `privacy.html` | Privacy policy, served at `/privacy` (site + SaaS Idea Scout Google OAuth) |
 | `og.png` | 1200×630 social share image |
 | `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-*.png` | Icons |
 | `manifest.webmanifest` | PWA manifest |
