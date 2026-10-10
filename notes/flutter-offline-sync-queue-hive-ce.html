@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A Flutter offline sync queue on Hive CE, gaps included · Cihat Karaboğa</title>
+    <meta
+      name="description"
+      content="A Hive CE box of queued writes, flushed oldest-first through Dio once the device is back online, retried after 2 s and 4 s, then marked failed — and the conflict and idempotency handling it leaves out."
+    />
+    <meta name="author" content="Cihat Karaboğa" />
+    <link rel="canonical" href="https://karaboga.dev/notes/flutter-offline-sync-queue-hive-ce" />
+    <meta name="theme-color" id="theme-color" content="#0c0c0d" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="karaboga.dev" />
+    <meta property="og:title" content="A Flutter offline sync queue on Hive CE, gaps included" />
+    <meta
+      property="og:description"
+      content="How the sync queue in my Flutter boilerplate stores, orders, retries and drops offline writes — and what it doesn't handle yet."
+    />
+    <meta property="og:url" content="https://karaboga.dev/notes/flutter-offline-sync-queue-hive-ce" />
+    <meta property="og:image" content="https://karaboga.dev/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="article:published_time" content="2026-10-10" />
+    <meta property="article:author" content="https://karaboga.dev/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@karabogadev" />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter+Tight:wght@400;500&display=swap"
+    />
+    <link rel="stylesheet" href="/notes/notes.css" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "@id": "https://karaboga.dev/notes/flutter-offline-sync-queue-hive-ce#article",
+        "url": "https://karaboga.dev/notes/flutter-offline-sync-queue-hive-ce",
+        "mainEntityOfPage": "https://karaboga.dev/notes/flutter-offline-sync-queue-hive-ce",
+        "headline": "A Flutter offline sync queue on Hive CE, gaps included",
+        "description": "A Hive CE box of queued writes, flushed oldest-first through Dio once the device is back online, retried after 2 s and 4 s, then marked failed — and the conflict and idempotency handling it leaves out.",
+        "datePublished": "2026-10-10",
+        "dateModified": "2026-10-10",
+        "inLanguage": "en",
+        "image": "https://karaboga.dev/og.png",
+        "keywords": ["Flutter", "offline-first", "Hive CE", "sync queue", "Dio", "BLoC"],
+        "author": {
+          "@type": "Person",
+          "@id": "https://karaboga.dev/#person",
+          "name": "Cihat Karaboğa",
+          "url": "https://karaboga.dev/"
+        },
+        "publisher": { "@id": "https://karaboga.dev/#person" },
+        "isPartOf": { "@id": "https://karaboga.dev/notes/#blog" },
+        "about": {
+          "@type": "SoftwareSourceCode",
+          "name": "Flutter App Boilerplate",
+          "codeRepository": "https://github.com/karabogadev/flutter_app_boilerplate",
+          "programmingLanguage": "Dart"
+        }
+      }
+    </script>
+
+    <!-- same pre-paint theme resolution as the home page -->
+    <script>
+      (function () {
+        var d = document.documentElement;
+        var stored = null;
+        try {
+          stored = localStorage.getItem("theme");
+        } catch (_) {}
+        var theme =
+          stored === "dark" || stored === "light"
+            ? stored
+            : window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        d.setAttribute("data-theme", theme);
+        var meta = document.getElementById("theme-color");
+        if (meta) meta.content = theme === "dark" ? "#0c0c0d" : "#f6f6f3";
+      })();
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/"
+          ><img src="/favicon.svg" alt="" width="22" height="22" />karaboga.dev</a
+        >
+        <a class="crumb" href="/notes/">Notes</a>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <article>
+          <h1>A Flutter offline sync queue on Hive CE, <em class="it">gaps included</em></h1>
+          <p class="meta">
+            <a href="/">Cihat Karaboğa</a> ·
+            <time datetime="2026-10-10">10 October 2026</time> · Flutter
+          </p>
+
+          <p class="lead">
+            My
+            <a href="https://github.com/karabogadev/flutter_app_boilerplate"
+              >Flutter boilerplate</a
+            >
+            ships a queue for writes made while offline: 973 lines across six
+            files in <code>lib/core/offline/</code>. Nothing in the
+            app calls it yet — <code>queueOperation</code> is defined and never
+            used. So this is a tour of the plumbing: what it guarantees today,
+            and what whoever wires it up still has to decide.
+          </p>
+
+          <p>
+            Everything below is read from commit
+            <a
+              href="https://github.com/karabogadev/flutter_app_boilerplate/tree/47bfb7b3a0f58499d766772d00a3c93db404838b"
+              ><code>47bfb7b</code></a
+            >
+            (24 September 2026). Versions are at the end.
+          </p>
+
+          <h2>A queued write is one Hive object</h2>
+          <p>
+            Each pending request is a <code>SyncOperation</code>, a
+            <code>HiveObject</code> with type id 2, stored in a single box
+            named <code>sync_queue</code>. It holds the whole request, not a
+            diff:
+          </p>
+          <pre><code>@HiveType(typeId: 2)
+class SyncOperation extends HiveObject {
+  final String id;                         // Uuid().v4()
+  final SyncOperationType operationType;   // create · update · delete
+  final String entityType;
+  final String entityId;
+  final String payload;                    // jsonEncode(data)
+  final String endpoint;
+  final DateTime createdAt;
+  int retryCount;
+  SyncStatus status;                       // pending · inProgress · completed · failed
+  String? errorMessage;
+  DateTime? lastAttemptAt;
+  // …
+}</code></pre>
+          <p class="src">
+            Trimmed from
+            <a
+              href="https://github.com/karabogadev/flutter_app_boilerplate/blob/47bfb7b3a0f58499d766772d00a3c93db404838b/lib/core/offline/sync_operation.dart#L10-L45"
+              >sync_operation.dart</a
+            >; the comments are mine.
+          </p>
+          <p>
+            Storing the endpoint and an encoded payload keeps the queue
+            ignorant of the domain: it never imports a feature, it just replays
+            HTTP calls. The cost shows up later — with no entity model, it
+            can't merge two updates to the same record.
+          </p>
+
+          <h2>“Online” means a DNS answer, not a Wi-Fi icon</h2>
+          <p>
+            <code>ConnectivityService</code> listens to
+            <code>connectivity_plus</code>, but a network interface isn't
+            treated as internet. It confirms with a lookup:
+          </p>
+          <pre><code>final result = await InternetAddress.lookup(
+  'google.com',
+).timeout(const Duration(seconds: 5));
+return result.isNotEmpty &amp;&amp; result[0].rawAddress.isNotEmpty;</code></pre>
+          <p class="src">
+            <a
+              href="https://github.com/karabogadev/flutter_app_boilerplate/blob/47bfb7b3a0f58499d766772d00a3c93db404838b/lib/core/offline/connectivity_service.dart#L80-L90"
+              >connectivity_service.dart</a
+            >
+          </p>
+          <p>
+            When the status flips to online and auto-sync is on (the default),
+            <code>OfflineManager</code> calls <code>processQueue()</code>. Two
+            consequences: the check uses <code>dart:io</code>, so it doesn't run
+            on Flutter web; and until the first check finishes, the status
+            starts as online.
+          </p>
+
+          <h2>Flushing: oldest first, one at a time</h2>
+          <pre><code>List&lt;SyncOperation&gt; get pendingOperations {
+  final now = DateTime.now();
+  return _box.values
+      .where(
+        (op) =&gt; op.status == SyncStatus.pending &amp;&amp; _isReadyForRetry(op, now),
+      )
+      .toList()
+    ..sort((a, b) =&gt; a.createdAt.compareTo(b.createdAt));
+}</code></pre>
+          <p class="src">
+            <a
+              href="https://github.com/karabogadev/flutter_app_boilerplate/blob/47bfb7b3a0f58499d766772d00a3c93db404838b/lib/core/offline/sync_queue.dart#L54-L62"
+              >sync_queue.dart</a
+            >
+          </p>
+          <p>
+            <code>processQueue()</code> walks that list in a plain
+            <code>for</code> loop and maps each operation to
+            <code>POST</code>, <code>PUT</code> or <code>DELETE</code>. An
+            <code>_isProcessing</code> flag stops a second run from starting
+            while one is in flight, so a flapping connection can't send the
+            same operation twice in parallel.
+          </p>
+          <p>
+            The requests go through the app's shared <code>DioClient</code>,
+            which matters more than it looks: queued writes pass through the
+            same token-refresh interceptor as live ones. If several queued
+            requests hit a 401 together, they share one refresh call
+            (<code>_refreshInFlight ??=</code>) and each is retried once with
+            the new token.
+          </p>
+
+          <h2>Retries: 2 seconds, 4 seconds, then failed</h2>
+          <pre><code>Future&lt;void&gt; markFailed(String error, {int maxRetries = 3}) async {
+  retryCount++;
+  errorMessage = error;
+  lastAttemptAt = DateTime.now();
+
+  if (retryCount &gt;= maxRetries) {
+    status = SyncStatus.failed;
+  } else {
+    status = SyncStatus.pending;
+  }
+  await save();
+}</code></pre>
+          <p class="src">
+            <a
+              href="https://github.com/karabogadev/flutter_app_boilerplate/blob/47bfb7b3a0f58499d766772d00a3c93db404838b/lib/core/offline/sync_operation.dart#L102-L114"
+              >sync_operation.dart</a
+            >
+          </p>
+          <p>
+            The backoff is <code>Duration(seconds: 1 &lt;&lt; retryCount)</code>.
+            Walking it through:
+          </p>
+          <div class="table">
+            <table>
+              <thead>
+                <tr><th scope="col">Attempt</th><th scope="col">On failure</th><th scope="col">Next attempt allowed</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td><code>retryCount</code> 1 → pending</td><td>2 s later</td></tr>
+                <tr><td>2</td><td><code>retryCount</code> 2 → pending</td><td>4 s later</td></tr>
+                <tr><td>3</td><td><code>retryCount</code> 3 → failed</td><td>only by hand</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            The code comment promises “2s, 4s, 8s”; the 8-second step never
+            happens, because the third failure already marks the operation
+            failed. And “allowed” is the right word: nothing schedules the
+            retry. The backoff is only checked when a run starts — on the next
+            switch to online, a manual <code>sync()</code> from
+            <code>ConnectivityCubit</code>, or <code>retryFailed()</code>,
+            which resets the count to zero.
+          </p>
+          <p>
+            Two failure paths are covered well. If the app is killed mid-sync,
+            <code>OfflineManager.init</code> resets any
+            <code>inProgress</code> operation to pending on the next launch.
+            And on logout or session expiry, pending operations are dropped so
+            they aren't sent with the next user's token.
+          </p>
+
+          <h2>What it doesn't handle</h2>
+          <ul>
+            <li>
+              <strong>No caller.</strong> No repository queues a write yet, and
+              there are no local entity boxes — <code>sync_queue</code> is the
+              only Hive box. The offline-first repository in the README is an
+              example, not code in <code>lib/</code>.
+            </li>
+            <li>
+              <strong>No conflict resolution.</strong> No version or ETag is
+              sent, and a 409 is handled like any other error: retried, then
+              marked failed. Merging is left to the server.
+            </li>
+            <li>
+              <strong>No idempotency key.</strong> The operation's UUID is never
+              sent. If a <code>POST</code> lands but the response is lost, the
+              retry creates the record twice.
+            </li>
+            <li>
+              <strong>Ordering is best-effort.</strong> A failed operation
+              doesn't block the ones after it, so an update can reach the
+              server before the create it depends on.
+            </li>
+            <li>
+              <strong>Housekeeping is manual.</strong> Completed operations
+              stay in the box; <code>clearCompleted()</code> and the 7-day
+              <code>clearStale()</code> exist, but nothing calls them on its
+              own. Logout clears pending operations, not failed ones.
+            </li>
+            <li>
+              <strong>Plain storage.</strong> The box isn't encrypted, and
+              payloads are stored as JSON strings.
+            </li>
+            <li>
+              <strong>Thin tests.</strong> The queue tests cover
+              <code>markFailed</code>, staleness and payload decoding;
+              <code>processQueue</code> and the backoff timing aren't tested.
+            </li>
+          </ul>
+          <p>
+            None of these are hard to add — an <code>Idempotency-Key</code>
+            header from the operation id, blocking later operations for the
+            same <code>entityId</code>, a timer for due retries. They're the
+            decisions a real backend forces, which is why they belong to the
+            app that wires the queue up rather than to a template.
+          </p>
+
+          <h2>Versions</h2>
+          <div class="table">
+            <table>
+              <tbody>
+                <tr><td>Dart SDK</td><td><code>^3.9.0</code></td></tr>
+                <tr><td>Flutter</td><td><code>&gt;=3.35.0</code></td></tr>
+                <tr><td>hive_ce</td><td><code>^2.20.0</code></td></tr>
+                <tr><td>dio</td><td><code>^5.11.1</code></td></tr>
+                <tr><td>connectivity_plus</td><td><code>^7.3.1</code></td></tr>
+                <tr><td>flutter_bloc</td><td><code>^9.1.1</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="next">
+            <p>
+              The queue, its connectivity check and the cubit are in
+              <a
+                href="https://github.com/karabogadev/flutter_app_boilerplate/tree/47bfb7b3a0f58499d766772d00a3c93db404838b/lib/core/offline"
+                ><code>lib/core/offline</code></a
+              >
+              on GitHub.
+            </p>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-inner">
+          <span>© 2026 Cihat Karaboğa</span>
+          <nav aria-label="Site">
+            <a href="/">Home</a><a href="/notes/">Notes</a
+            ><a href="https://github.com/karabogadev" rel="me noopener">GitHub</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

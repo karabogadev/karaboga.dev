@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notes · Cihat Karaboğa</title>
+    <meta
+      name="description"
+      content="Notes from real mobile projects by Cihat Karaboğa: Flutter, Dart and the tooling around them — what broke, what worked, with the code and versions."
+    />
+    <meta name="author" content="Cihat Karaboğa" />
+    <link rel="canonical" href="https://karaboga.dev/notes/" />
+    <meta name="theme-color" id="theme-color" content="#0c0c0d" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="karaboga.dev" />
+    <meta property="og:title" content="Notes · Cihat Karaboğa" />
+    <meta
+      property="og:description"
+      content="Notes from real mobile projects: Flutter, Dart and the tooling around them."
+    />
+    <meta property="og:url" content="https://karaboga.dev/notes/" />
+    <meta property="og:image" content="https://karaboga.dev/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@karabogadev" />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter+Tight:wght@400;500&display=swap"
+    />
+    <link rel="stylesheet" href="/notes/notes.css" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "@id": "https://karaboga.dev/notes/#blog",
+        "url": "https://karaboga.dev/notes/",
+        "name": "Notes · Cihat Karaboğa",
+        "inLanguage": "en",
+        "author": { "@id": "https://karaboga.dev/#person" },
+        "isPartOf": { "@id": "https://karaboga.dev/#website" },
+        "blogPost": [
+          {
+            "@type": "BlogPosting",
+            "@id": "https://karaboga.dev/notes/flutter-offline-sync-queue-hive-ce#article",
+            "headline": "A Flutter offline sync queue on Hive CE, gaps included",
+            "url": "https://karaboga.dev/notes/flutter-offline-sync-queue-hive-ce",
+            "datePublished": "2026-10-10"
+          }
+        ]
+      }
+    </script>
+
+    <!-- same pre-paint theme resolution as the home page -->
+    <script>
+      (function () {
+        var d = document.documentElement;
+        var stored = null;
+        try {
+          stored = localStorage.getItem("theme");
+        } catch (_) {}
+        var theme =
+          stored === "dark" || stored === "light"
+            ? stored
+            : window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        d.setAttribute("data-theme", theme);
+        var meta = document.getElementById("theme-color");
+        if (meta) meta.content = theme === "dark" ? "#0c0c0d" : "#f6f6f3";
+      })();
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/"
+          ><img src="/favicon.svg" alt="" width="22" height="22" />karaboga.dev</a
+        >
+        <a class="crumb" href="/notes/" aria-current="page">Notes</a>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <div class="intro">
+          <h1>Notes from <em class="it">real projects</em></h1>
+          <p class="lead">
+            Flutter, Dart and the tooling around them. Each note starts from
+            something that happened in my work — what broke, what worked — with
+            the code and the versions it applies to.
+          </p>
+        </div>
+
+        <!-- newest first; keep in step with the home page Notes section and sitemap.xml -->
+        <ol class="note-list">
+          <li>
+            <a class="note-row" href="/notes/flutter-offline-sync-queue-hive-ce">
+              <time datetime="2026-10-10">10 Oct 2026</time>
+              <div>
+                <h2>A Flutter offline sync queue on Hive CE, gaps included</h2>
+                <p>
+                  How queued writes are stored, ordered, retried and dropped —
+                  and the conflict and idempotency handling left out.
+                </p>
+              </div>
+            </a>
+          </li>
+        </ol>
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-inner">
+          <span>© 2026 Cihat Karaboğa</span>
+          <nav aria-label="Site">
+            <a href="/">Home</a
+            ><a href="https://github.com/karabogadev" rel="me noopener">GitHub</a
+            ><a href="mailto:cihat@karaboga.dev">cihat@karaboga.dev</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

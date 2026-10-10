@@ -2,7 +2,7 @@
 
 Personal site of **Cihat Karaboğa** — mobile software engineer, Türkiye.
 
-A single static page. `index.html` is self-contained — inline CSS and a small
+A static site with no build step. `index.html` is self-contained — inline CSS and a small
 inline script, no build step. Built for speed and SEO with semantic HTML,
 Open Graph + Twitter cards, JSON-LD structured data, a sitemap and a manifest.
 Type is Inter Tight with Instrument Serif italic accents (Google Fonts) and
@@ -39,6 +39,20 @@ the markup at load, so it never needs a second dictionary.
 A phrase set in the serif italic is its own key on its own `<em>`, so no
 translation ever needs markup.
 
+## Notes
+
+`/notes/` holds write-ups from real projects, one static HTML file per note
+sharing `notes/notes.css` — still no build step. Each note carries
+`BlogPosting` JSON-LD whose author is the home page's `#person`, so search and
+AI engines attach the writing to the same entity. `WRITING.md` has the rules
+every note follows (sources for every fact, real example first, versions,
+limits) and the publishing checklist; start a new note by copying the latest.
+
+`scripts/gsc.py` reads a Search Console performance export and lists leaks
+(page-1 queries clicked far less than this site's norm) and gaps (queries seen
+past page 1, never clicked). `scripts/indexnow.sh` pings Bing and the other
+IndexNow engines after a deploy; Google picks changes up from the sitemap.
+
 ## Develop locally
 
 Serve the folder so root-absolute paths (`/favicon.svg`, `/og.png`, …) resolve:
@@ -73,6 +87,10 @@ custom domain to `karaboga.dev` (this adds a `CNAME` file).
 | `index.html` | The page — markup, inline CSS, SEO metadata, JSON-LD |
 | `404.html` | Themed not-found page |
 | `privacy.html` | Privacy policy, served at `/privacy` (site + SaaS Idea Scout Google OAuth) |
+| `notes/` | Notes index, notes, and their shared `notes.css` |
+| `WRITING.md` | Rules and publishing checklist for notes |
+| `scripts/gsc.py`, `scripts/indexnow.sh` | Search Console gap/leak report, IndexNow ping |
+| `<key>.txt` | IndexNow ownership key, served from the root |
 | `og.png` | 1200×630 social share image |
 | `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-*.png` | Icons |
 | `manifest.webmanifest` | PWA manifest |
