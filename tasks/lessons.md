@@ -6,19 +6,29 @@ Bu repoda tasarım değişikliğini ekran görüntüsüyle doğrularken üç kez
 tuzağa düşüldü: **görüntüdeki kusur sayfada değil, ölçüm yönteminde çıktı.**
 Bir sonraki seferde önce yöntemi doğrula, sonra kodu suçla.
 
-- `--window-size` genişliği **500px'in altına inmiyor** (hem `--headless` hem
-  `--headless=new`). 390 istersen 500 alırsın, görüntü de kırpılır — bu
-  "yatay taşma" gibi görünür ama değildir. Gerçek dar viewport için sayfayı
-  sabit genişlikli bir `<iframe>` içinde render et; iframe kendi layout
-  viewport'unu alır.
+- `--window-size` genişliği tam Chrome'da (`--headless` ve `--headless=new`)
+  **500px'in altına inmiyor**: 390 istersen 500px layout alırsın, PNG 390'a
+  kırpılır — bu "yatay taşma" gibi görünür ama değildir. `chrome-headless-shell`
+  (ayrı binary) bu tabana sahip değil. Dar viewport için: shell, sabit genişlikli
+  `<iframe>` ya da Playwright `viewport` (emülasyon; 320 gerçekten 320 verir).
+  2026-10-10'da Chrome for Testing 151 ile yeniden ölçüldü.
 - Taşmayı gözle değil ölçerek doğrula:
-  `document.documentElement.scrollWidth` vs `clientWidth`.
+  `document.documentElement.scrollWidth` vs `clientWidth`. Iframe içindeki
+  taşma ekran görüntüsünde kırpılır, hiç görünmez.
 - `scroll-behavior: smooth` + fragment (`#about`) headless'ta yarım kalıyor;
   ekran görüntüsü boş kare yakalayabiliyor. Ölçüm için `scrollBehavior='auto'`.
-- `--dump-dom` piksel üretmez: CSS transition'ları ilerlemez, IntersectionObserver
-  düzensiz ateşlenir. Bu modda `getComputedStyle(el).opacity` geçiş ortasında
-  donuk kalır — sınıfın uygulanıp uygulanmadığına bak, hesaplanan değere değil.
-  Nihai görünümü sadece gerçek `--screenshot` kanıtlar.
+- `--dump-dom` `load` anında DOM'u alır; load sonrası timer'lar hiç çalışmaz.
+  `--virtual-time-budget` timer'ları çalıştırır ama CSS transition'ları
+  güvenilir biçimde ilerletmez. Hesaplanan değere değil, sınıfın uygulanıp
+  uygulanmadığına bak. Bütçesiz `--screenshot` da geçişi yarıda yakalayabilir.
+- Bu makinede taze `--user-data-dir` ile Chrome for Testing `--dump-dom` ve
+  `--screenshot`'ta sonsuza dek takılıyor. Bayrağı verme ya da Playwright kullan.
+
+## Yazılara konan iddialar
+
+Bir derse ya da hafızaya dayanan iddia yayınlanmadan önce yeniden üretilir.
+`lessons.md`'deki dört headless Chrome iddiasından biri yeniden ölçünce yanlış,
+biri eksik çıktı — not olarak yayınlansaydı yanlış bilgi yayılacaktı.
 
 ## Reveal animasyonları
 

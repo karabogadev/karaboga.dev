@@ -13,6 +13,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://karaboga.dev/notes/headless-chrome-500px-minimum-width</loc>
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://karaboga.dev/notes/flutter-offline-sync-queue-hive-ce</loc>
     <lastmod>2026-10-10</lastmod>
     <changefreq>yearly</changefreq>

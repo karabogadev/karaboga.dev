@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Headless Chrome won’t go below 500px wide: three fixes · Cihat Karaboğa</title>
+    <meta
+      name="description"
+      content="Headless Chrome clamps --window-size to a 500px-wide layout viewport, so a 390px screenshot is a cropped 500px page. chrome-headless-shell, a fixed-width iframe, or Playwright’s viewport give a real 390."
+    />
+    <meta name="author" content="Cihat Karaboğa" />
+    <link rel="canonical" href="https://karaboga.dev/notes/headless-chrome-500px-minimum-width" />
+    <meta name="theme-color" id="theme-color" content="#0c0c0d" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="karaboga.dev" />
+    <meta property="og:title" content="Headless Chrome won’t go below 500px wide: three fixes" />
+    <meta
+      property="og:description"
+      content="A 390px screenshot from headless Chrome is a cropped 500px layout. What I measured, and three ways to get a real narrow viewport."
+    />
+    <meta property="og:url" content="https://karaboga.dev/notes/headless-chrome-500px-minimum-width" />
+    <meta property="og:image" content="https://karaboga.dev/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="article:published_time" content="2026-10-10" />
+    <meta property="article:author" content="https://karaboga.dev/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@karabogadev" />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter+Tight:wght@400;500&display=swap"
+    />
+    <link rel="stylesheet" href="/notes/notes.css" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "@id": "https://karaboga.dev/notes/headless-chrome-500px-minimum-width#article",
+        "url": "https://karaboga.dev/notes/headless-chrome-500px-minimum-width",
+        "mainEntityOfPage": "https://karaboga.dev/notes/headless-chrome-500px-minimum-width",
+        "headline": "Headless Chrome won’t go below 500px wide: three fixes",
+        "description": "Headless Chrome clamps --window-size to a 500px-wide layout viewport, so a 390px screenshot is a cropped 500px page. chrome-headless-shell, a fixed-width iframe, or Playwright’s viewport give a real 390.",
+        "datePublished": "2026-10-10",
+        "dateModified": "2026-10-10",
+        "inLanguage": "en",
+        "image": "https://karaboga.dev/og.png",
+        "keywords": ["headless Chrome", "chrome-headless-shell", "window-size", "responsive testing", "Playwright"],
+        "author": {
+          "@type": "Person",
+          "@id": "https://karaboga.dev/#person",
+          "name": "Cihat Karaboğa",
+          "url": "https://karaboga.dev/"
+        },
+        "publisher": { "@id": "https://karaboga.dev/#person" },
+        "isPartOf": { "@id": "https://karaboga.dev/notes/#blog" }
+      }
+    </script>
+
+    <!-- same pre-paint theme resolution as the home page -->
+    <script>
+      (function () {
+        var d = document.documentElement;
+        var stored = null;
+        try {
+          stored = localStorage.getItem("theme");
+        } catch (_) {}
+        var theme =
+          stored === "dark" || stored === "light"
+            ? stored
+            : window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        d.setAttribute("data-theme", theme);
+        var meta = document.getElementById("theme-color");
+        if (meta) meta.content = theme === "dark" ? "#0c0c0d" : "#f6f6f3";
+      })();
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/"
+          ><img src="/favicon.svg" alt="" width="22" height="22" />karaboga.dev</a
+        >
+        <a class="crumb" href="/notes/">Notes</a>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <article>
+          <h1>Headless Chrome won’t go below 500px wide: <em class="it">three fixes</em></h1>
+          <p class="meta">
+            <a href="/">Cihat Karaboğa</a> ·
+            <time datetime="2026-10-10">10 October 2026</time> · Tooling
+          </p>
+
+          <p class="lead">
+            While redesigning this site I checked the mobile layout with
+            headless Chrome screenshots at 390px. The right edge looked cut
+            off, and I went looking for a horizontal overflow in my CSS. There
+            was none: headless Chrome had rendered a 500px-wide page and
+            cropped it to 390.
+          </p>
+
+          <p>
+            Every number below was measured on 10 October 2026 on macOS 27.0.1
+            (Apple Silicon) with Chrome for Testing 151.0.7922.34,
+            chrome-headless-shell 151.0.7922.34 and Brave 155.1.97.56.
+          </p>
+
+          <h2>What the window-size flag actually gives you</h2>
+          <p>
+            A test page printing <code>innerWidth</code> and
+            <code>clientWidth</code>, captured with
+            <code>--dump-dom</code>, and the PNG width from
+            <code>--screenshot</code>:
+          </p>
+          <pre><code>chrome --headless --window-size=390,844 --dump-dom file:///…/vp.html
+chrome --headless --window-size=390,844 --screenshot=out.png file:///…/vp.html</code></pre>
+          <div class="table">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Requested</th>
+                  <th scope="col">Chrome 151 / Brave 155<br />layout · PNG</th>
+                  <th scope="col">chrome-headless-shell 151<br />layout · PNG</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>320</td><td>500 · 320</td><td>320 · 320</td></tr>
+                <tr><td>390</td><td>500 · 390</td><td>390 · 390</td></tr>
+                <tr><td>499</td><td>500 · 499</td><td>499 · 499</td></tr>
+                <tr><td>500</td><td>500 · 500</td><td>500 · 500</td></tr>
+                <tr><td>501</td><td>501 · 501</td><td>501 · 501</td></tr>
+                <tr><td>800</td><td>800 · 800</td><td>800 · 800</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Below 500, the full browser lays the page out at 500 and then
+            crops the image to the size you asked for. An element pinned to
+            <code>right: 0</code> is simply missing from the 390px PNG. So is
+            anything your <code>max-width: 400px</code> media query was supposed
+            to change, because at 500 it never matches.
+          </p>
+          <p>
+            <code>--headless</code> and <code>--headless=new</code> behave the
+            same — in current Chrome they're the same mode.
+            <code>--force-device-scale-factor=1</code> and
+            <code>--hide-scrollbars</code> change nothing. Height isn't exact
+            either: 844 requested gave an <code>innerHeight</code> of 757.
+          </p>
+
+          <h2>Fix 1: use chrome-headless-shell</h2>
+          <p>
+            The old headless mode now ships as a separate binary,
+            <code>chrome-headless-shell</code>, and it has no floor: 320 and 390
+            give real 320 and 390 viewports, with the right media queries
+            applied, and the height matches the request. If you have
+            Playwright's browsers installed it's already on disk, next to its
+            Chromium; otherwise:
+          </p>
+          <pre><code>npx @puppeteer/browsers install chrome-headless-shell</code></pre>
+
+          <h2>Fix 2: render the page in a fixed-width iframe</h2>
+          <p>
+            If you're stuck with the full browser, give the page its own
+            viewport. An iframe's document lays out at the iframe's width, no
+            matter how wide the window is:
+          </p>
+          <pre><code>&lt;iframe src="/" width="390" height="2400" style="border:0"&gt;&lt;/iframe&gt;</code></pre>
+          <p>
+            Inside a 390px iframe the page reports
+            <code>innerWidth</code> 390 and a
+            <code>max-width: 400px</code> query applies — in both headless
+            modes of the full browser and in the shell. Serve the host page and the site from the
+            same origin (a local server, not <code>file://</code>) and the host
+            can also read measurements out of the frame.
+          </p>
+
+          <h2>Fix 3: let Playwright set the viewport</h2>
+          <p>
+            Playwright sets the viewport through emulation instead of the window
+            size. Using the same Chrome for Testing build, this gave a true
+            320px layout:
+          </p>
+          <pre><code>const ctx = await browser.newContext({ viewport: { width: 320, height: 900 } });
+const page = await ctx.newPage();
+await page.goto('http://localhost:8080/');
+await page.evaluate(() =&gt; document.documentElement.clientWidth); // 320</code></pre>
+          <p>This is how this site’s layout checks run now.</p>
+
+          <h2>Measure overflow, don't look for it</h2>
+          <p>
+            The screenshot was what fooled me, so the check that replaced it is
+            a number:
+          </p>
+          <pre><code>const d = document.documentElement;
+d.scrollWidth &gt; d.clientWidth; // true means something sticks out</code></pre>
+          <p>
+            In a 390px iframe, a page with a 600px-wide element reports
+            <code>scrollWidth</code> 600 against <code>clientWidth</code> 390.
+            In the screenshot of the same frame, the element is just clipped
+            at the edge — the overflow is invisible. The opposite of my
+            original problem, and another reason not to trust the picture.
+          </p>
+
+          <h2>Two smaller traps</h2>
+          <ul>
+            <li>
+              <strong><code>--dump-dom</code> captures at <code>load</code>.</strong>
+              Timers scheduled after load never run. With
+              <code>--virtual-time-budget=3000</code> they do, but CSS
+              transitions don't reliably keep up: across 11 runs, an element
+              fading in over one second mostly still read
+              <code>opacity: 0</code> at 1500ms. Check that the class was added,
+              not the computed value.
+            </li>
+            <li>
+              <strong>A plain <code>--screenshot</code> can catch a fade
+              mid-way.</strong> Without a time budget the element came out
+              nearly blank; with <code>--virtual-time-budget=3000</code> it was
+              fully drawn in 3 of 3 runs.
+            </li>
+          </ul>
+          <p>
+            One more, specific to this machine: Chrome for Testing hung on both
+            <code>--dump-dom</code> and <code>--screenshot</code> whenever I
+            passed a fresh <code>--user-data-dir</code>. Without the flag it was
+            fine.
+          </p>
+
+          <div class="next">
+            <p>
+              The site these checks run against is open source:
+              <a href="https://github.com/karabogadev/karaboga.dev"
+                >karabogadev/karaboga.dev</a
+              >
+              on GitHub.
+            </p>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-inner">
+          <span>© 2026 Cihat Karaboğa</span>
+          <nav aria-label="Site">
+            <a href="/">Home</a><a href="/notes/">Notes</a
+            ><a href="https://github.com/karabogadev" rel="me noopener">GitHub</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
